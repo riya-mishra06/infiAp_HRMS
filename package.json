@@ -1,0 +1,15 @@
+{
+  "name": "hr-dashboard-mern",
+  "version": "1.0.0",
+  "description": "HR Dashboard MERN Stack Root",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd frontend && npm run dev",
+    "server": "cd backend && npm run dev",
+    "dev": "npm run client",
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
