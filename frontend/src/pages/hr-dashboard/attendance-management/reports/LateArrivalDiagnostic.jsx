@@ -116,7 +116,13 @@ const LateArrivalDiagnostic = () => {
                <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Employee Violation Index</h3>
                <div className="relative group w-48">
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" />
-                  <input type="text" placeholder="Search employees..." className="bg-white border border-slate-100 rounded-xl pl-8 pr-4 py-2 text-[10px] font-black uppercase tracking-widest outline-none shadow-sm focus:border-primary-100 w-full" />
+                  <input 
+                    type="text" 
+                    placeholder="Search employees..." 
+                    className="bg-white border border-slate-100 rounded-xl pl-8 pr-4 py-2 text-[10px] font-black uppercase tracking-widest outline-none shadow-sm focus:border-primary-100 w-full" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                </div>
             </div>
             <div className="flex-1 overflow-y-auto no-scrollbar">

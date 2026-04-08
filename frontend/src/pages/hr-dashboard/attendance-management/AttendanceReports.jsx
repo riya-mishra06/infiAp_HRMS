@@ -37,6 +37,7 @@ const AttendanceReports = () => {
   const [notification, setNotification] = useState(null);
   const [activeTab, setActiveTab] = useState('Monthly');
   const [showConfigDrawer, setShowConfigDrawer] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const showNotification = (msg) => {
     setNotification(msg);
@@ -54,6 +55,11 @@ const AttendanceReports = () => {
     { name: 'Mon', value: 92 }, { name: 'Tue', value: 88 }, { name: 'Wed', value: 95 },
     { name: 'Thu', value: 91 }, { name: 'Fri', value: 98 }, { name: 'Sat', value: 30 }, { name: 'Sun', value: 10 }
   ];
+
+  const filteredReports = reports.filter(rep => 
+    rep.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    rep.type.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col h-[calc(100vh-120px)] w-full gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 overflow-hidden">
@@ -246,7 +252,7 @@ const AttendanceReports = () => {
                      </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50 relative z-10">
-                     {reports.map((rep, idx) => (
+                     {filteredReports.map((rep, idx) => (
                         <tr key={idx} onClick={() => navigate(rep.path)} className="group hover:bg-slate-50/50 transition-all cursor-pointer">
                            <td className="px-10 py-8">
                               <div className="flex items-center gap-5">
