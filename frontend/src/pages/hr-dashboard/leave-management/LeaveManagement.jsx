@@ -20,7 +20,10 @@ import {
   Settings,
   Share2,
   Layout,
-  XCircle
+  XCircle,
+  History,
+  ShieldCheck,
+  UserCheck
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -31,33 +34,64 @@ import {
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 
-// Workaround for missing icons in module scope
-const History = (props) => <Clock {...props} />;
-const ShieldCheck = (props) => <CheckCircle2 {...props} />;
-
 const LeaveManagement = () => {
   const navigate = useNavigate();
   const [notification, setNotification] = useState(null);
   const [activeTab, setActiveTab] = useState('Active');
   const [showConfigDrawer, setShowConfigDrawer] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [complianceRules, setComplianceRules] = useState([
+    { id: 1, label: 'Auto-approve medical < 2 days', active: true },
+    { id: 2, label: 'Restrict engineering > 5% total', active: false },
+    { id: 3, label: 'Flag repetitive Fri/Mon patterns', active: true },
+  ]);
 
   const showNotification = (msg) => {
     setNotification(msg);
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const leaveActions = [
-    { title: 'Leave Request Audit', date: 'Oct 24', category: 'Requests', status: 'Priority', size: 'Pending', path: '/leave/requests', icon: ClipboardList, color: 'text-primary-600', bg: 'bg-primary-50' },
-    { title: 'Leadership Approvals', date: 'Wk 42', category: 'Approvals', status: 'Required', size: '12 Items', path: '/leave/approval', icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { title: 'Historical Archive', date: 'Q3 2023', category: 'History', status: 'Locked', size: '142 Logs', path: '/leave/history', icon: History, color: 'text-slate-600', bg: 'bg-slate-50' },
-    { title: 'Policy Compliance', date: 'FY 2024', category: 'Legal', status: 'Updated', size: 'v4.2', path: '/leave/policy', icon: ShieldCheck, color: 'text-orange-600', bg: 'bg-orange-50' },
-  ];
+  const toggleRule = (id) => {
+    setComplianceRules(prev => prev.map(r => r.id === id ? { ...r, active: !r.active } : r));
+    showNotification("Global policy node updated.");
+  };
+
+  const getTabData = () => {
+    const data = {
+      'Pending': [
+        { title: 'Sarah Chen - Sick Leave', date: 'Oct 12', category: 'Urgent', status: 'Priority', size: '3 Days', path: '/leave/approval', icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
+        { title: 'Marcus Thompson - Annual', date: 'Oct 20', category: 'Vacation', status: 'Required', size: '6 Days', path: '/leave/approval', icon: Calendar, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+      ],
+      'Archive': [
+        { title: 'Arjun Mehta - Annual', date: 'Nov 12', category: 'History', status: 'Locked', size: 'Approved', path: '/leave/history', icon: History, color: 'text-slate-600', bg: 'bg-slate-50' },
+        { title: 'Priya Sharma - Sick', date: 'Oct 28', category: 'History', status: 'Locked', size: 'Approved', path: '/leave/history', icon: History, color: 'text-slate-600', bg: 'bg-slate-50' },
+      ],
+      'Analytics': [
+        { title: 'Q3 Departmental Audit', date: 'Quarterly', category: 'Analytics', status: 'Generated', size: '15 Page PDF', path: '/leave/history', icon: PieChart, color: 'text-primary-600', bg: 'bg-primary-50' },
+        { title: 'Absence Trend Report', date: 'Monthly', category: 'Analytics', status: 'Ready', size: 'Excel Data', path: '/leave/history', icon: Activity, color: 'text-primary-600', bg: 'bg-primary-50' },
+      ],
+      'Active': [
+        { title: 'Leave Request Audit', date: 'Oct 24', category: 'Requests', status: 'Priority', size: '18 Pending', path: '/leave/requests', icon: ClipboardList, color: 'text-primary-600', bg: 'bg-primary-50' },
+        { title: 'Leadership Approvals', date: 'Wk 42', category: 'Approvals', status: 'Required', size: '12 Items', path: '/leave/approval', icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { title: 'Compliance Engine', date: 'FY 2024', category: 'Legal', status: 'Updated', size: 'v4.2 Active', path: '/leave/requests', icon: ShieldCheck, color: 'text-orange-600', bg: 'bg-orange-50' },
+      ]
+    };
+    return data[activeTab] || data['Active'];
+  };
 
   const trendData = [
     { name: 'Mon', value: 4 }, { name: 'Tue', value: 7 }, { name: 'Wed', value: 5 },
     { name: 'Thu', value: 8 }, { name: 'Fri', value: 12 }, { name: 'Sat', value: 2 }, { name: 'Sun', value: 1 }
   ];
+
+  const statCards = [
+    { label: 'Pending', value: '18', color: 'text-orange-500', icon: Clock, filter: 'Pending' },
+    { label: 'Approved', value: '142', color: 'text-emerald-500', icon: CheckCircle2, filter: 'Approved' },
+    { label: 'Rejected', value: '24', color: 'text-rose-500', icon: XCircle, filter: 'Rejected' },
+    { label: 'On Leave Today', value: '12', color: 'text-primary-500', icon: UserCheck, filter: 'All Requests' },
+  ];
+
+  const currentActions = getTabData();
 
   return (
     <div className="flex flex-col h-[calc(100vh-120px)] w-full gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 overflow-hidden">
@@ -74,7 +108,7 @@ const LeaveManagement = () => {
                  </div>
                  <button onClick={() => setShowConfigDrawer(false)} className="p-3 bg-slate-50 text-slate-400 hover:text-slate-800 rounded-2xl transition-all"><X size={20} /></button>
               </div>
-              <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar no-scrollbar">
+              <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar no-scrollbar text-left">
                  <section className="space-y-6">
                     <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
                        <Layout size={14} className="text-primary-500" />
@@ -85,6 +119,24 @@ const LeaveManagement = () => {
                           <div key={t} className="p-5 border border-slate-100 rounded-[24px] text-left hover:border-primary-500 hover:bg-primary-50 transition-all group">
                              <p className="text-xs font-black text-slate-800 uppercase tracking-tight group-hover:text-primary-600">{t}</p>
                              <p className="text-xl font-black text-slate-400 mt-1">24 Days</p>
+                          </div>
+                       ))}
+                    </div>
+                 </section>
+                 <section className="space-y-6">
+                    <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
+                       <ShieldCheck size={14} className="text-emerald-500" />
+                       Compliance Rules
+                    </h4>
+                    <div className="space-y-4 text-left">
+                       {complianceRules.map(rule => (
+                          <div key={rule.id} 
+                               onClick={() => toggleRule(rule.id)}
+                               className="p-4 bg-slate-50 rounded-2xl flex items-center justify-between cursor-pointer hover:bg-slate-100 transition-all active:scale-[0.98]">
+                             <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{rule.label}</span>
+                             <div className={`w-10 h-6 rounded-full flex items-center px-1 transition-all ${rule.active ? 'bg-primary-500' : 'bg-slate-300'}`}>
+                                <div className={`w-4 h-4 bg-white rounded-full shadow-sm transition-all ${rule.active ? 'ml-auto' : 'ml-0'}`}></div>
+                             </div>
                           </div>
                        ))}
                     </div>
@@ -106,7 +158,7 @@ const LeaveManagement = () => {
       {notification && (
         <div className="fixed top-24 right-8 z-100 animate-in slide-in-from-right-8 fade-in flex items-center gap-3 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/10">
           <BellRing size={20} className="text-primary-400" />
-          <span className="text-sm font-bold tracking-tight uppercase tracking-widest">{notification}</span>
+          <span className="text-sm font-bold tracking-tight uppercase">{notification}</span>
         </div>
       )}
 
@@ -118,10 +170,10 @@ const LeaveManagement = () => {
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
-             onClick={() => showNotification("Accessing historical datasets...")}
+             onClick={() => navigate('/leave/history')}
              className="px-8 py-3 bg-white border border-slate-100 text-slate-400 font-black text-[10px] uppercase rounded-2xl hover:bg-slate-50 transition-all shadow-sm active:scale-95"
            >
-              View Archive
+              View History
            </button>
            <button 
              onClick={() => setShowConfigDrawer(true)}
@@ -165,16 +217,15 @@ const LeaveManagement = () => {
                </div>
             </div>
 
-            <div className="space-y-4">
-               {[
-                 { label: 'Pending Approvals', value: '18', icon: Clock, color: 'text-orange-500' },
-                 { label: 'Avg Leave Period', value: '4.2 Days', icon: Activity, color: 'text-primary-500' },
-               ].map((stat, i) => (
-                 <div key={i} className="card-soft bg-white p-6 flex items-center gap-4 hover:border-primary-100 transition-all cursor-crosshair">
-                    <div className={`p-3 bg-slate-50 rounded-2xl ${stat.color} shadow-inner`}><stat.icon size={20} /></div>
+            <div className="grid grid-cols-2 gap-4">
+               {statCards.map((stat, i) => (
+                 <div key={i} 
+                      onClick={() => navigate(`/leave/requests?status=${stat.filter}`)}
+                      className="card-soft bg-white p-5 flex flex-col gap-3 hover:border-primary-100 transition-all cursor-pointer active:scale-95 group">
+                    <div className={`p-2 w-fit bg-slate-50 rounded-xl ${stat.color} shadow-inner group-hover:bg-white group-hover:shadow-soft`}><stat.icon size={16} /></div>
                     <div>
-                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{stat.label}</p>
-                       <p className="text-lg font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
+                       <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{stat.label}</p>
+                       <p className="text-xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
                     </div>
                  </div>
                ))}
@@ -223,7 +274,7 @@ const LeaveManagement = () => {
             {/* Diagnostic Table/Cards */}
             <div className="flex-1 overflow-y-auto no-scrollbar">
                <table className="w-full text-left">
-                  <thead className="sticky top-0 z-20 bg-slate-50/80 backdrop-blur-md border-b border-slate-100">
+                  <thead className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-slate-100">
                      <tr>
                         <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Diagnostic Workspace</th>
                         <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Log Node</th>
@@ -231,17 +282,17 @@ const LeaveManagement = () => {
                         <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
                      </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-50 relative z-10">
-                     {leaveActions.map((act, idx) => (
-                        <tr key={idx} onClick={() => navigate(act.path)} className="group hover:bg-slate-50/50 transition-all cursor-pointer">
+                  <tbody className="divide-y divide-slate-50 relative z-10 transition-all">
+                     {currentActions.filter(a => a.title.toLowerCase().includes(searchQuery.toLowerCase())).map((act, idx) => (
+                        <tr key={`${activeTab}-${idx}`} onClick={() => navigate(act.path)} className="group hover:bg-slate-50/50 transition-all cursor-pointer animate-in fade-in slide-in-from-left-4 duration-300">
                            <td className="px-10 py-8">
                               <div className="flex items-center gap-5">
                                  <div className={`p-4 rounded-2xl ${act.bg} ${act.color} border border-slate-100 shadow-sm group-hover:scale-110 transition-all`}>
-                                    <act.icon size={24} />
+                                    {React.createElement(act.icon, { size: 24 })}
                                  </div>
-                                 <div>
+                                 <div className="text-left">
                                     <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-1">{act.title}</p>
-                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{act.size} • Verified Archive</p>
+                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{act.category} • {act.size}</p>
                                  </div>
                               </div>
                            </td>
@@ -253,16 +304,16 @@ const LeaveManagement = () => {
                            </td>
                            <td className="px-6 py-8">
                               <span className={`px-4 py-1.5 text-[10px] font-black rounded-xl uppercase tracking-widest border ${
-                                 act.status === 'Priority' ? 'bg-orange-50 text-orange-600 border-orange-100' : 
-                                 act.status === 'Required' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-slate-900/5 text-slate-600 border-slate-100'
+                                 act.status === 'Priority' || act.status === 'Urgent' ? 'bg-orange-50 text-orange-600 border-orange-100' : 
+                                 act.status === 'Required' || act.status === 'Locked' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-slate-900/5 text-slate-600 border-slate-100'
                               }`}>{act.status}</span>
                            </td>
                            <td className="px-10 py-8 text-right">
                               <div className="flex items-center justify-end gap-3">
-                                 <button onClick={(e) => { e.stopPropagation(); showNotification(`Exporting ${act.title}...`); }} className="p-3 bg-white border border-slate-100 text-slate-400 hover:text-slate-800 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all">
+                                 <button onClick={(e) => { e.stopPropagation(); showNotification(`Exporting ${act.title}...`); }} className="p-3 bg-white border border-slate-100 text-slate-400 hover:text-slate-800 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">
                                     <Download size={20} />
                                  </button>
-                                 <button className="p-3 bg-white border border-slate-100 text-slate-400 hover:text-primary-600 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all">
+                                 <button className="p-3 bg-white border border-slate-100 text-slate-400 hover:text-primary-600 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">
                                     <ArrowRight size={20} />
                                  </button>
                               </div>

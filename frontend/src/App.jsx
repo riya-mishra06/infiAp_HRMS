@@ -14,8 +14,16 @@ import DailyAttendanceAudit from './pages/hr-dashboard/attendance-management/rep
 import LateArrivalDiagnostic from './pages/hr-dashboard/attendance-management/reports/LateArrivalDiagnostic';
 import CorrectionWorkflow from './pages/hr-dashboard/attendance-management/CorrectionWorkflow';
 import LeaveManagement from './pages/hr-dashboard/leave-management/LeaveManagement';
+import LeaveRequests from './pages/hr-dashboard/leave-management/LeaveRequests';
+import LeaveApproval from './pages/hr-dashboard/leave-management/LeaveApproval';
+import LeaveHistory from './pages/hr-dashboard/leave-management/LeaveHistory';
+import EmployeeLeaveProfile from './pages/hr-dashboard/leave-management/EmployeeLeaveProfile';
 import PayrollManagement from './pages/hr-dashboard/payroll-management/PayrollManagement';
 import RecruitmentManagement from './pages/hr-dashboard/recruitment-management/RecruitmentManagement';
+import Candidates from './pages/hr-dashboard/recruitment/Candidates';
+import HiringApplications from './pages/hr-dashboard/recruitment/HiringApplications';
+import InterviewScheduling from './pages/hr-dashboard/recruitment/InterviewScheduling';
+import CandidateProfile from './pages/hr-dashboard/recruitment/CandidateProfile';
 import PerformanceManagement from './pages/hr-dashboard/performance-management/PerformanceManagement';
 import AnalyticsManagement from './pages/hr-dashboard/analytics-management/AnalyticsManagement';
 import ResignationHub from './pages/hr-dashboard/resignation-management/ResignationHub';
@@ -55,14 +63,16 @@ function App() {
             <Route path="/attendance-correction" element={<CorrectionWorkflow />} />
             
             <Route path="/leave" element={<LeaveManagement />} />
-            <Route path="/leave/requests" element={<Placeholder title="Leave Requests" />} />
-            <Route path="/leave/approval" element={<Placeholder title="Leave Approval" />} />
-            <Route path="/leave/history" element={<Placeholder title="Leave History" />} />
+            <Route path="/leave/requests" element={<LeaveRequests />} />
+            <Route path="/leave/approval" element={<LeaveApproval />} />
+            <Route path="/leave/history" element={<LeaveHistory />} />
+            <Route path="/leave/profile/:id" element={<EmployeeLeaveProfile />} />
 
             <Route path="/recruitment" element={<RecruitmentManagement />} />
-            <Route path="/recruitment/candidates" element={<Placeholder title="Candidates" />} />
-            <Route path="/recruitment/applications" element={<Placeholder title="Hiring Applications" />} />
-            <Route path="/recruitment/interviews" element={<Placeholder title="Interview Scheduling" />} />
+            <Route path="/recruitment/candidates" element={<Candidates />} />
+            <Route path="/recruitment/applications" element={<HiringApplications />} />
+            <Route path="/recruitment/interviews" element={<InterviewScheduling />} />
+            <Route path="/recruitment/candidate/:id" element={<CandidateProfile />} />
 
             <Route path="/payroll" element={<PayrollManagement />} />
             <Route path="/payroll/overview" element={<Placeholder title="Payroll Overview" />} />
