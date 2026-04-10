@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Dashboard from './pages/hr-dashboard/Dashboard';
 import EmployeeDirectory from './pages/hr-dashboard/employee-management/EmployeeDirectory';
@@ -52,7 +52,7 @@ import { EmployeeProvider } from './context/EmployeeContext';
 // Placeholder components for Settings
 const Placeholder = ({ title }) => (
   <div className="card-soft p-12 text-center mt-20">
-    <div className="w-20 h-20 bg-slate-50 rounded-[32px] flex items-center justify-center text-slate-300 mx-auto mb-8 shadow-inner border border-slate-100">
+    <div className="w-20 h-20 bg-slate-50 rounded-4xl flex items-center justify-center text-slate-300 mx-auto mb-8 shadow-inner border border-slate-100">
        <div className="w-10 h-10 border-4 border-slate-200 border-t-primary-500 rounded-full animate-spin"></div>
     </div>
     <h2 className="text-3xl font-black text-slate-800 mb-2 tracking-tight">{title} Module</h2>
@@ -66,6 +66,7 @@ function App() {
       <EmployeeProvider>
         <Routes>
           {/* 1. Cinematic Auth Flow */}
+          <Route path="/" element={<Navigate to="/splash" replace />} />
           <Route path="/splash" element={<SplashScreen />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -78,6 +79,8 @@ function App() {
             <DashboardLayout>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/departments" element={<Dashboard />} />
                 <Route path="/employees" element={<EmployeeDirectory />} />
                 <Route path="/employees/add" element={<AddEmployee />} />
                 <Route path="/employees/profiles" element={<EmployeeProfilesHub />} />

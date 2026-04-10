@@ -1,195 +1,208 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-   Users,
-   Calendar,
-   Clock,
-   CheckCircle2,
-   TrendingUp,
-   TrendingDown,
-   ArrowUpRight,
-   MoreHorizontal,
-   BellRing,
-   DollarSign,
-   ClipboardList
+  Building2,
+  Users,
+  Briefcase,
+  Wallet,
+  UserPlus,
+  PlusCircle,
+  Send,
+  ChevronRight,
+  Sparkles,
+  Clock3,
+  Check,
+  X,
+  BellRing,
+  CircleDot,
 } from 'lucide-react';
-import {
-   AreaChart,
-   Area,
-   ResponsiveContainer,
-   XAxis,
-   YAxis,
-   Tooltip,
-   CartesianGrid,
-   BarChart,
-   Bar
-} from 'recharts';
 
 const Dashboard = () => {
-   const navigate = useNavigate();
-   const [notification, setNotification] = useState(null);
+  const navigate = useNavigate();
+  const [leaveStatus, setLeaveStatus] = useState('pending');
 
-   const showNotification = (msg) => {
-      setNotification(msg);
-      setTimeout(() => setNotification(null), 3000);
-   };
+  const stats = useMemo(
+    () => [
+      { title: 'Departments', value: '08', icon: Building2, note: 'Active business units' },
+      { title: 'Employees', value: '320', icon: Users, note: 'Total workforce count' },
+      { title: 'Active Jobs', value: '12', icon: Briefcase, note: 'Open recruitment roles' },
+      { title: 'Payroll', value: '$85,000', icon: Wallet, note: '+4% vs last month' },
+    ],
+    []
+  );
 
-   const stats = [
-      { title: 'Total Employee', value: '428', change: '+12%', icon: Users, color: 'text-primary-600', bg: 'bg-primary-50', link: '/employees' },
-      { title: 'Attendance Today', value: '94.2%', change: '+2.4%', icon: CheckCircle2, color: 'text-green-600', bg: 'bg-green-50', link: '/attendance' },
-      { title: 'Pending Leaves', value: '18', change: '-4', icon: ClipboardList, color: 'text-orange-600', bg: 'bg-orange-50', link: '/leave' },
-      { title: 'Monthly Payroll', value: '₹4.2M', change: 'Normal', icon: DollarSign, color: 'text-indigo-600', bg: 'bg-indigo-50', link: '/payroll' },
-   ];
+  const departments = useMemo(
+    () => [
+      { name: 'Engineering', head: 'Rahul Sharma', teams: 5, employees: 85, tag: 'Tech', tagClass: 'bg-[#E8ECFF] text-[#4559E7]' },
+      { name: 'Marketing', head: 'Priya Kaur', teams: 3, employees: 42, tag: 'Creative', tagClass: 'bg-[#FFF0E4] text-[#DD7A2D]' },
+      { name: 'Human Resources', head: 'Anit Verma', teams: 2, employees: 16, tag: 'Admin', tagClass: 'bg-[#E7F7EE] text-[#2E9A63]' },
+    ],
+    []
+  );
 
-   const trendData = [
-      { name: 'Mon', present: 380, absent: 20 },
-      { name: 'Tue', present: 395, absent: 15 },
-      { name: 'Wed', present: 410, absent: 5 },
-      { name: 'Thu', present: 385, absent: 30 },
-      { name: 'Fri', present: 405, absent: 10 },
-   ];
+  const recentActivity = useMemo(
+    () => [
+      { title: 'Payroll processed for Sales Department', time: 'Today at 10:15 AM' },
+      { title: 'New hire Michael Scott onboarded', time: 'Yesterday at 04:30 PM' },
+      { title: 'Announcement: Friday team sync at 3 PM', time: 'Oct 10, 2023' },
+    ],
+    []
+  );
 
-   return (
-      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 w-full relative pt-4 px-1">
-
-         {/* Global Notification */}
-         {notification && (
-            <div className="fixed top-24 right-8 z-[100] animate-in slide-in-from-right-8 fade-in flex items-center gap-3 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/10">
-               <BellRing size={20} className="text-primary-400" />
-               <span className="text-sm font-bold tracking-tight">{notification}</span>
+  return (
+    <div className="space-y-8 pb-10">
+      <section className="grid grid-cols-4 gap-6">
+        {stats.map((stat) => (
+          <article
+            key={stat.title}
+            className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_26px_-16px_rgba(45,55,110,0.5)]"
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <div className="rounded-xl bg-[#F2F5FD] p-2.5 text-[#4E63F0]">
+                <stat.icon size={18} />
+              </div>
+              <ChevronRight size={16} className="text-[#B1BCD9]" />
             </div>
-         )}
+            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#90A0C8]">{stat.title}</p>
+            <h3 className="mt-2 text-3xl font-black tracking-tight text-[#1E2A54]">{stat.value}</h3>
+            <p className="mt-1 text-xs font-semibold text-[#7A89B3]">{stat.note}</p>
+          </article>
+        ))}
+      </section>
 
-         {/* Header */}
-         <div className="p-8 border-b border-slate-50 flex items-center justify-between">
-           <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tight mb-2">Command Center</h1>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Global Administrative Oversight & Performance Diagnostic</p>
-           </div>
-            <div className="flex items-center gap-4">
-               <button
-                  onClick={() => showNotification("Syncing real-time Employee data...")}
-                  className="px-6 py-3 bg-white border border-slate-100 text-slate-500 font-black text-[10px] uppercase rounded-2xl hover:bg-slate-50 transition-all shadow-sm active:scale-95"
-               >
-                  Refresh Data
-               </button>
-               <button
-                  onClick={() => navigate('/employees/add')}
-                  className="px-8 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px]"
-               >
-                  Quick Onboard
-               </button>
+      <section className="grid grid-cols-[1.5fr_1fr] gap-6">
+        <div className="space-y-6">
+          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Quick Actions</h2>
+              <button className="text-xs font-black text-[#4E63F0]">View All</button>
             </div>
-         </div>
-
-         {/* Stats Grid (Interactive Highlights) */}
-         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, idx) => (
-               <div
-                  key={idx}
-                  onClick={() => { showNotification(`Navigating to ${stat.title}...`); navigate(stat.link); }}
-                  className="card-soft group hover:translate-y-[-8px] hover:shadow-2xl hover:border-primary-100 transition-all duration-500 border-slate-100 bg-white p-8 cursor-pointer relative overflow-hidden"
-               >
-                  <div className="flex items-start justify-between mb-8 relative z-10">
-                     <div className={`p-4 rounded-[22px] ${stat.bg} ${stat.color} group-hover:rotate-12 transition-all shadow-inner`}>
-                        <stat.icon size={28} strokeWidth={2.5} />
-                     </div>
-                     <div className="flex flex-col items-end">
-                        <div className="flex items-center gap-1 text-[11px] font-black text-green-500 uppercase tracking-tighter">
-                           <TrendingUp size={12} />
-                           {stat.change}
-                        </div>
-                        <ArrowUpRight size={18} className="text-slate-200 group-hover:text-primary-400 group-hover:translate-x-1 transition-all mt-1" />
-                     </div>
-                  </div>
-                  <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest relative z-10">{stat.title}</p>
-                  <h3 className="text-4xl font-black text-slate-800 tracking-tighter mt-2 relative z-10">{stat.value}</h3>
-
-                  {/* Background Decoration */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary-50 transition-colors"></div>
-               </div>
-            ))}
-         </div>
-
-         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            {/* Main Analytics Hub */}
-            <div className="xl:col-span-2 space-y-8">
-               <div className="card-soft bg-white p-10 border-slate-100 shadow-soft">
-                  <div className="flex items-center justify-between mb-12">
-                     <div>
-                        <h2 className="text-xl font-black text-slate-800 tracking-tight underline underline-offset-8 decoration-primary-200">Employee Pulse Diagnostic</h2>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-3">Live attendance trends for current week</p>
-                     </div>
-                     <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-2">
-                           <div className="w-3 h-3 bg-primary-500 rounded-full"></div>
-                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Present</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                           <div className="w-3 h-3 bg-red-100 rounded-full border border-red-200"></div>
-                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Absent</span>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="h-[360px] w-full">
-                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={trendData} barGap={12}>
-                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                           <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }} />
-                           <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 900 }} />
-                           <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }} />
-                           <Bar dataKey="present" fill="#6366f1" radius={[8, 8, 8, 8]} barSize={32} />
-                           <Bar dataKey="absent" fill="#fee2e2" radius={[8, 8, 8, 8]} barSize={32} />
-                        </BarChart>
-                     </ResponsiveContainer>
-                  </div>
-               </div>
+            <div className="grid grid-cols-3 gap-4">
+              <button
+                onClick={() => navigate('/employees/add')}
+                className="flex items-center gap-3 rounded-xl border border-[#E6ECF9] bg-[#F7F9FF] px-4 py-4 text-left transition hover:border-[#CAD5FA] hover:bg-[#F2F6FF]"
+              >
+                <UserPlus size={16} className="text-[#4E63F0]" />
+                <span className="text-xs font-bold text-[#273462]">Add Employee</span>
+              </button>
+              <button className="flex items-center gap-3 rounded-xl border border-[#E6ECF9] bg-[#F7F9FF] px-4 py-4 text-left transition hover:border-[#CAD5FA] hover:bg-[#F2F6FF]">
+                <PlusCircle size={16} className="text-[#4E63F0]" />
+                <span className="text-xs font-bold text-[#273462]">Create Department</span>
+              </button>
+              <button className="flex items-center gap-3 rounded-xl border border-[#E6ECF9] bg-[#F7F9FF] px-4 py-4 text-left transition hover:border-[#CAD5FA] hover:bg-[#F2F6FF]">
+                <Send size={16} className="text-[#4E63F0]" />
+                <span className="text-xs font-bold text-[#273462]">Post Job</span>
+              </button>
             </div>
+          </article>
 
-            {/* Real-time Intel (Sidebar) */}
-            <div className="space-y-8">
-               <div className="card-soft bg-slate-900 border-none relative overflow-hidden text-white shadow-2xl p-10 min-h-[500px] flex flex-col group">
-                  <div className="relative z-10 flex-1 flex flex-col">
-                     <div className="flex items-center justify-between mb-12">
-                        <h3 className="text-sm font-black uppercase tracking-[0.3em] opacity-40">System Intel</h3>
-                        <TrendingUp size={24} className="text-primary-500 group-hover:scale-125 transition-transform" />
-                     </div>
-
-                     <div className="space-y-10 flex-1">
-                        {[
-                           { label: 'Cloud Synchronicity', value: 98, color: 'bg-primary-500' },
-                           { label: 'Employee Retention', value: 92, color: 'bg-indigo-500' },
-                           { label: 'Task Throughput', value: 84, color: 'bg-orange-500' },
-                        ].map((item, i) => (
-                           <div key={i} className="space-y-4">
-                              <div className="flex justify-between items-end">
-                                 <p className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">{item.label}</p>
-                                 <span className="text-sm font-black text-white">{item.value}%</span>
-                              </div>
-                              <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 shadow-inner">
-                                 <div className={`h-full ${item.color} rounded-full animate-in slide-in-from-left-4 duration-1500`} style={{ width: `${item.value}%` }}></div>
-                              </div>
-                           </div>
-                        ))}
-                     </div>
-
-                     <div
-                        onClick={() => navigate('/analytics')}
-                        className="mt-12 p-6 bg-white/5 rounded-[32px] border border-white/5 group-hover:bg-white/10 transition-all cursor-pointer text-center"
-                     >
-                        <p className="text-[11px] font-black text-primary-400 uppercase tracking-widest mb-1">Deep Analytics Hub</p>
-                        <p className="text-xs text-white/50 font-medium">Access full predictive modeling suite</p>
-                     </div>
-                  </div>
-
-                  <div className="absolute top-0 right-0 w-80 h-80 bg-primary-600/10 rounded-full blur-[120px] -mr-40 -mt-40 transition-all group-hover:bg-primary-600/20"></div>
-                  <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600/5 rounded-full blur-[100px] -ml-32 -mb-32"></div>
-               </div>
+          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Departments</h2>
+              <button onClick={() => navigate('/departments')} className="text-xs font-black text-[#4E63F0]">See All</button>
             </div>
-         </div>
-      </div>
-   );
+            <div className="grid grid-cols-3 gap-4">
+              {departments.map((dept) => (
+                <div key={dept.name} className="rounded-xl border border-[#E8EDFA] bg-[#FCFDFF] p-4 transition hover:-translate-y-0.5 hover:shadow-md">
+                  <div className="mb-3 flex items-start justify-between">
+                    <h3 className="text-sm font-black text-[#22305F]">{dept.name}</h3>
+                    <span className={`rounded-full px-2 py-1 text-[10px] font-black uppercase tracking-widest ${dept.tagClass}`}>
+                      {dept.tag}
+                    </span>
+                  </div>
+                  <p className="text-xs font-semibold text-[#7383B0]">Head: {dept.head}</p>
+                  <p className="mt-1 text-xs font-semibold text-[#7383B0]">{dept.teams} Teams • {dept.employees} Employees</p>
+                  <button className="mt-4 w-full rounded-lg border border-[#E0E6F7] bg-white py-2 text-xs font-bold text-[#364575] transition hover:bg-[#F3F7FF]">
+                    View Teams
+                  </button>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Recruitment</h2>
+              <button className="text-xs font-black text-[#4E63F0]">New Job</button>
+            </div>
+            <div className="rounded-xl border border-[#E8EDFA] bg-[#FCFDFF] p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-black text-[#22305F]">Frontend Developer</h3>
+                  <p className="mt-1 text-xs font-semibold text-[#7383B0]">Engineering • Remote</p>
+                </div>
+                <span className="rounded-full bg-[#DEF6E9] px-2 py-1 text-[10px] font-black uppercase tracking-widest text-[#299458]">New</span>
+              </div>
+              <button className="mt-4 rounded-lg bg-linear-to-r from-[#4E63F0] to-[#6855E8] px-4 py-2 text-xs font-bold text-white transition hover:shadow-lg hover:shadow-[#4E63F0]/20">
+                Review Candidates
+              </button>
+            </div>
+          </article>
+        </div>
+
+        <div className="space-y-6">
+          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Leave Request</h2>
+              <span className="text-xs font-black text-[#4E63F0]">Pending</span>
+            </div>
+            <div className="rounded-xl border border-[#E8EDFA] bg-[#FCFDFF] p-4">
+              <div className="mb-3 flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-black text-[#22305F]">Jessica Miller</h3>
+                  <p className="text-xs font-semibold text-[#7383B0]">Sick leave • 2 days</p>
+                </div>
+                <Clock3 size={16} className="text-[#90A0C8]" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setLeaveStatus('rejected')}
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#F1C7D0] bg-[#FFF5F7] py-2 text-xs font-bold text-[#CC4764] transition hover:bg-[#FFE9EE]"
+                >
+                  <X size={14} />
+                  Reject
+                </button>
+                <button
+                  onClick={() => setLeaveStatus('approved')}
+                  className="flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#4E63F0] to-[#6855E8] py-2 text-xs font-bold text-white transition hover:shadow-lg hover:shadow-[#4E63F0]/20"
+                >
+                  <Check size={14} />
+                  Approve
+                </button>
+              </div>
+              <p className="mt-3 text-[11px] font-bold uppercase tracking-widest text-[#8F9BC1]">Status: {leaveStatus}</p>
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Recent Activity</h2>
+              <BellRing size={16} className="text-[#6A79A8]" />
+            </div>
+            <div className="space-y-4">
+              {recentActivity.map((activity) => (
+                <div key={activity.title} className="flex gap-3">
+                  <CircleDot size={14} className="mt-1 text-[#4E63F0]" />
+                  <div>
+                    <p className="text-sm font-semibold text-[#22305F]">{activity.title}</p>
+                    <p className="text-xs font-medium text-[#8B97BC]">{activity.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-2xl bg-linear-to-br from-[#4E63F0] to-[#6855E8] p-6 text-white shadow-[0_16px_28px_-14px_rgba(78,99,240,0.65)]">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-black uppercase tracking-[0.2em] text-white/80">Insights</h2>
+              <Sparkles size={16} className="text-white" />
+            </div>
+            <p className="mt-3 text-xl font-black">Workforce health is stable and trending upward this week.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default Dashboard;
