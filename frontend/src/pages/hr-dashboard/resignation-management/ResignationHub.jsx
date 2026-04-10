@@ -66,7 +66,7 @@ const ResignationHub = () => {
   const COLORS = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'];
 
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] w-full gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 overflow-hidden">
+    <div className="flex flex-col min-h-[calc(100vh-120px)] w-full gap-10 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 text-left pb-20">
       
       {/* Configuration Drawer */}
       {showConfigDrawer && (
@@ -139,10 +139,10 @@ const ResignationHub = () => {
       </div>
 
       {/* Main Workspace Grid */}
-      <div className="flex-1 grid grid-cols-1 xl:grid-cols-4 gap-8 overflow-hidden min-h-0">
+      <div className="flex-1 grid grid-cols-1 xl:grid-cols-12 gap-10 text-left">
          
          {/* 1. SIDEBAR: Live Turnover Metrics */}
-         <div className="xl:col-span-1 flex flex-col gap-6 overflow-y-auto no-scrollbar pb-10">
+         <div className="xl:col-span-3 flex flex-col gap-10 text-left">
             
             <div className="card-soft bg-white p-8 border-slate-100 shadow-soft">
                <div className="flex items-center justify-between mb-8">
@@ -204,7 +204,7 @@ const ResignationHub = () => {
          </div>
 
          {/* 2. MAIN HUB: Resignation Workspaces */}
-         <div className="xl:col-span-3 flex flex-col min-h-0 bg-white border border-slate-100 rounded-[44px] shadow-soft overflow-hidden">
+         <div className="xl:col-span-9 flex flex-col min-h-0 bg-white border border-slate-100 rounded-[44px] shadow-soft overflow-hidden">
             
             {/* Command Toolbar */}
             <div className="px-10 py-8 border-b border-slate-50 flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-slate-50/20">

@@ -14,7 +14,7 @@ import {
   Undo2,
   Check,
   ChevronDown,
-  Layout
+  LayoutDashboard
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -249,7 +249,7 @@ const InterviewFeedback = () => {
             {/* Sticky Mobile Nav (Visible on Desktop footer style) */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 px-10 py-4 rounded-[32px] shadow-2xl flex items-center gap-10 border border-white/10 shrink-0 z-40">
                 {[
-                    { icon: Layout, label: 'Dashboard', path: '/recruitment' },
+                    { icon: LayoutDashboard, label: 'Dashboard', path: '/recruitment' },
                     { icon: Users, label: 'Candidates', path: '/recruitment/candidates' },
                     { icon: ChevronRight, label: 'Interviews', active: true },
                 ].map((item, i) => (

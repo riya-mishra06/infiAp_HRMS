@@ -20,11 +20,15 @@ import {
   List,
   MapPin,
   Briefcase,
-  UserPlus
+  UserPlus,
+  LayoutDashboard,
+  Users,
+  ClipboardList,
+  Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const HiringApplications = () => {
+const Applications = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTab, setActiveTab] = useState('New');
@@ -229,7 +233,7 @@ const HiringApplications = () => {
                                     Shortlist
                                 </button>
                                 <button 
-                                    onClick={() => navigate('/recruitment/interviews')}
+                                    onClick={() => navigate('/recruitment/interviews/schedule')}
                                     className="py-3 bg-orange-50 text-orange-600 border border-orange-100 font-black rounded-xl hover:bg-orange-100 transition-all uppercase tracking-widest text-[9px] flex items-center justify-center gap-2 active:scale-95"
                                 >
                                     <Calendar size={14} />
@@ -266,7 +270,7 @@ const HiringApplications = () => {
             {/* Desktop Navigation Footer */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 px-10 py-4 rounded-[32px] shadow-2xl flex items-center gap-10 border border-white/10 shrink-0">
                 {[
-                    { icon: Layout, label: 'Dashboard', path: '/recruitment' },
+                    { icon: LayoutDashboard, label: 'Dashboard', path: '/recruitment' },
                     { icon: Users, label: 'Candidates', path: '/recruitment/candidates' },
                     { icon: ClipboardList, label: 'Applications', path: '/recruitment/applications', active: true },
                     { icon: Settings, label: 'Settings', path: '/settings' },
@@ -285,4 +289,4 @@ const HiringApplications = () => {
     );
 };
 
-export default HiringApplications;
+export default Applications;

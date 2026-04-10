@@ -26,6 +26,7 @@ import {
   PieChart,
   Activity
 } from 'lucide-react';
+import Logo from '../../assets/logo_infi_ap.png';
 
 // Workaround for missing icons if needed (Outside to avoid initialization order issues)
 const Banknote = (props) => <CreditCard {...props} />;
@@ -162,13 +163,13 @@ const Sidebar = () => {
     <div className="w-64 bg-white h-screen fixed left-0 top-0 border-r border-slate-200 flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
       {/* Premium Logo Section */}
       <div className="p-8 mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-slate-900 rounded-xl shadow-lg flex items-center justify-center text-white">
-            <LayoutDashboard size={22} strokeWidth={2.5} />
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-white rounded-2xl shadow-soft flex items-center justify-center overflow-hidden border border-slate-50 transition-transform hover:scale-105">
+            <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Employee Member</span>
-            <span className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase">Admin Access</span>
+            <span className="text-xl font-black text-slate-800 tracking-tighter leading-none mb-1">InfiAP</span>
+            <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Tech Solutions</span>
           </div>
         </div>
       </div>

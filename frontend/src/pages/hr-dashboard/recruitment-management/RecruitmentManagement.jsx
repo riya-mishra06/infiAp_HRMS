@@ -19,7 +19,7 @@ import {
   PlusCircle,
   Settings,
   Share2,
-  Layout,
+  LayoutDashboard,
   Briefcase,
   Users,
   UserPlus,
@@ -104,7 +104,7 @@ const RecruitmentManagement = () => {
               <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar no-scrollbar text-left">
                  <section className="space-y-6">
                     <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                       <Layout size={14} className="text-primary-500" />
+                       <LayoutDashboard size={14} className="text-primary-500" />
                        Hiring Workflow
                     </h4>
                     <div className="space-y-4">
