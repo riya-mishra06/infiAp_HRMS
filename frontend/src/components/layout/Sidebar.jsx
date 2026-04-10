@@ -54,7 +54,7 @@ const Sidebar = () => {
   };
 
   const menuItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, path: '/' },
+    { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
     {
       name: 'Employees',
       icon: Users,
@@ -62,101 +62,14 @@ const Sidebar = () => {
       key: 'employees',
       hasSubmenu: true,
       subItems: [
-        { name: 'View Profile', icon: Users, path: '/employees/profiles' },
+        { name: 'View Profile', icon: Users, path: '/employees' },
         { name: 'Edit Profile', icon: FileSignature, path: '/employees' },
       ]
     },
-    {
-      name: 'Attendance',
-      icon: CalendarCheck,
-      path: '/attendance',
-      key: 'attendance',
-      hasSubmenu: true,
-      subItems: [
-        { name: 'Hub', icon: LayoutDashboard, path: '/attendance' },
-        { name: 'Check-in Records', icon: History, path: '/attendance/records' },
-        { name: 'Monthly Attendance', icon: Calendar, path: '/attendance/monthly' },
-        { name: 'Attendance Reports', icon: FileText, path: '/attendance-reports' },
-      ]
-    },
-    {
-      name: 'Leave',
-      icon: Clock,
-      path: '/leave',
-      key: 'leave',
-      hasSubmenu: true,
-      subItems: [
-        { name: 'Hub', icon: LayoutDashboard, path: '/leave' },
-        { name: 'Leave Requests', icon: ClipboardList, path: '/leave/requests' },
-        { name: 'Leave Approval', icon: CheckCircle2, path: '/leave/approval' },
-        { name: 'Leave History', icon: History, path: '/leave/history' },
-      ]
-    },
-    {
-      name: 'Recruitment',
-      icon: Briefcase,
-      path: '/recruitment',
-      key: 'recruitment',
-      hasSubmenu: true,
-      subItems: [
-        { name: 'Hub', icon: LayoutDashboard, path: '/recruitment' },
-        { name: 'Candidates', icon: Users, path: '/recruitment/candidates' },
-        { name: 'Applications', icon: ClipboardList, path: '/recruitment/applications' },
-        { name: 'Interviews', icon: Calendar, path: '/recruitment/interviews' },
-      ]
-    },
-    {
-      name: 'Payroll',
-      icon: CreditCard,
-      path: '/payroll',
-      key: 'payroll',
-      hasSubmenu: true,
-      subItems: [
-        { name: 'Hub', icon: LayoutDashboard, path: '/payroll' },
-        { name: 'Payroll Overview', icon: PieChart, path: '/payroll/overview' },
-        { name: 'Salary Process', icon: Banknote, path: '/payroll/salary' },
-        { name: 'Payslip Mgmt', icon: Receipt, path: '/payroll/payslips' },
-      ]
-    },
-    {
-      name: 'Performance',
-      icon: BarChart3,
-      path: '/performance',
-      key: 'performance',
-      hasSubmenu: true,
-      subItems: [
-        { name: 'Hub', icon: LayoutDashboard, path: '/performance' },
-        { name: 'Monthly Metrics', icon: Target, path: '/performance/monthly' },
-        { name: 'Feedback', icon: ClipboardList, path: '/performance/feedback' },
-        { name: 'Reports', icon: FileText, path: '/performance/reports' },
-      ]
-    },
-    {
-      name: 'Analytics',
-      icon: BarChart,
-      path: '/analytics',
-      key: 'analytics',
-      hasSubmenu: true,
-      subItems: [
-        { name: 'Hub', icon: LayoutDashboard, path: '/analytics' },
-        { name: 'Employee Reports', icon: Users, path: '/analytics/employees' },
-        { name: 'Attendance Data', icon: Activity, path: '/analytics/attendance' },
-        { name: 'Insights', icon: Target, path: '/analytics/performance' },
-      ]
-    },
-    {
-      name: 'Resignation',
-      icon: DoorOpen,
-      path: '/resignation',
-      key: 'resignation',
-      hasSubmenu: true,
-      subItems: [
-        { name: 'Hub', icon: LayoutDashboard, path: '/resignation' },
-        { name: 'Submit Exit', icon: FileSignature, path: '/resignation/submit' },
-        { name: 'Requests', icon: ClipboardList, path: '/resignation/requests' },
-        { name: 'Exit Process', icon: DoorOpen, path: '/resignation/exit' },
-      ]
-    },
+    { name: 'Departments', icon: Building2, path: '/departments' },
+    { name: 'Recruitment', icon: Briefcase, path: '/recruitment' },
+    { name: 'Payroll', icon: CreditCard, path: '/payroll' },
+    { name: 'Settings', icon: Settings, path: '/settings' },
   ];
 
   return (

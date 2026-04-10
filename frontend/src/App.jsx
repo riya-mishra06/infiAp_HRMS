@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Dashboard from './pages/hr-dashboard/Dashboard';
+import Departments from './pages/hr-dashboard/Departments';
 import EmployeeDirectory from './pages/hr-dashboard/employee-management/EmployeeDirectory';
 import AddEmployee from './pages/hr-dashboard/employee-management/AddEmployee';
 import EditEmployee from './pages/hr-dashboard/employee-management/EditEmployee';
@@ -80,7 +81,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/departments" element={<Dashboard />} />
+                <Route path="/departments" element={<Departments />} />
                 <Route path="/employees" element={<EmployeeDirectory />} />
                 <Route path="/employees/add" element={<AddEmployee />} />
                 <Route path="/employees/profiles" element={<EmployeeProfilesHub />} />
