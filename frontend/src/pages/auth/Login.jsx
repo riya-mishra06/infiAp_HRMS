@@ -10,7 +10,8 @@ import {
 } from 'lucide-react';
 import AuthLayout from '../../components/layout/AuthLayout';
 
-// High-Fidelity Social Icons
+import { useAuth } from '../../context/AuthContext';
+
 const GoogleIcon = () => (
     <svg width="18" height="18" viewBox="0 0 24 24">
         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -28,17 +29,17 @@ const LinkedinIcon = () => (
 
 const Login = () => {
     const navigate = useNavigate();
+    const { switchRole } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [selectedRole, setSelectedRole] = useState('Admin');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (selectedRole === 'HR') {
-            navigate('/2fa', { state: { role: selectedRole } });
-            return;
-        }
-        navigate('/dashboard');
+        switchRole(selectedRole);
+        
+        // All roles now require 2FA verification
+        navigate('/2fa', { state: { role: selectedRole } });
     };
 
     return (

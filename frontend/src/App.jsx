@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './components/layout/DashboardLayout';
+import AdminLayout from './components/layout/AdminLayout';
+
+// HR Dashboard Pages
 import Dashboard from './pages/hr-dashboard/Dashboard';
-import Departments from './pages/hr-dashboard/Departments';
 import EmployeeDirectory from './pages/hr-dashboard/employee-management/EmployeeDirectory';
 import AddEmployee from './pages/hr-dashboard/employee-management/AddEmployee';
 import EditEmployee from './pages/hr-dashboard/employee-management/EditEmployee';
@@ -42,19 +44,44 @@ import ResignationHub from './pages/hr-dashboard/resignation-management/Resignat
 import SubmitResignation from './pages/hr-dashboard/resignation-management/SubmitResignation';
 import ResignationRequests from './pages/hr-dashboard/resignation-management/ResignationRequests';
 import ExitProcess from './pages/hr-dashboard/resignation-management/ExitProcess';
+
+// Company Admin Pages
+import AdminDashboard from './pages/admin-dashboard/AdminDashboard';
+import AdminDepartments from './pages/admin-dashboard/Departments';
+import CreateDepartment from './pages/admin-dashboard/department-management/CreateDepartment';
+import ManageTeams from './pages/admin-dashboard/department-management/ManageTeams';
+import CreateTeam from './pages/admin-dashboard/department-management/CreateTeam';
+import SalaryStructure from './pages/admin-dashboard/payroll-management/SalaryStructure';
+import PayslipGeneration from './pages/admin-dashboard/payroll-management/PayslipGeneration';
+import FinanceReports from './pages/admin-dashboard/payroll-management/FinanceReports';
+import RecruitmentHub from './pages/admin-dashboard/recruitment-control/RecruitmentHub';
+import RecruitmentAnalytics from './pages/admin-dashboard/recruitment-control/RecruitmentAnalytics';
+import PayrollHub from './pages/admin-dashboard/payroll-management/PayrollHub';
+import SecureDocument from './pages/admin-dashboard/payroll-management/SecureDocument';
+import LinkExpired from './pages/admin-dashboard/payroll-management/LinkExpired';
+import SharingSecurity from './pages/admin-dashboard/payroll-management/SharingSecurity';
+import CandidateTracking from './pages/admin-dashboard/recruitment-control/CandidateTracking';
+import InterviewManagement from './pages/admin-dashboard/recruitment-control/InterviewManagement';
+import CreateJob from './pages/admin-dashboard/recruitment-control/CreateJob';
+import CompanyPolicies from './pages/admin-dashboard/policies/CompanyPolicies';
+import SecurityDocuments from './pages/admin-dashboard/security/SecurityDocuments';
+import SystemSettings from './pages/admin-dashboard/settings/SystemSettings';
+
+// Auth
 import SplashScreen from './pages/auth/SplashScreen';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import TwoFactor from './pages/auth/TwoFactor';
 import ResetPassword from './pages/auth/ResetPassword';
 import Success from './pages/auth/Success';
+
 import { EmployeeProvider } from './context/EmployeeContext';
 
 // Placeholder components for Settings
 const Placeholder = ({ title }) => (
   <div className="card-soft p-12 text-center mt-20">
     <div className="w-20 h-20 bg-slate-50 rounded-4xl flex items-center justify-center text-slate-300 mx-auto mb-8 shadow-inner border border-slate-100">
-       <div className="w-10 h-10 border-4 border-slate-200 border-t-primary-500 rounded-full animate-spin"></div>
+      <div className="w-10 h-10 border-4 border-slate-200 border-t-primary-500 rounded-full animate-spin"></div>
     </div>
     <h2 className="text-3xl font-black text-slate-800 mb-2 tracking-tight">{title} Module</h2>
     <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Final Optimization In Progress</p>
@@ -75,20 +102,55 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/auth-success" element={<Success />} />
 
-          {/* 2. Secure Dashboard Environment (Protected) */}
+          {/* 2. Admin Panel (Company Level Admin) */}
+          <Route path="/admin/*" element={
+            <AdminLayout>
+              <Routes>
+                <Route path="/" element={<AdminDashboard />} />
+                <Route path="/dashboard" element={<AdminDashboard />} />
+                <Route path="/department-management" element={<AdminDepartments />} />
+                <Route path="/departments" element={<AdminDepartments />} />
+
+                {/* Department  */}
+                <Route path="/department-management/create" element={<CreateDepartment />} />
+                <Route path="/department-management/teams" element={<ManageTeams />} />
+                <Route path="/department-management/teams/create" element={<CreateTeam />} />
+
+                {/* Payroll */}
+                <Route path="/payroll-management" element={<PayrollHub />} />
+                <Route path="/payroll-management/structure" element={<SalaryStructure />} />
+                <Route path="/payroll-management/generate" element={<PayslipGeneration />} />
+                <Route path="/payroll-management/reports" element={<FinanceReports />} />
+                <Route path="/payroll-management/secure-sharing" element={<SecureDocument />} />
+                <Route path="/payroll-management/expired" element={<LinkExpired />} />
+                <Route path="/payroll-management/verify" element={<SharingSecurity />} />
+
+                {/* Recruitment */}
+                <Route path="/recruitment-control/hub" element={<RecruitmentHub />} />
+                <Route path="/recruitment-control/analytics" element={<RecruitmentAnalytics />} />
+                <Route path="/recruitment-control/create" element={<CreateJob />} />
+                <Route path="/recruitment-control/tracking" element={<CandidateTracking />} />
+                <Route path="/recruitment-control/interviews" element={<InterviewManagement />} />
+
+                <Route path="/policies" element={<CompanyPolicies />} />
+                <Route path="/security" element={<SecurityDocuments />} />
+                <Route path="/settings" element={<SystemSettings />} />
+              </Routes>
+            </AdminLayout>
+          } />
+
+          {/* 3. HR Dashboard Environment (Existing) */}
           <Route path="/*" element={
             <DashboardLayout>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/departments" element={<Departments />} />
                 <Route path="/employees" element={<EmployeeDirectory />} />
                 <Route path="/employees/add" element={<AddEmployee />} />
                 <Route path="/employees/profiles" element={<EmployeeProfilesHub />} />
                 <Route path="/employees/edit/:id" element={<EditEmployee />} />
                 <Route path="/employees/profile/:id" element={<EmployeeProfiles />} />
-                
-                {/* Attendance Module Suite */}
+
                 <Route path="/attendance" element={<AttendanceDashboard />} />
                 <Route path="/attendance/records" element={<CheckInRecords />} />
                 <Route path="/attendance/monthly" element={<MonthlyAttendance />} />
@@ -96,7 +158,7 @@ function App() {
                 <Route path="/attendance-reports/daily" element={<DailyAttendanceAudit />} />
                 <Route path="/attendance-reports/late" element={<LateArrivalDiagnostic />} />
                 <Route path="/attendance-correction" element={<CorrectionWorkflow />} />
-                
+
                 <Route path="/leave" element={<LeaveManagement />} />
                 <Route path="/leave/requests" element={<LeaveRequests />} />
                 <Route path="/leave/approval" element={<LeaveApproval />} />

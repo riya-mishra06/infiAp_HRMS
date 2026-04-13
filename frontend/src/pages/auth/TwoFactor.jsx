@@ -29,7 +29,14 @@ const TwoFactor = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate('/dashboard');
+        
+        // Dynamic redirection based on verified role
+        if (role === 'HR') {
+            navigate('/dashboard');
+        } else {
+            // Admin and Main Admin go to the management portal
+            navigate('/admin/dashboard');
+        }
     };
 
     return (

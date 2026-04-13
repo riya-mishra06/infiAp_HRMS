@@ -24,19 +24,20 @@ import {
   FileSignature,
   DoorOpen,
   PieChart,
-  Activity
+  Activity,
+  Building2,
+  ShieldAlert,
+  LayoutGrid
 } from 'lucide-react';
 import Logo from '../../assets/logo_infi_ap.png';
-
-// Workaround for missing icons if needed (Outside to avoid initialization order issues)
-const Banknote = (props) => <CreditCard {...props} />;
-const Receipt = (props) => <FileText {...props} />;
+import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Track open state for submenus (Only one open at a time logic)
+  const { role, logout } = useAuth();
+
+  // Track open state for submenus
   const [openSubmenu, setOpenSubmenu] = useState(() => {
     if (location.pathname.startsWith('/attendance')) return 'attendance';
     if (location.pathname.startsWith('/leave')) return 'leave';
@@ -46,6 +47,9 @@ const Sidebar = () => {
     if (location.pathname.startsWith('/analytics')) return 'analytics';
     if (location.pathname.startsWith('/resignation')) return 'resignation';
     if (location.pathname.startsWith('/employees')) return 'employees';
+    if (location.pathname.startsWith('/admin/employees')) return 'employees';
+    if (location.pathname.startsWith('/admin/department-management')) return 'departments';
+    if (location.pathname.startsWith('/admin/payroll-management')) return 'payroll';
     return null;
   });
 
@@ -53,53 +57,205 @@ const Sidebar = () => {
     setOpenSubmenu(prev => prev === key ? null : key);
   };
 
-  const menuItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  // Master Menu List with Role Mapping
+  const allMenuItems = [
+    {
+      name: role === 'HR' ? 'Dashboard' : 'admin dashboard',
+      icon: LayoutDashboard,
+      path: role === 'HR' ? '/' : '/admin/dashboard',
+      roles: ['HR', 'Admin', 'Main Admin']
+    },
     {
       name: 'Employees',
       icon: Users,
-      path: '/employees',
-      key: 'employees',
-      hasSubmenu: true,
+      path: role === 'HR' ? '/employees' : '/admin/employees',
+      roles: ['HR'],
       subItems: [
-        { name: 'View Profile', icon: Users, path: '/employees' },
-        { name: 'Edit Profile', icon: FileSignature, path: '/employees' },
+        { name: role === 'HR' ? 'View Profile' : 'Staff Overview', icon: Users, path: role === 'HR' ? '/employees/profiles' : '/admin/employees/view' },
+        { name: role === 'HR' ? 'Edit Profile' : 'Modify Access', icon: FileSignature, path: role === 'HR' ? '/employees' : '/admin/employees/edit' },
       ]
     },
-    { name: 'Departments', icon: Building2, path: '/departments' },
-    { name: 'Recruitment', icon: Briefcase, path: '/recruitment' },
-    { name: 'Payroll', icon: CreditCard, path: '/payroll' },
-    { name: 'Settings', icon: Settings, path: '/settings' },
+    {
+      name: role === 'HR' ? 'Departments' : 'Department ',
+      icon: Building2,
+      path: '/admin/department-management',
+      key: 'departments',
+      hasSubmenu: true,
+      roles: ['HR', 'Admin', 'Main Admin'],
+      subItems: [
+        { name: 'Create Department', icon: PlusCircle, path: '/admin/department-management/create' },
+        { name: 'Manage Teams', icon: LayoutGrid, path: '/admin/department-management/teams' },
+      ]
+    },
+    {
+      name: 'Attendance',
+      icon: CalendarCheck,
+      path: '/attendance',
+      key: 'attendance',
+      hasSubmenu: true,
+      roles: ['HR'],
+      subItems: [
+        { name: 'Hub', icon: LayoutDashboard, path: '/attendance' },
+        { name: 'Check-in Records', icon: History, path: '/attendance/records' },
+        { name: 'Monthly Attendance', icon: Calendar, path: '/attendance/monthly' },
+        { name: 'Attendance Reports', icon: FileText, path: '/attendance-reports' },
+      ]
+    },
+    {
+      name: 'Leave',
+      icon: Clock,
+      path: '/leave',
+      key: 'leave',
+      hasSubmenu: true,
+      roles: ['HR'],
+      subItems: [
+        { name: 'Hub', icon: LayoutDashboard, path: '/leave' },
+        { name: 'Leave Requests', icon: ClipboardList, path: '/leave/requests' },
+        { name: 'Leave Approval', icon: CheckCircle2, path: '/leave/approval' },
+        { name: 'Leave History', icon: History, path: '/leave/history' },
+      ]
+    },
+    {
+      name: role === 'HR' ? 'Recruitment' : 'Recruitment',
+      icon: Briefcase,
+      path: role === 'HR' ? '/recruitment' : '/admin/recruitment-control/posting',
+      key: 'recruitment',
+      hasSubmenu: true,
+      roles: ['HR', 'Admin', 'Main Admin'],
+      subItems: [
+        { name: role === 'HR' ? 'Hub' : 'Hub', icon: LayoutDashboard, path: role === 'HR' ? '/recruitment' : '/admin/recruitment-control/hub' },
+        { name: role === 'HR' ? 'Analytics' : 'Analytics', icon: PieChart, path: role === 'HR' ? '/recruitment/analytics' : '/admin/recruitment-control/analytics' },
+        { name: role === 'HR' ? 'Candidates' : 'Job Posting', icon: role === 'HR' ? Users : PlusCircle, path: role === 'HR' ? '/recruitment/candidates' : '/admin/recruitment-control/create' },
+        { name: role === 'HR' ? 'Applications' : 'Candidate Tracking', icon: role === 'HR' ? ClipboardList : Users, path: role === 'HR' ? '/recruitment/applications' : '/admin/recruitment-control/tracking' },
+        { name: role === 'HR' ? 'Interviews' : 'Interview Management', icon: Calendar, path: role === 'HR' ? '/recruitment/interviews' : '/admin/recruitment-control/interviews' },
+      ]
+    },
+    {
+      name: role === 'HR' ? 'Payroll' : 'Payroll',
+      icon: CreditCard,
+      path: role === 'HR' ? '/payroll' : '/admin/payroll-management',
+      key: 'payroll',
+      hasSubmenu: true,
+      roles: ['HR', 'Admin', 'Main Admin'],
+      subItems: [
+        { name: role === 'HR' ? 'Payroll Hub' : 'Salary Structure', icon: role === 'HR' ? LayoutDashboard : CreditCard, path: role === 'HR' ? '/payroll' : '/admin/payroll-management/structure' },
+        { name: role === 'HR' ? 'Salary Structure' : 'Payslip Generation', icon: role === 'HR' ? CreditCard : FileText, path: role === 'HR' ? '/payroll/salary' : '/admin/payroll-management/generate' },
+        { name: role === 'HR' ? 'Payslip Gen' : 'Finance Reports', icon: role === 'HR' ? FileText : PieChart, path: role === 'HR' ? '/payroll/salary' : '/admin/payroll-management/reports' },
+      ]
+    },
+    {
+      name: 'Company Policies',
+      icon: FileText,
+      path: '/admin/policies',
+      roles: ['Admin', 'Main Admin']
+    },
+    {
+      name: 'Security Documents',
+      icon: ShieldAlert,
+      path: '/admin/security',
+      roles: ['Admin', 'Main Admin']
+    },
+    {
+      name: 'Performance',
+      icon: BarChart3,
+      path: '/performance',
+      key: 'performance',
+      hasSubmenu: true,
+      roles: ['HR'],
+      subItems: [
+        { name: 'Hub', icon: LayoutDashboard, path: '/performance' },
+        { name: 'Metrics', icon: Target, path: '/performance/monthly' },
+        { name: 'Feedback', icon: ClipboardList, path: '/performance/feedback' },
+      ]
+    },
+    {
+      name: 'Analytics',
+      icon: BarChart,
+      path: '/analytics',
+      key: 'analytics',
+      hasSubmenu: true,
+      roles: ['HR'],
+      subItems: [
+        { name: 'Hub', icon: LayoutDashboard, path: '/analytics' },
+        { name: 'Employee Data', icon: Users, path: '/analytics/employees' },
+        { name: 'Attendance', icon: Activity, path: '/analytics/attendance' },
+      ]
+    },
+    {
+      name: 'Resignation',
+      icon: DoorOpen,
+      path: '/resignation',
+      key: 'resignation',
+      hasSubmenu: true,
+      roles: ['HR'],
+      subItems: [
+        { name: 'Hub', icon: LayoutDashboard, path: '/resignation' },
+        { name: 'Submit Exit', icon: FileSignature, path: '/resignation/submit' },
+      ]
+    },
+    {
+      name: role === 'HR' ? 'Settings' : 'System Settings',
+      icon: Settings,
+      path: '/admin/settings',
+      roles: ['Admin', 'Main Admin']
+    },
   ];
+
+  const filteredMenuItems = allMenuItems.filter(item => item.roles.includes(role));
+
+  const getRoleLabel = () => {
+    if (role === 'Main Admin') return 'Super Admin';
+    if (role === 'Admin') return 'Company Admin';
+    if (role === 'HR') return 'HR Manager';
+    return 'User';
+  };
+
+  const getRoleColor = () => {
+    if (role === 'Main Admin') return 'text-purple-600 bg-purple-50';
+    if (role === 'Admin') return 'text-indigo-600 bg-indigo-50';
+    if (role === 'HR') return 'text-emerald-600 bg-emerald-50';
+    return 'text-slate-600 bg-slate-50';
+  };
 
   return (
     <div className="w-64 bg-white h-screen fixed left-0 top-0 border-r border-slate-200 flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
       {/* Premium Logo Section */}
       <div className="p-8 mb-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-white rounded-2xl shadow-soft flex items-center justify-center overflow-hidden border border-slate-50 transition-transform hover:scale-105">
-            <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain" />
+        <div className="flex items-center gap-4 mb-2">
+          <div className="w-10 h-10 bg-white rounded-2xl shadow-soft flex items-center justify-center overflow-hidden border border-slate-50 transition-transform hover:scale-105">
+            <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain p-1" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-black text-slate-800 tracking-tighter leading-none mb-1">InfiAP</span>
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Tech Solutions</span>
+            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Solutions</span>
           </div>
+        </div>
+
+        {/* Dynamic Role Badge */}
+        <div className={`mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-current/10 ${getRoleColor()}`}>
+          <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse"></div>
+          <span className="text-[10px] font-black uppercase tracking-widest leading-none">{getRoleLabel()}</span>
         </div>
       </div>
 
       {/* Navigation Menu */}
-      <nav className="flex-1 px-4 overflow-y-auto custom-scrollbar pb-10">
-        <p className="px-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Main Menu</p>
+      <nav className="flex-1 px-4 overflow-y-auto no-scrollbar pb-10">
+        <p className="px-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Navigation</p>
         <ul className="space-y-1">
-          {menuItems.map((item) => (
+          {filteredMenuItems.map((item) => (
             <li key={item.name}>
               {item.hasSubmenu ? (
                 <div className="space-y-1">
                   <button
                     onClick={() => toggleSubmenu(item.key)}
                     className={`w-full flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 group ${location.pathname.startsWith(item.path)
-                        ? (openSubmenu === item.key ? 'bg-slate-100 text-slate-900' : 'bg-slate-900 text-white shadow-xl shadow-slate-200')
-                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                      ? (openSubmenu === item.key ? 'bg-slate-100 text-slate-900 border-l-4 border-slate-900 ml-0' : 'bg-slate-900 text-white shadow-xl shadow-slate-200')
+                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
                       }`}
                   >
                     <item.icon size={18} className="transition-transform group-hover:scale-110" />
@@ -140,48 +296,43 @@ const Sidebar = () => {
                     }`
                   }
                 >
-                  {({ isActive }) => (
-                    <>
-                      <item.icon size={18} className="transition-transform group-hover:scale-110" />
-                      <span className="font-bold text-sm tracking-tight">{item.name}</span>
-                      <div className={`ml-auto w-1 h-1 rounded-full bg-primary-400 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}></div>
-                    </>
-                  )}
+                  <item.icon size={18} className="transition-transform group-hover:scale-110" />
+                  <span className="font-bold text-sm tracking-tight">{item.name}</span>
                 </NavLink>
               )}
             </li>
           ))}
         </ul>
 
-        {/* Employee Action Button */}
+        {/* Dynamic Action Button based on Role */}
         <div className="mt-8 px-5">
-          <button
-            onClick={() => navigate('/employees/add')}
-            className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary-600 text-white font-black rounded-2xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-100 active:scale-95 text-[10px] uppercase tracking-widest"
-          >
-            <PlusCircle size={16} />
-            Add Employee
-          </button>
-        </div>
-
-        {/* Support Widget */}
-        <div className="mt-8 px-5 py-6 bg-slate-50 rounded-2xl border border-slate-100 relative overflow-hidden group">
-          <div className="relative z-10">
-            <p className="text-xs font-black text-slate-800 mb-1">Need help?</p>
-            <p className="text-[10px] text-slate-400 font-bold mb-4 uppercase">Support center</p>
-            <button className="flex items-center gap-2 text-[10px] font-black text-primary-600 bg-white px-3 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all uppercase tracking-widest">
-              <HelpCircle size={14} />
-              Open Tickets
+          {role === 'HR' ? (
+            <button
+              onClick={() => navigate('/employees/add')}
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-indigo-600 text-white font-black rounded-2xl hover:bg-indigo-700 transition-all shadow-lg active:scale-95 text-[10px] uppercase tracking-widest"
+            >
+              <PlusCircle size={16} />
+              Add Employee
             </button>
-          </div>
-          <div className="absolute -right-4 -bottom-4 bg-primary-100/30 w-16 h-16 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+          ) : (
+            <button
+              onClick={() => navigate('/admin/department-management/create')}
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-lg active:scale-95 text-[10px] uppercase tracking-widest"
+            >
+              <Building2 size={16} />
+              New Dept
+            </button>
+          )}
         </div>
       </nav>
 
-      {/* Footer Settings */}
+      {/* Footer Actions */}
       <div className="p-4 border-t border-slate-100 bg-white">
-        <button className="flex items-center gap-3 px-5 py-3.5 rounded-xl text-red-500 hover:bg-red-50 transition-all font-black text-xs w-full text-left uppercase tracking-widest">
-          <LogOut size={18} />
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-5 py-3.5 rounded-xl text-red-500 hover:bg-red-50 transition-all font-black text-xs w-full text-left uppercase tracking-widest group"
+        >
+          <LogOut size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span>Sign Out</span>
         </button>
       </div>
