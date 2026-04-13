@@ -16,10 +16,12 @@ import {
   LayoutDashboard,
   CreditCard,
   PieChart,
+  BarChart3,
   ShieldCheck,
   FileText,
   Activity,
-  ArrowRight
+  ArrowRight,
+  History
 } from 'lucide-react';
 
 const AdminDashboard = () => {
