@@ -133,6 +133,12 @@ function App() {
                     <Route path="/department-management/teams" element={<ManageTeams />} />
                     <Route path="/department-management/teams/create" element={<CreateTeam />} />
 
+                    {/* Employees */}
+                    <Route path="/employees" element={<EmployeeDirectory />} />
+                    <Route path="/employees/view" element={<EmployeeProfilesHub />} />
+                    <Route path="/employees/edit" element={<EmployeeDirectory />} />
+                    <Route path="/employees/add" element={<AddEmployee />} />
+
                     {/* Payroll */}
                     <Route path="/payroll-management" element={<PayrollHub />} />
                     <Route path="/payroll-management/structure" element={<SalaryStructure />} />

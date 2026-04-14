@@ -52,8 +52,8 @@ const SystemSettings = () => {
        {/* Premium Header */}
        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 px-4">
           <div>
-             <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">Platform Settings</h1>
-             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1 leading-none">Configure system preferences and platform controls</p>
+             <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Platform Settings</h1>
+             <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Configure system preferences and platform control nodes</p>
           </div>
           <div className="flex items-center gap-4">
              <div className="relative group">
@@ -87,28 +87,28 @@ const SystemSettings = () => {
 
              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Time Zone</label>
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Time Zone</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>UTC +05:30 (Chennai, Kolkata, Mumbai)</option>
                       <option>UTC +00:00 (GMT London)</option>
                    </select>
                 </div>
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Date Format</label>
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Date Format</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>DD/MM/YYYY</option>
                       <option>MM/DD/YYYY</option>
                    </select>
                 </div>
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Currency</label>
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Currency</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>INR (₹)</option>
                       <option>USD ($)</option>
                    </select>
                 </div>
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Language</label>
+                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Language</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>English (US)</option>
                       <option>Hindi (HI)</option>
@@ -328,8 +328,8 @@ const SystemSettings = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t border-slate-50">
-             <button className="flex-1 py-6 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-[32px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95">Save Global Settings</button>
-             <button className="px-16 py-6 bg-white border-2 border-slate-100 text-slate-400 text-[11px] font-black uppercase tracking-[0.2em] rounded-[32px] hover:bg-slate-50 transition-all">Reset to Defaults</button>
+             <button className="flex-1 py-6 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-[32px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95">Save Global Settings</button>
+             <button className="px-16 py-6 bg-white border-2 border-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-[32px] hover:bg-slate-50 transition-all">Reset to Defaults</button>
           </div>
 
        </div>

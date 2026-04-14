@@ -61,10 +61,10 @@ const PayslipGeneration = () => {
                <ArrowLeft size={20} />
             </button>
             <div>
-               <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-1 uppercase">
+               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">
                   {step === 'success' ? 'Confirmation' : step === 'shared' ? 'Success' : 'Payslip Generation'}
                </h1>
-               <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Lifecycle Management Index</p>
+               <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Lifecycle Management Index</p>
             </div>
          </div>
          <button className="p-4 bg-white border border-slate-100 rounded-2xl text-slate-400 hover:text-indigo-600 transition-all shadow-soft active:rotate-90">
@@ -79,7 +79,7 @@ const PayslipGeneration = () => {
                <div className="space-y-10 animate-in fade-in zoom-in-95 duration-500">
                   <div className="bg-white p-12 rounded-[56px] border border-slate-50 shadow-soft space-y-10">
                      <div className="space-y-4">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Select Payroll Period</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Select Payroll Period</label>
                         <div className="relative group cursor-pointer">
                            <div className="w-full bg-slate-50 border border-slate-100 rounded-3xl px-8 py-5 text-sm font-black text-slate-800 flex items-center justify-between group-hover:bg-white group-hover:shadow-lg transition-all text-left">
                               August 2023
@@ -88,10 +88,10 @@ const PayslipGeneration = () => {
                         </div>
                      </div>
 
-                     <button 
-                       onClick={handleGenerate}
-                       className="w-full py-6 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[28px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 hover:shadow-indigo-100 active:scale-95 transition-all flex items-center justify-center gap-4"
-                     >
+                      <button 
+                        onClick={handleGenerate}
+                        className="w-full py-6 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-[28px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 hover:shadow-indigo-100 active:scale-95 transition-all flex items-center justify-center gap-4"
+                      >
                         <Zap size={18} strokeWidth={2.5} />
                         Generate Payslip
                      </button>
@@ -100,7 +100,7 @@ const PayslipGeneration = () => {
                   {/* HIGH FIDELITY PREVIEW DETAILS (Screen 2) */}
                   <div className="bg-white p-12 rounded-[56px] border border-slate-50 shadow-soft space-y-10">
                      <div className="flex items-center justify-between pb-6 border-b border-slate-50">
-                        <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Preview Details</h4>
+                         <h4 className="text-xs font-black uppercase tracking-widest text-slate-800">Preview Details Nodes</h4>
                         <span className="px-4 py-1.5 bg-slate-50 text-slate-400 text-[9px] font-black rounded-full uppercase tracking-widest border border-slate-100">Draft</span>
                      </div>
                      <div className="space-y-6">
@@ -125,8 +125,8 @@ const PayslipGeneration = () => {
                   {/* History Ledger */}
                   <div className="bg-white p-10 rounded-[48px] border border-slate-50 shadow-soft">
                      <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
-                        <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Recent History</h4>
-                        <button className="text-[10px] font-black text-indigo-600 hover:underline">View All</button>
+                         <h4 className="text-xs font-black uppercase tracking-widest text-slate-800">Recent Status Nodes</h4>
+                         <button className="text-[10px] font-black text-indigo-600 hover:underline uppercase tracking-widest">Global Audit</button>
                      </div>
                      <div className="space-y-6 text-left">
                         {history.map((h, i) => (
@@ -193,17 +193,17 @@ const PayslipGeneration = () => {
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 mt-12">
-                           <button 
-                             onClick={() => navigate('/admin/payroll-management/secure-sharing')}
-                             className="w-full py-5.5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-4"
-                           >
-                              <Eye size={18} />
-                              View Payslip
-                           </button>
-                           <button className="w-full py-5.5 bg-white border-2 border-slate-100 text-slate-900 text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] hover:bg-slate-50 active:scale-95 transition-all flex items-center justify-center gap-4">
-                              <Download size={18} />
-                              Download PDF
-                           </button>
+                            <button 
+                              onClick={() => navigate('/admin/payroll-management/secure-sharing')}
+                              className="w-full py-5.5 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-4"
+                            >
+                               <Eye size={18} />
+                               View Payslip
+                            </button>
+                            <button className="w-full py-5.5 bg-white border-2 border-slate-100 text-slate-900 text-[10px] font-black uppercase tracking-[0.4em] rounded-[24px] hover:bg-slate-50 active:scale-95 transition-all flex items-center justify-center gap-4">
+                               <Download size={18} />
+                               Download PDF
+                            </button>
                         </div>
 
                         <button 

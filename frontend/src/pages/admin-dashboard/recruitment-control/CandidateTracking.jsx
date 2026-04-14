@@ -98,17 +98,17 @@ const CandidateTracking = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-4">Candidate Tracking</h1>
-          <p className="text-sm font-bold text-slate-400">Manage and monitor applicants across all open positions.</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Candidate Tracking</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Manage and monitor applicants across all open position nodes</p>
         </div>
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-3 px-6 py-3.5 bg-white border border-slate-100 text-slate-400 font-black text-[10px] uppercase rounded-2xl hover:bg-slate-50 transition-all shadow-soft active:scale-95 group">
+          <button className="flex items-center gap-3 px-6 py-3.5 bg-white border border-slate-100 text-slate-400 font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all shadow-soft active:scale-95 group">
              <Filter size={16} className="group-hover:text-indigo-500 transition-colors" />
              Filtering Logic
           </button>
           <button className="flex items-center gap-3 px-8 py-3.5 bg-indigo-600 text-white font-black rounded-2xl hover:bg-indigo-700 transition-all shadow-2xl shadow-indigo-100 uppercase tracking-widest text-[10px] active:scale-95 group">
             <Plus size={16} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
-            Add Candidate
+            Add Candidate Node
           </button>
         </div>
       </div>
@@ -152,21 +152,21 @@ const CandidateTracking = () => {
 
             {/* Meta Architecture */}
             <div className="p-10 text-center">
-               <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-1 group-hover:text-indigo-600 transition-colors uppercase">{can.name}</h3>
-               <p className="text-sm font-bold text-slate-400 mb-6 italic">{can.role}</p>
+               <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-2 group-hover:text-indigo-600 transition-colors uppercase leading-none">{can.name}</h3>
+               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Engineering Talent Node</p>
                
                <div className="flex items-center justify-center gap-6 mb-8 py-4 border-y border-slate-50">
                   <div className="text-center">
-                     <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1 leading-none">Experience</p>
-                     <p className="text-xs font-black text-slate-600">{can.experience}</p>
+                     <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 leading-none text-left">Experience</p>
+                     <p className="text-xs font-black text-slate-600 text-left">{can.experience}</p>
                   </div>
                   <div className="w-px h-6 bg-slate-100"></div>
                   <div className="text-center">
-                     <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1 leading-none">Applied</p>
-                     <p className="text-xs font-black text-slate-600">{can.appliedDate}</p>
+                     <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 leading-none text-left">Applied</p>
+                     <p className="text-xs font-black text-slate-600 text-left">{can.appliedDate}</p>
                   </div>
                   <div className="w-px h-6 bg-slate-100"></div>
-                  <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline active:scale-95 transition-all">View Profile</button>
+                  <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline active:scale-95 transition-all">View Dossier</button>
                </div>
 
                {/* Diagnostic Tags */}

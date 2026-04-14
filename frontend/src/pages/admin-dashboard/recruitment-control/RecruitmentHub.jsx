@@ -51,8 +51,8 @@ const RecruitmentHub = () => {
       {/* Premium Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">InfiAP Recruitment</h1>
-          <p className="text-sm font-bold text-slate-400">Welcome back, Sarah</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">InfiAP Recruitment</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Welcome back, Sarah Nodes</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative group">
@@ -72,12 +72,12 @@ const RecruitmentHub = () => {
       {/* Recruitment Overview Section */}
       <section>
         <div className="flex items-center justify-between mb-8 px-2">
-          <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Recruitment Overview</h2>
+          <h2 className="text-xs font-black text-slate-800 uppercase tracking-widest leading-none">Recruitment Overview</h2>
           <button 
             onClick={() => navigate('/admin/recruitment-control/analytics')}
-            className="text-sm font-black text-indigo-600 hover:underline transition-all"
+            className="text-[10px] font-black text-indigo-600 hover:underline transition-all uppercase tracking-widest"
           >
-            View Reports
+            View Statistical Reports
           </button>
         </div>
         
@@ -93,7 +93,7 @@ const RecruitmentHub = () => {
                 </span>
               </div>
               <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 leading-none">Open Jobs</p>
+                <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 leading-none">Metric Node</p>
                 <h3 className="text-4xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</h3>
               </div>
             </div>
@@ -105,8 +105,8 @@ const RecruitmentHub = () => {
       <section className="relative">
         <div className="flex items-center justify-between mb-8 px-2">
           <div className="flex items-center gap-4">
-             <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Active Job Postings</h2>
-             <span className="bg-indigo-50 text-indigo-600 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">3 Active</span>
+             <h2 className="text-xs font-black text-slate-800 uppercase tracking-widest leading-none">Active Job Postings Nodes</h2>
+             <span className="bg-indigo-50 text-indigo-600 text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">3 Active</span>
           </div>
         </div>
 
@@ -138,10 +138,10 @@ const RecruitmentHub = () => {
               </div>
 
               <div className="flex items-center gap-4 relative z-10">
-                <button className="flex-1 py-5 bg-[#4E63F0] text-white text-[12px] font-black uppercase tracking-[0.2em] rounded-[24px] shadow-2xl shadow-indigo-100 hover:bg-indigo-700 hover:shadow-indigo-200 transition-all hover:scale-[1.02] active:scale-95">
+                <button className="flex-1 py-5 bg-[#4E63F0] text-white text-[10px] font-black uppercase tracking-widest rounded-[24px] shadow-2xl shadow-indigo-100 hover:bg-indigo-700 hover:shadow-indigo-200 transition-all active:scale-95">
                   View Applicants
                 </button>
-                <button className="px-8 py-5 border-2 border-slate-100 text-slate-400 hover:border-indigo-500 hover:text-indigo-500 text-[12px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all hover:bg-indigo-50/50 active:scale-95">
+                <button className="px-8 py-5 border-2 border-slate-100 text-slate-400 hover:border-indigo-500 hover:text-indigo-500 text-[10px] font-black uppercase tracking-widest rounded-[24px] transition-all hover:bg-indigo-50/50 active:scale-95">
                   Edit
                 </button>
               </div>

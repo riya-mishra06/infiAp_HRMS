@@ -47,8 +47,8 @@ const SalaryStructure = () => {
                <ArrowLeft size={20} />
             </button>
             <div>
-               <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-1">Salary Structure</h1>
-               <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Compensation Audit & Breakdown</p>
+               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Salary Structure</h1>
+               <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Compensation Audit & Breakdown</p>
             </div>
          </div>
          <div className="flex items-center gap-4">
@@ -76,8 +76,8 @@ const SalaryStructure = () => {
                      </div>
                      <div>
                         <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">Alex Thompson</h2>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Senior Software Engineer • INF-9021</p>
-                        <span className="px-4 py-1.5 bg-indigo-50 text-indigo-600 text-[9px] font-black rounded-full uppercase tracking-[0.2em] border border-indigo-100">Full-time</span>
+                        <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none mb-4">Senior Software Engineer • INF-9021</p>
+                        <span className="px-4 py-1.5 bg-indigo-50 text-indigo-600 text-[9px] font-black rounded-full uppercase tracking-widest border border-indigo-100">Full-time</span>
                      </div>
                   </div>
 
@@ -110,7 +110,7 @@ const SalaryStructure = () => {
                </div>
 
                <div className="space-y-6 relative z-10">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 border-b border-white/5 pb-4">Year-over-Year Comparison <span className="text-slate-700 ml-4 font-normal">2023 VS 2024</span></p>
+                  <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none border-b border-white/5 pb-4">Year-over-Year Comparison <span className="text-slate-700 ml-4 font-normal tracking-normal uppercase">2023 VS 2024</span></p>
                   
                   <div className="grid grid-cols-2 gap-6">
                      <div className="p-6 bg-white/5 rounded-[28px] border border-white/5">
@@ -132,7 +132,7 @@ const SalaryStructure = () => {
                   <div className="space-y-4 pt-4">
                      <div>
                         <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.2em] mb-2">
-                           <span className="text-slate-400">Basic Pay Growth</span>
+                           <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none">Basic Pay Growth</span>
                            <span className="text-emerald-500">+8.5%</span>
                         </div>
                         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
@@ -141,7 +141,7 @@ const SalaryStructure = () => {
                      </div>
                      <div>
                         <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.2em] mb-2">
-                           <span className="text-slate-400">Allowances Growth</span>
+                           <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none">Allowances Growth</span>
                            <span className="text-indigo-400">+4.2%</span>
                         </div>
                         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
@@ -229,8 +229,8 @@ const SalaryStructure = () => {
                   </div>
                </div>
                <div className="relative z-10 text-right">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-4 px-4">Secure Audit Ready</p>
-                  <button className="px-10 py-5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-[24px] hover:bg-indigo-700 active:scale-95 transition-all shadow-2xl shadow-indigo-900/50">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 px-4">Secure Audit Ready</p>
+                  <button className="px-10 py-5 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-[24px] hover:bg-indigo-700 active:scale-95 transition-all shadow-2xl shadow-indigo-900/50">
                      Approve Protocol
                   </button>
                </div>

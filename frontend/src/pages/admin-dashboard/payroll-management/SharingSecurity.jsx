@@ -59,10 +59,10 @@ const SharingSecurity = () => {
            >
               <ArrowLeft size={18} />
            </button>
-           <div>
-              <h1 className="text-xl font-black text-slate-800 tracking-tight uppercase leading-none mb-1">InfiAP Security</h1>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Identity Verification Protocol</p>
-           </div>
+            <div>
+               <h1 className="text-2xl font-black text-slate-800 tracking-tight underline decoration-indigo-300 underline-offset-4 uppercase leading-none mb-1">InfiAP Security</h1>
+               <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Identity Verification Protocol</p>
+            </div>
         </div>
 
         {/* Verification Card */}
@@ -93,7 +93,7 @@ const SharingSecurity = () => {
               <button className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.3em] hover:underline ml-4">Resend Link</button>
            </div>
 
-           <button className="w-full py-5.5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 active:scale-95 transition-all mb-4">
+           <button className="w-full py-5.5 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 active:scale-95 transition-all mb-4">
               Verify Identity
            </button>
         </div>

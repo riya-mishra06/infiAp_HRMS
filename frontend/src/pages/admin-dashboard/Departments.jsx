@@ -27,8 +27,8 @@ const Departments = () => {
       {/* Header Area */}
       <div className="flex items-center justify-between px-2">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight mb-2">Departments</h1>
-          <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">InfiAP Organizational Structure</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Departments</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">InfiAP Organizational Structure</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative group">
@@ -51,7 +51,7 @@ const Departments = () => {
 
       {/* Overview Block */}
       <section className="px-2">
-        <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 mb-6 block">Overview</label>
+        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6 block">Executive Overview</label>
         <div className="grid grid-cols-3 gap-10">
           {overviewStats.map((stat, idx) => (
             <div key={idx} className="p-10 bg-white rounded-[40px] border border-slate-50 shadow-soft flex items-center gap-8 group hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5">
@@ -59,8 +59,8 @@ const Departments = () => {
                 <stat.icon size={36} />
               </div>
               <div>
-                <h3 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">{stat.value}</h3>
-                <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.15em] leading-none">{stat.label}</p>
+                <h3 className="text-4xl font-black text-slate-800 tracking-tighter leading-none mb-2">{stat.value}</h3>
+                <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none">{stat.label}</p>
               </div>
             </div>
           ))}
@@ -70,8 +70,8 @@ const Departments = () => {
       {/* Main Grid */}
       <section className="px-2 pb-24 relative">
         <div className="flex items-center justify-between mb-8">
-          <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Active Departments</label>
-          <button className="text-xs font-black text-indigo-600 hover:underline transition-all">See All Resources</button>
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Active Departments</label>
+          <button className="text-[10px] font-black text-indigo-600 hover:underline transition-all uppercase tracking-widest">See All Resources</button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -99,13 +99,13 @@ const Departments = () => {
                     <div className="w-2 h-2 rounded-full bg-current"></div>
                     <span className="text-lg font-black tracking-tight">{dept.teams}</span>
                   </span>
-                  <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest leading-none">Teams</span>
+                  <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none">Teams</span>
                 </div>
               </div>
 
               <button
                 onClick={() => navigate('/admin/department-management/teams')}
-                className="relative z-10 w-full py-5 bg-slate-50 text-slate-600 font-black rounded-[24px] group-hover:bg-indigo-600 group-hover:text-white group-hover:shadow-2xl group-hover:shadow-indigo-100 transition-all duration-500 text-xs uppercase tracking-[0.25em]"
+                className="relative z-10 w-full py-5 bg-slate-50 text-slate-600 font-black rounded-[24px] group-hover:bg-indigo-600 group-hover:text-white group-hover:shadow-2xl group-hover:shadow-indigo-100 transition-all duration-500 text-[10px] uppercase tracking-widest"
               >
                 View Teams
               </button>

@@ -50,8 +50,8 @@ const CreateDepartment = () => {
               <Building2 size={36} />
             </div>
             <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tight mb-2">Create Department</h1>
-              <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Setup new organizational unit</p>
+              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Create Department</h1>
+              <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Setup new organizational unit</p>
             </div>
           </div>
 
@@ -59,7 +59,7 @@ const CreateDepartment = () => {
             <div className="space-y-8">
               {/* Department Name */}
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Department Name</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Department Name</label>
                 <input 
                   type="text"
                   placeholder="e.g. Engineering, Marketing..."
@@ -72,7 +72,7 @@ const CreateDepartment = () => {
 
               {/* Description */}
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Department Description</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Department Description</label>
                 <textarea 
                   placeholder="Briefly describe the department's role and objectives..."
                   rows="4"
@@ -85,7 +85,7 @@ const CreateDepartment = () => {
 
               {/* Department Manager */}
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Department Manager</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Department Manager</label>
                 <div className="relative">
                   <select 
                     className="w-full appearance-none bg-slate-50 border border-slate-100 rounded-[24px] px-8 py-5 text-lg font-bold text-slate-800 focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500/20 focus:bg-white transition-all outline-none"
@@ -105,7 +105,7 @@ const CreateDepartment = () => {
               {/* Location & Teams */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Primary Location</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Primary Location</label>
                   <div className="relative">
                     <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
                     <input 
@@ -119,7 +119,7 @@ const CreateDepartment = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Initial Teams Count</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Initial Teams Count</label>
                   <div className="relative">
                     <LayoutGrid className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
                     <input 
@@ -139,7 +139,7 @@ const CreateDepartment = () => {
             <div className="flex flex-col md:flex-row items-center gap-6 pt-8">
               <button 
                 type="submit"
-                className="w-full md:flex-1 py-6 bg-linear-to-r from-[#4E63F0] to-[#6855E8] text-white rounded-[24px] font-black text-sm uppercase tracking-[0.2em] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-4"
+                className="w-full md:flex-1 py-6 bg-linear-to-r from-[#4E63F0] to-[#6855E8] text-white rounded-[24px] font-black text-[10px] uppercase tracking-[0.25em] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-4"
               >
                 <Check size={20} strokeWidth={3} />
                 Create Department
@@ -147,7 +147,7 @@ const CreateDepartment = () => {
               <button 
                 type="button"
                 onClick={() => navigate('/admin/departments')}
-                className="w-full md:w-auto px-12 py-6 bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 rounded-[24px] font-black text-sm uppercase tracking-[0.2em] transition-all"
+                className="w-full md:w-auto px-12 py-6 bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 rounded-[24px] font-black text-[10px] uppercase tracking-[0.25em] transition-all"
               >
                 Cancel
               </button>

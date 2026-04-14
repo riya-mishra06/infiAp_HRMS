@@ -80,8 +80,8 @@ const PayrollHub = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 px-2">
         <div>
-           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3 underline decoration-indigo-300 underline-offset-4 uppercase">Payroll Management</h1>
-           <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">Global compensation & disbursement infrastructure</p>
+           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Payroll Management</h1>
+           <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Global compensation & disbursement infrastructure</p>
         </div>
         <div className="flex items-center gap-4">
            {/* Dynamic Period Picker */}
@@ -107,7 +107,7 @@ const PayrollHub = () => {
                   <h3 className="text-4xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</h3>
                   {stat.change && <span className="text-[10px] text-emerald-500 font-black px-2 py-1 bg-emerald-50 rounded-lg">{stat.change}</span>}
                </div>
-               <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-4">{stat.label}</p>
+                <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none mb-4">{stat.label}</p>
                {stat.sub && (
                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2 mt-auto">
                     <Clock size={12} className="text-indigo-400" />
@@ -128,7 +128,7 @@ const PayrollHub = () => {
 
           {/* Quick Actions Ecosystem */}
           <section className="bg-white rounded-[56px] p-12 border border-slate-50 shadow-soft border-b-8 border-b-slate-100">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 mb-10 border-b border-slate-50 pb-6">Quick Actions</h4>
+            <h4 className="text-xs font-black uppercase tracking-widest text-slate-800 mb-10 border-b border-slate-50 pb-6">Quick Actions</h4>
             <div className="space-y-4">
               {quickActions.map((action, idx) => (
                 <button
@@ -152,7 +152,7 @@ const PayrollHub = () => {
           {/* Payroll Status History */}
           <section className="bg-white rounded-[56px] p-12 border border-slate-50 shadow-soft">
             <div className="flex items-center justify-between mb-10 border-b border-slate-50 pb-6">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">Payroll Status</h4>
+              <h4 className="text-xs font-black uppercase tracking-widest text-slate-800">Payroll Status</h4>
               <button className="text-[9px] font-black text-indigo-600 hover:underline uppercase tracking-widest">Global History</button>
             </div>
             <div className="space-y-8">
@@ -182,8 +182,8 @@ const PayrollHub = () => {
           <section className="bg-white rounded-[64px] p-14 border border-slate-50 shadow-soft relative overflow-hidden h-full flex flex-col">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-10 mb-14 relative z-10">
               <div>
-                <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none uppercase mb-2">Salary Disbursement</h2>
-                <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Real-time audit & payment authorization feed</p>
+                <h2 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Salary Disbursement</h2>
+                <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Real-time audit & payment authorization feed</p>
               </div>
               <div className="relative group flex-1 md:max-w-[400px]">
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" size={20} />
@@ -242,8 +242,8 @@ const PayrollHub = () => {
             <div className="mt-14 p-12 bg-white rounded-[56px] border border-slate-50 shadow-soft relative overflow-hidden group">
                <div className="flex items-center justify-between mb-10 relative z-10">
                   <div>
-                     <h4 className="text-2xl font-black text-slate-800 tracking-tight leading-none uppercase mb-2">Payroll Disbursement Trend</h4>
-                     <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Monthly capital outflow & growth diagnostics</p>
+                     <h4 className="text-xs font-black text-slate-800 tracking-tight uppercase mb-2">Payroll Disbursement Trend</h4>
+                     <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Monthly capital outflow & growth diagnostics</p>
                   </div>
                   <div className="flex items-center gap-8">
                      <div className="text-right">

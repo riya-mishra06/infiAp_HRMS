@@ -40,7 +40,10 @@ const CreateJob = () => {
         >
           <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
         </button>
-        <h1 className="text-2xl font-black text-slate-800 tracking-tight">Post New Job</h1>
+        <div>
+           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Post New Job</h1>
+           <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Assemble a new organizational role node</p>
+        </div>
         <div className="w-14"></div> {/* Balance spacer */}
       </div>
 
@@ -62,7 +65,7 @@ const CreateJob = () => {
       <div className="bg-white p-12 rounded-[48px] border border-slate-50 shadow-soft space-y-12">
         {/* Job Title */}
         <div className="space-y-4">
-          <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Job Title</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Job Title</label>
           <input 
             type="text" 
             placeholder="e.g. Senior Product Designer"
@@ -73,7 +76,7 @@ const CreateJob = () => {
         {/* Dept & Type Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="space-y-4 relative">
-            <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Department</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Department</label>
             <div className="relative">
               <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none">
                 <option>Engineering</option>
@@ -85,7 +88,7 @@ const CreateJob = () => {
             </div>
           </div>
           <div className="space-y-4 relative">
-            <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Type</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Type</label>
             <div className="relative">
               <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none">
                 <option>Full-time</option>
@@ -100,7 +103,7 @@ const CreateJob = () => {
 
         {/* Job Description */}
         <div className="space-y-4">
-          <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Job Description</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Job Description</label>
           <textarea 
             placeholder="Describe the role, responsibilities, and team..."
             rows={6}
@@ -110,7 +113,7 @@ const CreateJob = () => {
 
         {/* Required Skills - Chip System */}
         <div className="space-y-4">
-          <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Required Skills</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Required Skills</label>
           <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4 flex flex-wrap gap-3 shadow-inner">
             {skills.map(skill => (
               <span key={skill} className="bg-indigo-50 text-indigo-600 text-xs font-black px-4 py-2 rounded-xl flex items-center gap-2 group hover:bg-indigo-100 transition-colors">
@@ -135,7 +138,7 @@ const CreateJob = () => {
 
         {/* Exp Level */}
         <div className="space-y-4">
-          <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Experience Level</label>
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Experience Level</label>
           <div className="relative">
             <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none">
               <option>Entry (0-2 years)</option>
@@ -150,7 +153,7 @@ const CreateJob = () => {
         {/* Location & Deadline Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="space-y-4 relative group">
-            <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Location</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Location</label>
             <div className="relative">
               <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" size={20} />
               <input 
@@ -161,7 +164,7 @@ const CreateJob = () => {
             </div>
           </div>
           <div className="space-y-4 relative group">
-            <label className="text-sm font-black text-slate-700 uppercase tracking-widest">Application Deadline</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Application Deadline</label>
             <div className="relative">
               <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" size={20} />
               <input 
@@ -174,13 +177,13 @@ const CreateJob = () => {
 
         {/* Form Action Intelligence */}
         <div className="pt-10 flex flex-col sm:flex-row items-center gap-6">
-          <button className="w-full sm:flex-1 py-6 border-2 border-indigo-600 text-indigo-600 text-sm font-black uppercase tracking-[0.25em] rounded-[28px] hover:bg-indigo-50 transition-all flex items-center justify-center gap-4 active:scale-95">
+          <button className="w-full sm:flex-1 py-6 border-2 border-indigo-600 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-[28px] hover:bg-indigo-50 transition-all flex items-center justify-center gap-4 active:scale-95">
             <Save size={20} />
             Save Draft
           </button>
-          <button className="w-full sm:flex-1 py-6 bg-linear-to-r from-[#4E63F0] to-[#6855E8] text-white text-sm font-black uppercase tracking-[0.25em] rounded-[28px] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 transition-all flex items-center justify-center gap-4 hover:-translate-y-1 active:scale-95">
+          <button className="w-full sm:flex-1 py-6 bg-linear-to-r from-[#4E63F0] to-[#6855E8] text-white text-[10px] font-black uppercase tracking-widest rounded-[28px] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 transition-all flex items-center justify-center gap-4 hover:-translate-y-1 active:scale-95">
             <Rocket size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            Publish Role
+            Publish Role Protocols
           </button>
         </div>
       </div>

@@ -75,8 +75,8 @@ const CompanyPolicies = () => {
       {/* Premium Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 px-2">
         <div>
-           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3 underline decoration-indigo-300 underline-offset-8 uppercase">Company Policies</h1>
-           <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Institutional Operating Protocols</p>
+           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Company Policies</h1>
+           <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Institutional Operating Protocols</p>
         </div>
         <div className="flex items-center gap-4">
            <div className="relative group">
@@ -100,7 +100,7 @@ const CompanyPolicies = () => {
         {stats.map((stat, idx) => (
           <div key={idx} className="bg-white p-8 rounded-[40px] border border-slate-50 shadow-soft flex items-center justify-between group hover:shadow-xl transition-all">
              <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-2">{stat.label}</p>
+                <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 leading-none">Policy Node</p>
                 <h3 className={`text-4xl font-black ${stat.color} tracking-tighter`}>{stat.value}</h3>
              </div>
              <div className={`w-14 h-14 ${stat.bg} rounded-2xl flex items-center justify-center`}>
@@ -141,9 +141,9 @@ const CompanyPolicies = () => {
                 </div>
 
                 <div className="mt-10 space-y-4 relative z-10">
-                   <button className="w-full py-5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 active:scale-95 transition-all flex items-center justify-center gap-4">
+                   <button className="w-full py-5 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 active:scale-95 transition-all flex items-center justify-center gap-4">
                       <Eye size={18} />
-                      View Policy
+                      View Policy Nodes
                    </button>
                    <div className="grid grid-cols-2 gap-4">
                       <button className="py-4 bg-slate-50 text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] rounded-[20px] hover:bg-indigo-50 hover:text-indigo-600 transition-all flex items-center justify-center gap-3">

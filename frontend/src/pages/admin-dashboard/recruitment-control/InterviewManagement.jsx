@@ -67,8 +67,8 @@ const InterviewManagement = () => {
       {/* Premium Navigation */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-6 border-b border-slate-100">
         <div>
-           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-4 uppercase">Interview Synchronization</h1>
-           <p className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">Lifecycle Management for Talent Interactions</p>
+           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Interview Synchronization</h1>
+           <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Lifecycle Management for Talent Interactions</p>
         </div>
         <div className="flex bg-slate-50 p-1.5 rounded-2xl">
           {['Upcoming', 'Completed', 'Cancelled'].map((tab) => (
@@ -96,7 +96,7 @@ const InterviewManagement = () => {
                     </div>
                     <h2 className="text-2xl font-black tracking-tight leading-none">Schedule Interview</h2>
                  </div>
-                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100">Establish new interaction protocol</p>
+                 <p className="text-[8px] font-black uppercase tracking-widest text-indigo-100">Establish new interaction protocol</p>
               </div>
 
               <div className="p-10 space-y-8">
@@ -175,7 +175,7 @@ const InterviewManagement = () => {
                  <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600">
                     <Zap size={16} className="fill-current" />
                  </div>
-                 <h3 className="text-lg font-black text-slate-800 tracking-[0.2em] uppercase">TODAY, OCT 24</h3>
+                 <h3 className="text-xs font-black text-slate-800 tracking-widest uppercase mb-1">TODAY, OCT 24</h3>
               </div>
 
               <div className="space-y-8">
@@ -253,7 +253,7 @@ const InterviewManagement = () => {
                  <div className="p-3 bg-slate-100 rounded-xl text-slate-400">
                     <Clock size={16} />
                  </div>
-                 <h3 className="text-lg font-black text-slate-400 tracking-[0.2em] uppercase">TOMORROW, OCT 25</h3>
+                 <h3 className="text-xs font-black text-slate-400 tracking-widest uppercase mb-1">TOMORROW, OCT 25</h3>
               </div>
 
               {tomorrowInterviews.map((int) => (

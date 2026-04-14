@@ -67,8 +67,8 @@ const FinanceReports = () => {
       {/* Premium Split Layout Header (Optional - for context) */}
       <div className="flex items-center justify-between px-2 mb-10">
          <div>
-            <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-8">Financial Audit</h1>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Institutional Disbursement Intelligence</p>
+            <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Financial Audit</h1>
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Institutional Disbursement Intelligence</p>
          </div>
          <div className="flex items-center gap-4">
             <button className="flex items-center gap-3 px-8 py-3.5 bg-slate-50 text-slate-500 font-black rounded-2xl border border-slate-100 hover:bg-white transition-all text-[10px] uppercase tracking-widest">
@@ -87,20 +87,20 @@ const FinanceReports = () => {
          {/* MAIN AUDIT BOARD (Left 75%) */}
          <section className="xl:col-span-9 bg-white rounded-[56px] p-16 border border-slate-50 shadow-soft relative overflow-hidden group">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-16 relative z-10">
-               <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300">Monthly Overview</label>
-                  <h2 className="text-5xl font-black text-slate-800 tracking-tighter">Payroll Disbursement Trend</h2>
+               <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Monthly Overview</label>
+                  <h2 className="text-4xl font-black text-slate-800 tracking-tight leading-none">Payroll Disbursement Trend</h2>
                </div>
                
                {/* Custom Legend to match screenshot */}
                <div className="flex items-center gap-10 mt-6 md:mt-0">
                   <div className="flex items-center gap-3">
                      <div className="w-3 h-3 rounded-full bg-indigo-600 shadow-md"></div>
-                     <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Gross</span>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gross</span>
                   </div>
                   <div className="flex items-center gap-3">
                      <div className="w-3 h-3 rounded-full bg-slate-200 shadow-sm border border-slate-300/20"></div>
-                     <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Previous</span>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Previous</span>
                   </div>
                </div>
             </div>
@@ -167,8 +167,8 @@ const FinanceReports = () => {
                      <Layout size={28} />
                   </div>
                   <div>
-                     <h3 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-1 uppercase">Allocation</h3>
-                     <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">By Department</p>
+                     <h3 className="text-xs font-black text-slate-800 tracking-widest uppercase leading-none mb-1">Allocation</h3>
+                     <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none">By Department Audit</p>
                   </div>
                </div>
 

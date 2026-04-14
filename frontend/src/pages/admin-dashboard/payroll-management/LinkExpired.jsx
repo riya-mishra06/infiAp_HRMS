@@ -15,10 +15,10 @@ const LinkExpired = () => {
            <div className="w-24 h-24 bg-white rounded-[32px] shadow-2xl shadow-indigo-100 mx-auto flex items-center justify-center relative group">
               <ShieldCheck className="text-indigo-600 group-hover:scale-110 transition-transform" size={48} strokeWidth={1.5} />
            </div>
-           <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">InfiAP</h1>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Institutional Secure Gate</p>
-           </div>
+            <div>
+               <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">InfiAP Protocols</h1>
+               <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Institutional Secure Gate</p>
+            </div>
         </div>
 
         {/* Security Card */}
@@ -36,18 +36,18 @@ const LinkExpired = () => {
                       <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed max-w-[280px] mx-auto">For security reasons, this link is no longer active. Please contact the sender to request a new link or sign in to your portal.</p>
                    </div>
 
-                   <div className="space-y-4">
-                      <button 
-                        onClick={() => setRequestSent(true)}
-                        className="w-full py-5.5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 active:scale-95 transition-all flex items-center justify-center gap-4"
-                      >
-                         Request New Link
-                         <ChevronRight size={18} />
-                      </button>
-                      <button className="w-full py-5.5 bg-white border-2 border-slate-100 text-slate-400 text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] hover:bg-slate-50 transition-all flex items-center justify-center gap-4">
-                         Contact Support
-                      </button>
-                   </div>
+                    <div className="space-y-4">
+                       <button 
+                         onClick={() => setRequestSent(true)}
+                         className="w-full py-5.5 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-[24px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 active:scale-95 transition-all flex items-center justify-center gap-4"
+                       >
+                          Request New Link
+                          <ChevronRight size={18} />
+                       </button>
+                       <button className="w-full py-5.5 bg-white border-2 border-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-[24px] hover:bg-slate-50 transition-all flex items-center justify-center gap-4">
+                          Contact Support
+                       </button>
+                    </div>
                 </div>
               ) : (
                 /* SCREEN 6: REQUEST SENT */
@@ -69,9 +69,9 @@ const LinkExpired = () => {
                          <ChevronLeft size={16} />
                          Back to Login
                       </button>
-                      <button className="w-full py-5 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[20px] shadow-3xl shadow-slate-200">
-                        Sign In to Portal
-                      </button>
+                       <button className="w-full py-5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-[20px] shadow-3xl shadow-slate-200">
+                         Sign In to Portal
+                       </button>
                    </div>
                 </div>
               )}

@@ -61,8 +61,8 @@ const SecurityDocuments = () => {
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 px-2">
         <div>
-           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-3 underline decoration-indigo-300 underline-offset-8 uppercase">Security Documents</h1>
-           <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Manage and secure sensitive company protocols</p>
+           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Security Documents</h1>
+           <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Manage and secure sensitive company protocol nodes</p>
         </div>
         <div className="flex items-center gap-4">
            <div className="relative group">
@@ -153,8 +153,8 @@ const SecurityDocuments = () => {
              <PlusCircle size={32} />
           </div>
           <div>
-             <h1 className="text-5xl font-black text-slate-800 tracking-tighter leading-none mb-2 lowercase">Bulk Upload</h1>
-             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Multi-document batch processing</p>
+             <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Bulk Upload Nodes</h1>
+             <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Multi-document batch processing intelligence</p>
           </div>
        </div>
 
@@ -248,19 +248,19 @@ const SecurityDocuments = () => {
              <Upload size={32} />
           </div>
           <div>
-             <h1 className="text-5xl font-black text-slate-800 tracking-tighter leading-none mb-2 lowercase">InfiAP Security Docs</h1>
-             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Encrypted Vault Submission</p>
+             <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Vault Submission</h1>
+             <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Encrypted Institutional Ingestion Node</p>
           </div>
        </div>
 
        <div className="bg-white p-16 rounded-[64px] border border-slate-50 shadow-soft space-y-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
              <div className="space-y-4">
-                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Document Title</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Document Title</label>
                 <input type="text" placeholder="e.g. Annual Security Audit 2023" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-200" />
              </div>
              <div className="space-y-4">
-                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Category</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Category</label>
                 <div className="relative group">
                    <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-black text-slate-400 flex items-center justify-between group-hover:bg-white group-hover:shadow-lg transition-all cursor-pointer">
                       Select category
@@ -271,12 +271,12 @@ const SecurityDocuments = () => {
           </div>
 
           <div className="space-y-4">
-             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Description</label>
+             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Description</label>
              <textarea placeholder="Briefly describe the purpose of this document..." rows={4} className="w-full bg-slate-50 border border-slate-100 rounded-3xl px-8 py-6 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-200 resize-none" />
           </div>
 
           <div className="space-y-6">
-             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Security Level</label>
+             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Security Level</label>
              <div className="flex gap-4">
                 {['Public', 'Restricted', 'Confidential'].map((lvl) => (
                   <button key={lvl} className={`px-10 py-5 rounded-[20px] text-[11px] font-black uppercase tracking-widest border transition-all ${lvl === 'Public' ? 'bg-indigo-600 text-white border-indigo-600 shadow-xl shadow-indigo-100' : 'bg-slate-50 text-slate-400 border-slate-100 hover:bg-white'}`}>
@@ -287,7 +287,7 @@ const SecurityDocuments = () => {
           </div>
 
           <div className="space-y-6">
-             <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Department Access</label>
+             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Department Access</label>
              <div className="flex flex-wrap gap-3">
                 {['Engineering', 'HR'].map((dept) => (
                    <div key={dept} className="flex items-center gap-3 px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[11px] font-black uppercase text-slate-600">
@@ -340,8 +340,8 @@ const SecurityDocuments = () => {
                             <span className="px-4 py-1.5 bg-emerald-50 text-emerald-500 text-[9px] font-black rounded-full uppercase tracking-widest">Active</span>
                             <span className="px-4 py-1.5 bg-indigo-50 text-indigo-500 text-[9px] font-black rounded-full uppercase tracking-widest">Confidential</span>
                          </div>
-                         <h1 className="text-4xl font-black text-slate-800 tracking-tighter leading-tight uppercase underline decoration-indigo-200 underline-offset-8">InfiAP Security Protocol 2024</h1>
-                         <p className="text-[11px] font-bold text-slate-300 uppercase tracking-widest mt-4">Cybersecurity Policy • v2.4.0</p>
+                          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase leading-none">InfiAP Security Protocol 2024</h1>
+                          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-4 leading-none">Cybersecurity Policy • v2.4.0 • Vault Node</p>
                       </div>
                    </div>
                    <button className="p-4 bg-slate-50 text-slate-300 rounded-2xl hover:text-indigo-600 transition-all"><MoreVertical size={24} /></button>

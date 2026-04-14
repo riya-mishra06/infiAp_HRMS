@@ -138,7 +138,9 @@ const Sidebar = () => {
       name: 'Employees',
       icon: Users,
       path: role === 'HR' ? '/employees' : '/admin/employees',
-      roles: ['HR'],
+      key: 'employees',
+      hasSubmenu: true,
+      roles: ['HR', 'Admin'],
       subItems: [
         { name: role === 'HR' ? 'View Profile' : 'Staff Overview', icon: Users, path: role === 'HR' ? '/employees/profiles' : '/admin/employees/view' },
         { name: role === 'HR' ? 'Edit Profile' : 'Modify Access', icon: FileSignature, path: role === 'HR' ? '/employees' : '/admin/employees/edit' },

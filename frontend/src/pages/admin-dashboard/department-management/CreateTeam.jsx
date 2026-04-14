@@ -50,8 +50,8 @@ const CreateTeam = () => {
               <Users size={36} />
             </div>
             <div>
-              <h1 className="text-4xl font-black text-slate-800 tracking-tight mb-2">Create New Team</h1>
-              <p className="text-sm font-bold text-slate-400 uppercase tracking-widest leading-none">Assemble a new squad or department unit</p>
+              <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Create New Team</h1>
+              <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none text-left">Assemble a new squad or department unit</p>
             </div>
           </div>
 
@@ -60,7 +60,7 @@ const CreateTeam = () => {
               
               {/* Team Name */}
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Team Name</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Team Name</label>
                 <div className="relative">
                   <LayoutGrid className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
                   <input 
@@ -77,7 +77,7 @@ const CreateTeam = () => {
               {/* Department & Lead Selection */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Assign Department</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Assign Department</label>
                   <div className="relative">
                     <Building2 className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
                     <select 
@@ -95,7 +95,7 @@ const CreateTeam = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Appoint Team Lead</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Appoint Team Lead</label>
                   <div className="relative">
                     <Users className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
                     <select 
@@ -116,7 +116,7 @@ const CreateTeam = () => {
 
               {/* Team Capacity */}
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Target Team Size (Potential)</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Target Team Size (Potential)</label>
                 <div className="relative">
                   <Users className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
                   <input 
@@ -132,7 +132,7 @@ const CreateTeam = () => {
 
               {/* Team Mission / Description */}
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 ml-4">Team Mission & Objectives</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">Team Mission & Objectives</label>
                 <div className="relative">
                    <Target className="absolute left-6 top-7 text-slate-300" size={20} />
                    <textarea 
@@ -151,7 +151,7 @@ const CreateTeam = () => {
             <div className="flex flex-col md:flex-row items-center gap-6 pt-10">
               <button 
                 type="submit"
-                className="w-full md:flex-1 py-6 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-[24px] font-black text-sm uppercase tracking-[0.2em] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-4"
+                className="w-full md:flex-1 py-6 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-[24px] font-black text-[10px] uppercase tracking-[0.25em] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-4"
               >
                 <Check size={20} strokeWidth={3} />
                 Confirm & Create Team
@@ -159,7 +159,7 @@ const CreateTeam = () => {
               <button 
                 type="button"
                 onClick={() => navigate('/admin/department-management/teams')}
-                className="w-full md:w-auto px-12 py-6 bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600 rounded-[24px] font-black text-sm uppercase tracking-[0.2em] transition-all"
+                className="w-full md:w-auto px-12 py-6 bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600 rounded-[24px] font-black text-[10px] uppercase tracking-[0.25em] transition-all"
               >
                 Discard
               </button>

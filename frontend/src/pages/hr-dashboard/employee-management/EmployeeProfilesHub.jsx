@@ -33,8 +33,8 @@ const EmployeeProfilesHub = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Forensic Profile Hub</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Global Talent Inventory & Identity Portfolio</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Forensic Profile Hub</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Global Talent Inventory & Identity Portfolio Nodes</p>
         </div>
         <div className="flex items-center gap-4 relative group max-w-sm w-full">
            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" />

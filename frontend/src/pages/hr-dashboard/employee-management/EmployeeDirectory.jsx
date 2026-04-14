@@ -94,8 +94,8 @@ const EmployeeDirectory = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Staffing Command Center</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Corporate Workforce Directory & Organizational Diagnostic</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase">Staffing Command Center</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Corporate Workforce Directory & Organizational Diagnostic Nodes</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
           <button
@@ -209,10 +209,10 @@ const EmployeeDirectory = () => {
               <table className="w-full text-left border-collapse">
                  <thead className="sticky top-0 z-20 bg-slate-50/80 backdrop-blur-md border-b border-slate-100">
                     <tr>
-                       <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Identity Node</th>
-                       <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Operational Role</th>
-                       <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Lifecycle</th>
-                       <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                       <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">Identity Node</th>
+                       <th className="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">Operational Role</th>
+                       <th className="px-6 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest text-center">Lifecycle</th>
+                       <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">Actions</th>
                     </tr>
                  </thead>
                  <tbody className="divide-y divide-slate-50 relative z-10 font-[Inter]">

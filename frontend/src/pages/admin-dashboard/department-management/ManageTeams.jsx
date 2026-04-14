@@ -57,8 +57,8 @@ const ManageTeams = () => {
             <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
           </button>
           <div>
-            <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left uppercase">Department Teams</h1>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none text-left flex items-center gap-2">
+            <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Department Teams</h1>
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none text-left flex items-center gap-2">
               Engineering Department
               <span className="w-1 h-1 rounded-full bg-slate-300"></span>
               <span className="text-indigo-500">20 Teams Total</span>
@@ -82,13 +82,12 @@ const ManageTeams = () => {
         </div>
       </div>
 
-      {/* Filter Tabs */}
       <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-2">
         {tabs.map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all whitespace-nowrap
+            className={`px-8 py-3.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap
               ${activeTab === tab 
                 ? 'bg-slate-900 text-white shadow-xl shadow-slate-200 -translate-y-1' 
                 : 'bg-white text-slate-400 border border-slate-100 hover:bg-slate-50 hover:text-slate-600'}`}
@@ -96,7 +95,7 @@ const ManageTeams = () => {
             {tab}
           </button>
         ))}
-        <button className="ml-auto flex items-center gap-2 text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] hover:underline">
+        <button className="ml-auto flex items-center gap-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">
           <Filter size={14} />
           Advanced Filters
         </button>
@@ -129,10 +128,10 @@ const ManageTeams = () => {
                   </div>
                   <div>
                     <h4 className="text-lg font-black text-slate-800 leading-none mb-1">{team.members}</h4>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Members</p>
+                    <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none">Members</p>
                   </div>
                 </div>
-                <button className="flex-1 py-5 bg-slate-50 text-slate-500 hover:bg-indigo-600 hover:text-white transition-all rounded-[20px] font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-transparent hover:shadow-indigo-100 flex items-center justify-center gap-3">
+                <button className="flex-1 py-5 bg-slate-50 text-slate-500 hover:bg-indigo-600 hover:text-white transition-all rounded-[20px] font-black text-[10px] uppercase tracking-widest shadow-lg shadow-transparent hover:shadow-indigo-100 flex items-center justify-center gap-3">
                   View Team Details
                   <ChevronRight size={16} />
                 </button>
@@ -140,7 +139,7 @@ const ManageTeams = () => {
 
               {/* Key Members Sub-Section */}
               <div className="space-y-6 pt-8 border-t border-slate-50">
-                <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 block px-2">Key Members</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 block px-2">Key Members Nodes</label>
                 <div className="space-y-4">
                   {team.keyMembers.map((member, midx) => (
                     <div key={midx} className="flex items-center justify-between p-4 bg-slate-50/50 hover:bg-white border border-transparent hover:border-slate-100 rounded-2xl transition-all cursor-pointer group/member">
@@ -150,7 +149,7 @@ const ManageTeams = () => {
                         </div>
                         <div>
                           <p className="text-sm font-black text-slate-800 group-hover/member:text-indigo-600 transition-colors">{member.name}</p>
-                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">{member.role}</p>
+                          <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest leading-none">{member.role}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-600 rounded-full">
@@ -174,7 +173,7 @@ const ManageTeams = () => {
         <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center group-hover:rotate-90 transition-transform duration-500">
           <Plus size={20} strokeWidth={3} />
         </div>
-        <span className="text-xs font-black uppercase tracking-[0.2em]">Create Team</span>
+        <span className="text-[10px] font-black uppercase tracking-widest">Create Team</span>
       </button>
 
     </div>
