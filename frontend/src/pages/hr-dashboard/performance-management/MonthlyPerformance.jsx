@@ -1,34 +1,34 @@
 import React, { useState } from 'react';
-import { 
-  Zap, 
-  Target, 
-  TrendingUp, 
-  Activity, 
-  Undo2, 
-  Download, 
-  Filter, 
-  Award, 
-  Star, 
-  Clock, 
-  ChevronRight,
-  TrendingDown,
-  LayoutDashboard,
-  ClipboardList,
-  FileText
+import {
+    Zap,
+    Target,
+    TrendingUp,
+    Activity,
+    Undo2,
+    Download,
+    Filter,
+    Award,
+    Star,
+    Clock,
+    ChevronRight,
+    TrendingDown,
+    LayoutDashboard,
+    ClipboardList,
+    FileText
 } from 'lucide-react';
-import { 
-  Radar, 
-  RadarChart, 
-  PolarGrid, 
-  PolarAngleAxis, 
-  PolarRadiusAxis, 
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Cell
+import {
+    Radar,
+    RadarChart,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Cell
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 
@@ -54,18 +54,18 @@ const MonthlyPerformance = () => {
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-120px)] w-full gap-10 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 text-left pb-20">
-            
+
             {/* Header */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
                 <div className="flex items-center gap-6">
-                    <button 
+                    <button
                         onClick={() => navigate('/performance')}
                         className="p-4 bg-white border border-slate-100 text-slate-400 hover:text-slate-800 rounded-2xl shadow-sm transition-all hover:-translate-x-1 active:scale-95 text-left"
                     >
                         <Undo2 size={20} />
                     </button>
                     <div>
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Monthly Performance Metrics</h1>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Monthly Performance Metrics</h1>
                         <div className="flex items-center gap-4">
                             <span className="flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-600 rounded-lg text-[10px] font-black uppercase tracking-widest text-left">
                                 <Zap size={12} />
@@ -75,7 +75,7 @@ const MonthlyPerformance = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                     <button className="p-3 bg-white border border-slate-100 text-slate-400 rounded-2xl hover:text-slate-800 shadow-sm transition-all text-left">
                         <Filter size={20} />
@@ -88,30 +88,30 @@ const MonthlyPerformance = () => {
 
             {/* Workspace Grid */}
             <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-12 gap-10 text-left">
-                
+
                 {/* 1. Skill Diagnostic Hub */}
                 <div className="xl:col-span-4 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-[500px] text-left">
                     <div className="mb-10 shrink-0 text-left">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Aggregate Skill Index</h3>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Aggregate Skill Index</h3>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 text-left">Multi-dimensional capability mapping</p>
                     </div>
                     <div className="flex-1 min-h-0">
                         <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
                                 <PolarGrid stroke="#f1f5f9" />
-                                <PolarAngleAxis dataKey="subject" tick={{fontSize: 9, fontWeight: 900, fill: '#94a3b8'}} />
+                                <PolarAngleAxis dataKey="subject" tick={{ fontSize: 9, fontWeight: 900, fill: '#94a3b8' }} />
                                 <PolarRadiusAxis angle={30} domain={[0, 150]} tick={false} />
-                                <Radar 
-                                    name="Engineering" 
-                                    dataKey="A" 
-                                    stroke="#6366f1" 
-                                    fill="#6366f1" 
-                                    fillOpacity={0.2} 
+                                <Radar
+                                    name="Engineering"
+                                    dataKey="A"
+                                    stroke="#6366f1"
+                                    fill="#6366f1"
+                                    fillOpacity={0.2}
                                     strokeWidth={3}
                                 />
-                                <Tooltip 
-                                    contentStyle={{backgroundColor: '#0f172a', border: 'none', borderRadius: '16px', padding: '12px'}}
-                                    itemStyle={{color: '#fff', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase'}}
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '16px', padding: '12px' }}
+                                    itemStyle={{ color: '#fff', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase' }}
                                 />
                             </RadarChart>
                         </ResponsiveContainer>
@@ -121,7 +121,7 @@ const MonthlyPerformance = () => {
                 {/* 2. Top Performer Leaderboard */}
                 <div className="xl:col-span-4 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-[500px] text-left">
                     <div className="mb-10 shrink-0 text-left">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Performance Elite</h3>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Performance Elite</h3>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 text-left">Oct Merit Identification Leaderboard</p>
                     </div>
                     <div className="flex-1 space-y-6 overflow-y-auto no-scrollbar pr-2 text-left">
@@ -133,7 +133,7 @@ const MonthlyPerformance = () => {
                                     </div>
                                     <div className="text-left">
                                         <p className="text-xs font-black text-slate-800 uppercase tracking-tight text-left">{user.name}</p>
-                                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-left">Rank #{i+1}</p>
+                                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-left">Rank #{i + 1}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -154,7 +154,7 @@ const MonthlyPerformance = () => {
                     <div className="relative z-10 text-left">
                         <h3 className="text-xs font-black text-white/40 uppercase tracking-widest text-left">Strategic Goal Matrix</h3>
                         <p className="text-xl font-black text-white tracking-tight mt-2 text-left leading-tight">94% Core Achievement across all nodes.</p>
-                        
+
                         <div className="mt-12 space-y-10 text-left">
                             {[
                                 { label: 'Velocity Node', value: 85, color: 'bg-indigo-400' },
@@ -167,8 +167,8 @@ const MonthlyPerformance = () => {
                                         <span className="text-[10px] font-black uppercase text-left tracking-widest">{goal.value}%</span>
                                     </div>
                                     <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                                        <div 
-                                            className={`h-full ${goal.color} rounded-full transition-all duration-1000`} 
+                                        <div
+                                            className={`h-full ${goal.color} rounded-full transition-all duration-1000`}
                                             style={{ width: `${goal.value}%` }}
                                         ></div>
                                     </div>

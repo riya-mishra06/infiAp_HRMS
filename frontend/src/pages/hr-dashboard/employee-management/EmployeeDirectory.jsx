@@ -94,8 +94,8 @@ const EmployeeDirectory = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-12">Staffing Command Center</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Corporate Workforce Directory & Organizational Diagnostic</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Staffing Command Center</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Corporate Workforce Directory & Organizational Diagnostic</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
           <button
@@ -135,13 +135,13 @@ const EmployeeDirectory = () => {
                    </BarChart>
                  </ResponsiveContainer>
               </div>
-              <div className="mt-6 flex items-end justify-between">
-                 <div>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Total Nodes</p>
-                    <p className="text-2xl font-black text-slate-800 tracking-tighter">{employees.length} Active</p>
-                 </div>
-                 <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-lg">Capacity: 92%</span>
-              </div>
+               <div className="mt-6 flex items-end justify-between">
+                  <div>
+                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Nodes</p>
+                     <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{employees.length} Active</p>
+                  </div>
+                  <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-lg">92% CAP</span>
+               </div>
            </div>
 
            <div className="space-y-4">
@@ -152,8 +152,8 @@ const EmployeeDirectory = () => {
                 <div key={i} className="card-soft bg-white p-6 flex items-center gap-4 hover:border-indigo-100 transition-all cursor-crosshair">
                    <div className={`p-3 bg-slate-50 rounded-2xl ${stat.color} shadow-inner`}><stat.icon size={20} /></div>
                    <div>
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{stat.label}</p>
-                      <p className="text-lg font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">{stat.label}</p>
+                      <p className="text-2xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
                    </div>
                 </div>
               ))}
@@ -162,9 +162,9 @@ const EmployeeDirectory = () => {
            <div className="card-soft bg-slate-900 p-8 border-none text-white relative overflow-hidden group mt-auto">
               <div className="relative z-10">
                  <User className="mb-4 text-indigo-400" size={24} />
-                 <h4 className="text-sm font-black uppercase tracking-widest leading-tight mb-2">Audit Compliance</h4>
-                 <p className="text-[10px] opacity-60 font-medium leading-relaxed uppercase tracking-widest mb-6">Workforce identity nodes are currently synchronized with the global ledger.</p>
-                 <button className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all">Export Forensic Log</button>
+                  <h4 className="text-xs font-black uppercase tracking-widest leading-tight mb-2">Audit Compliance</h4>
+                  <p className="text-[10px] opacity-60 font-black leading-relaxed uppercase tracking-widest mb-6">Workforce identity nodes are currently synchronized with the global ledger.</p>
+                  <button className="w-full py-4 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-black uppercase tracking-[0.25em] transition-all">Export Forensic Log</button>
               </div>
               <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-indigo-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform"></div>
            </div>
@@ -223,12 +223,12 @@ const EmployeeDirectory = () => {
                                 <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 p-0.5 shadow-sm bg-white group-hover:scale-110 transition-all">
                                    <img src={emp.avatar} alt="" className="w-full h-full object-cover rounded-[14px]" />
                                 </div>
-                                <div>
-                                   <p className="text-sm font-black text-slate-800 tracking-tight leading-none mb-1.5 group-hover:text-indigo-600 transition-colors">{emp.name}</p>
-                                   <div className="flex items-center gap-1.5 text-slate-400 font-bold text-[10px] uppercase tracking-widest">
-                                      {emp.email}
-                                   </div>
-                                </div>
+                                 <div>
+                                    <p className="text-sm font-black text-slate-800 tracking-tight leading-none mb-2 group-hover:text-indigo-600 transition-colors uppercase">{emp.name}</p>
+                                    <div className="flex items-center gap-1.5 text-indigo-400 font-black text-[9px] uppercase tracking-[0.1em]">
+                                       {emp.email}
+                                    </div>
+                                 </div>
                              </div>
                           </td>
                           <td className="px-6 py-8">

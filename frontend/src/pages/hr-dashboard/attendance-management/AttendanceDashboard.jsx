@@ -137,8 +137,8 @@ const AttendanceDashboard = () => {
         {/* Page Header (Daily Overview - Mockup Style 1) */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-1">
-            <h1 className="text-4xl font-black text-slate-800 tracking-tight">Daily Overview</h1>
-            <p className="text-slate-400 font-semibold tracking-tight">Track employee attendance, monitor check-ins, and diagnostics</p>
+            <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Attendance Console</h1>
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] leading-none mt-1">Operational Logistics & Personnel Integrity Hub</p>
           </div>
           <div className="flex items-center gap-3 self-start lg:self-center">
              <div 
@@ -193,8 +193,8 @@ const AttendanceDashboard = () => {
                     {stat.change}
                   </span>
                </div>
-               <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest leading-none">{stat.title}</p>
-               <h3 className="text-4xl font-black text-slate-800 tracking-tighter mt-2">{stat.value}</h3>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">{stat.title}</p>
+                <h3 className="text-4xl font-black text-slate-800 tracking-tighter mt-1">{stat.value}</h3>
             </div>
           ))}
         </div>
@@ -202,7 +202,7 @@ const AttendanceDashboard = () => {
         {/* Activity Logs (Mockup Style 1 - Check-in Records) */}
         <div className="card-soft p-0 overflow-hidden border-slate-100 shadow-soft bg-white">
           <div className="px-8 py-6 border-b border-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <h2 className="text-xl font-black text-slate-800 tracking-tight underline underline-offset-8 decoration-primary-200">Check-in Records</h2>
+            <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Operational Punch Records</h2>
             <div className="flex items-center gap-3">
                <div className="relative group flex-1 md:flex-none">
                   <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-primary-500 transition-colors" />
@@ -238,8 +238,10 @@ const AttendanceDashboard = () => {
                           <img src={log.avatar} alt="" className="w-full h-full object-cover" />
                         </div>
                         <div>
-                          <p className="font-extrabold text-slate-800 tracking-tight leading-none mb-1.5 group-hover:text-primary-600 transition-colors">{log.name}</p>
-                          <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest opacity-80">{log.role}</p>
+                          <p className="text-sm font-black text-slate-800 tracking-tight leading-none mb-2 group-hover:text-primary-600 transition-colors uppercase">{log.name}</p>
+                          <div className="flex items-center gap-1.5 text-indigo-400 font-black text-[9px] uppercase tracking-[0.1em]">
+                             {log.role}
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -278,10 +280,10 @@ const AttendanceDashboard = () => {
         {/* Correction Box (Mockup Style 4/5) */}
         <div className="card-soft relative overflow-hidden group bg-white shadow-soft">
           <div className="flex items-center justify-between mb-8">
-             <div>
-               <h2 className="text-xl font-black text-slate-800 tracking-tight">Correction Requests</h2>
-               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Pending Portal</p>
-             </div>
+              <div>
+                <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-2">Correction Diagnostics</h2>
+                <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] leading-none">Pending Hub</p>
+              </div>
              <span className="px-2.5 py-1 text-[10px] font-black rounded-2xl bg-slate-900 text-white uppercase tracking-widest">
                {correctionRequests.length} Tasks
              </span>
@@ -323,7 +325,10 @@ const AttendanceDashboard = () => {
             ))}
           </div>
           
-          <button className="w-full mt-8 py-4 bg-primary-600 text-white text-[11px] font-black rounded-2xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-50 uppercase tracking-[0.2em]">
+          <button 
+            onClick={() => { setCorrectionRequests([]); showNotification(`${correctionRequests.length} tasks synchronized and archived.`); }}
+            className="w-full mt-8 py-4 bg-primary-600 text-white text-[11px] font-black rounded-2xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-50 uppercase tracking-[0.2em] active:scale-[0.98]"
+          >
             Bulk Approve ({correctionRequests.length})
           </button>
         </div>
@@ -332,7 +337,7 @@ const AttendanceDashboard = () => {
         <div className="card-soft bg-slate-900 border-none relative overflow-hidden text-white shadow-2xl p-8 min-h-[440px] flex flex-col">
            <div className="relative z-10 flex-1 flex flex-col">
               <div className="flex items-center justify-between mb-8">
-                 <h3 className="text-sm font-black uppercase tracking-[0.2em] opacity-40">System Performance</h3>
+                 <h3 className="text-[11px] font-black uppercase tracking-[0.2em] opacity-40">System Performance</h3>
                  <TrendingUp size={24} className="text-primary-500" strokeWidth={3} />
               </div>
               <div className="flex items-end gap-3 mb-10">

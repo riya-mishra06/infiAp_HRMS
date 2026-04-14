@@ -9,9 +9,11 @@ import {
   Users,
   Check
 } from 'lucide-react';
+import { useDepartmentContext } from '../../../context/DepartmentContext';
 
 const CreateDepartment = () => {
   const navigate = useNavigate();
+  const { addDepartment } = useDepartmentContext();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -22,7 +24,7 @@ const CreateDepartment = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic here
+    addDepartment(formData);
     navigate('/admin/departments');
   };
 

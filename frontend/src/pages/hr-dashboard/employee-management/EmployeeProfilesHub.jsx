@@ -33,11 +33,8 @@ const EmployeeProfilesHub = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-12">Forensic Profile Hub</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 flex items-center gap-2">
-             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-             Global Talent Inventory & Identity Portfolio
-          </p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Forensic Profile Hub</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Global Talent Inventory & Identity Portfolio</p>
         </div>
         <div className="flex items-center gap-4 relative group max-w-sm w-full">
            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" />
@@ -72,8 +69,8 @@ const EmployeeProfilesHub = () => {
                      </div>
 
                      <div className="mb-6">
-                        <h3 className="text-base font-black text-slate-800 tracking-tight leading-none mb-1 group-hover:text-indigo-600 transition-colors uppercase">{emp.name}</h3>
-                        <p className="text-[10px] text-indigo-500 font-black uppercase tracking-widest">{emp.role}</p>
+                        <h3 className="text-[14px] font-black text-slate-800 tracking-tight leading-none mb-1 group-hover:text-indigo-600 transition-colors uppercase">{emp.name}</h3>
+                        <p className="text-[10px] text-indigo-500 font-black uppercase tracking-[0.2em]">{emp.role}</p>
                      </div>
 
                      <div className="space-y-3 pt-4 border-t border-slate-50">
@@ -87,7 +84,7 @@ const EmployeeProfilesHub = () => {
                         </div>
                      </div>
 
-                     <button className="mt-8 w-full py-3 bg-slate-50 group-hover:bg-slate-900 group-hover:text-white rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2">
+                     <button className="mt-8 w-full py-3 bg-slate-50 group-hover:bg-slate-900 group-hover:text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2">
                         Inspect Profile
                         <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                      </button>
@@ -110,7 +107,7 @@ const EmployeeProfilesHub = () => {
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Total Workforce Nodes Indexed: {employees.length}</p>
          </div>
          <div className="flex items-center gap-6">
-            <button className="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all italic">Purging identity cache...</button>
+            <button className="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all italic">Purging identity cache...</button>
          </div>
       </div>
 

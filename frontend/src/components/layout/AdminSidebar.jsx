@@ -48,8 +48,8 @@ const AdminSidebar = () => {
             <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain p-1" />
           </div>
           <div>
-            <span className="text-lg font-black text-slate-800 tracking-tighter leading-none block">InfiAP</span>
-            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Admin Panel</span>
+            <span className="text-xl font-black text-slate-800 tracking-tighter leading-none block">InfiAP</span>
+            <span className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Admin Panel</span>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@ const AdminSidebar = () => {
                     }`}
                   >
                     <item.icon size={18} className="transition-transform group-hover:scale-110" />
-                    <span className="font-bold text-sm tracking-tight">{item.name}</span>
+                    <span className="font-black text-[11px] tracking-widest uppercase">{item.name}</span>
                     <ChevronDown size={14} className={`ml-auto transition-transform duration-300 ${employeesOpen ? 'rotate-180' : ''}`} />
                   </button>
 
@@ -116,7 +116,7 @@ const AdminSidebar = () => {
         <div className="mt-10 px-4 py-6 bg-linear-to-br from-[#F8FAFF] to-[#F1F5FF] rounded-2xl border border-blue-50 relative overflow-hidden group">
           <div className="relative z-10">
             <p className="text-xs font-black text-slate-800 mb-1">Company Admin</p>
-            <p className="text-[9px] text-slate-400 font-bold mb-4 uppercase">System Level Control</p>
+            <p className="text-[9px] text-slate-400 font-black mb-4 uppercase tracking-[0.2em]">System Level Control</p>
             <button className="flex items-center gap-2 text-[10px] font-black text-[#4E63F0] bg-white px-3 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all uppercase tracking-widest">
               <HelpCircle size={14} />
               Support

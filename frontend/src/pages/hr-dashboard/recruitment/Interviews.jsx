@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import { 
-  Search, 
-  Filter, 
-  Plus, 
-  Calendar as CalendarIcon, 
-  Clock, 
-  CheckCircle2, 
-  XCircle, 
-  MoreHorizontal, 
-  ArrowRight,
-  User,
-  MapPin,
-  Briefcase,
-  ChevronRight,
-  Undo2,
-  Video,
-  Users,
-  MessageSquare,
-  LayoutDashboard,
-  ClipboardList,
-  Settings,
-  Mail,
-  Zap
+import {
+    Search,
+    Filter,
+    Plus,
+    Calendar as CalendarIcon,
+    Clock,
+    CheckCircle2,
+    XCircle,
+    MoreHorizontal,
+    ArrowRight,
+    User,
+    MapPin,
+    Briefcase,
+    ChevronRight,
+    Undo2,
+    Video,
+    Users,
+    MessageSquare,
+    LayoutDashboard,
+    ClipboardList,
+    Settings,
+    Mail,
+    Zap
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,8 +33,8 @@ const Interviews = () => {
     const [notification, setNotification] = useState(null);
 
     const [interviews, setInterviews] = useState([
-        { 
-            id: 'INT-4001', 
+        {
+            id: 'INT-4001',
             candidate: 'Mark Wilson',
             role: 'Senior UI/UX Designer',
             stage: 'Technical Round',
@@ -44,8 +44,8 @@ const Interviews = () => {
             status: 'Upcoming',
             avatar: 'https://i.pravatar.cc/150?u=mark'
         },
-        { 
-            id: 'INT-4002', 
+        {
+            id: 'INT-4002',
             candidate: 'Elena Rodriguez',
             role: 'HR Manager',
             stage: 'Culture Fit',
@@ -55,8 +55,8 @@ const Interviews = () => {
             status: 'Upcoming',
             avatar: 'https://i.pravatar.cc/150?u=elena'
         },
-        { 
-            id: 'INT-4003', 
+        {
+            id: 'INT-4003',
             candidate: 'Alex Rivers',
             role: 'Sr. Software Engineer',
             stage: 'System Design',
@@ -66,8 +66,8 @@ const Interviews = () => {
             status: 'Completed',
             avatar: 'https://i.pravatar.cc/150?u=alex'
         },
-        { 
-            id: 'INT-4004', 
+        {
+            id: 'INT-4004',
             candidate: 'Sarah Chen',
             role: 'Product Designer',
             stage: 'Initial Screening',
@@ -85,15 +85,15 @@ const Interviews = () => {
     };
 
     const filteredInterviews = interviews.filter(int => {
-        const matchesSearch = int.candidate.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                             int.role.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesSearch = int.candidate.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            int.role.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesTab = activeTab === 'All' || int.status === activeTab;
         return matchesSearch && matchesTab;
     });
 
     return (
         <div className="flex flex-col h-[calc(100vh-120px)] w-full gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 overflow-hidden text-left">
-            
+
             {/* Notification */}
             {notification && (
                 <div className="fixed top-24 right-8 z-100 animate-in slide-in-from-right-8 fade-in flex items-center gap-3 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/10">
@@ -105,7 +105,7 @@ const Interviews = () => {
             {/* Header Section */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
                 <div className="flex items-center gap-6">
-                    <button 
+                    <button
                         onClick={() => navigate('/recruitment')}
                         className="p-4 bg-white border border-slate-100 text-slate-400 hover:text-slate-800 rounded-2xl shadow-sm transition-all hover:-translate-x-1 active:scale-95"
                     >
@@ -125,9 +125,9 @@ const Interviews = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
-                    <button 
+                    <button
                         onClick={() => navigate('/recruitment/interviews/schedule')}
                         className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px] active:scale-95 flex items-center gap-2"
                     >
@@ -141,8 +141,8 @@ const Interviews = () => {
             <div className="px-10 py-6 bg-white border border-slate-100 rounded-[32px] shadow-soft flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
                 <div className="flex items-center gap-8">
                     {['Upcoming', 'Completed', 'All'].map(tab => (
-                        <button 
-                            key={tab} 
+                        <button
+                            key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`text-[11px] font-black uppercase tracking-[0.2em] transition-all relative py-2 ${activeTab === tab ? 'text-indigo-600' : 'text-slate-300 hover:text-slate-800'}`}
                         >
@@ -151,13 +151,13 @@ const Interviews = () => {
                         </button>
                     ))}
                 </div>
-                
+
                 <div className="flex items-center gap-4 w-full lg:w-auto">
                     <div className="relative group max-w-sm w-full lg:w-64">
                         <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-hover:text-indigo-500 transition-colors" />
-                        <input 
-                            type="text" 
-                            placeholder="Find candidate..." 
+                        <input
+                            type="text"
+                            placeholder="Find candidate..."
                             className="w-full bg-slate-50 border border-slate-100 focus:border-indigo-100 outline-none rounded-2xl pl-12 pr-4 py-3 text-xs font-black text-slate-600 transition-all shadow-sm uppercase tracking-tight"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -213,7 +213,7 @@ const Interviews = () => {
 
                             <div className="flex items-center gap-3 relative z-10 shrink-0">
                                 {int.status === 'Completed' ? (
-                                    <button 
+                                    <button
                                         onClick={() => navigate(`/recruitment/interview/${int.id}/feedback`)}
                                         className="px-6 py-3 bg-emerald-50 text-emerald-600 border border-emerald-100 font-black rounded-xl hover:bg-emerald-100 transition-all uppercase tracking-widest text-[9px] flex items-center gap-2 active:scale-95"
                                     >
@@ -223,7 +223,7 @@ const Interviews = () => {
                                 ) : (
                                     <>
                                         {int.type === 'Video Call' ? (
-                                            <button 
+                                            <button
                                                 onClick={() => showNotification("Joining secure video conference node...")}
                                                 className="px-6 py-3 bg-indigo-600 text-white font-black rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 uppercase tracking-widest text-[9px] flex items-center gap-2 active:scale-95"
                                             >
@@ -253,8 +253,8 @@ const Interviews = () => {
                     { icon: ClipboardList, label: 'Applications', path: '/recruitment/applications' },
                     { icon: CalendarIcon, label: 'Interviews', path: '/recruitment/interviews', active: true },
                 ].map((item, i) => (
-                    <button 
-                        key={i} 
+                    <button
+                        key={i}
                         onClick={() => navigate(item.path)}
                         className={`flex flex-col items-center gap-1 transition-all ${item.active ? 'text-indigo-400 scale-110' : 'text-slate-500 hover:text-white hover:scale-105'}`}
                     >

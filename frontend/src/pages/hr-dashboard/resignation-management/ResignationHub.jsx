@@ -119,8 +119,8 @@ const ResignationHub = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-rose-300 underline-offset-12">Exit Lifecycle Hub</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Corporate Resignation Management & Offboarding Diagnostic</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Exit Lifecycle Hub</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none">Corporate Resignation Management & Offboarding Diagnostic</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
@@ -146,7 +146,7 @@ const ResignationHub = () => {
             
             <div className="card-soft bg-white p-8 border-slate-100 shadow-soft">
                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Turnover Drivers</h3>
+                  <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Turnover Drivers</h3>
                   <TrendingUp size={20} className="text-rose-500" />
                </div>
                <div className="h-40 w-full flex items-center justify-center">

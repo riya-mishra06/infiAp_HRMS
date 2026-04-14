@@ -69,8 +69,8 @@ const CheckInRecords = () => {
             {/* Header & Main Controls */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
                 <div>
-                    <h1 className="text-3xl font-black text-slate-800 tracking-tight">Check-in Diagnostic Center</h1>
-                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Real-time enterprise verification & Employee log integrity</p>
+                    <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Check-in Diagnostic Center</h1>
+                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 leading-none">Real-time enterprise verification & Employee log integrity</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button
@@ -181,8 +181,8 @@ const CheckInRecords = () => {
                                 <ShieldCheck size={20} />
                             </div>
                         </div>
-                        <h3 className="text-2xl font-black text-slate-800 tracking-tight">{selectedRecord.name}</h3>
-                        <p className="text-primary-600 font-bold text-xs uppercase tracking-[0.2em] mt-1">{selectedRecord.role}</p>
+                        <h3 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">{selectedRecord.name}</h3>
+                        <p className="text-primary-600 font-bold text-[10px] uppercase tracking-[0.2em] leading-none">{selectedRecord.role}</p>
 
                         <div className="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-slate-50">
                             <div className="p-4 bg-slate-50 rounded-[28px] border border-slate-100">
@@ -199,7 +199,7 @@ const CheckInRecords = () => {
                     {/* 2. Geo-Diagnostic Widget */}
                     <div className="card-soft bg-white p-8 border-slate-100 shadow-soft space-y-6">
                         <div className="flex items-center justify-between">
-                            <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Geo-Verification Diagnostics</h4>
+                            <h4 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Geo-Verification Diagnostics</h4>
                             <Globe size={16} className="text-primary-400" />
                         </div>
                         <div className="aspect-video bg-slate-50 rounded-[32px] border border-slate-100 relative overflow-hidden group/map">

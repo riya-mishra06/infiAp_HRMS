@@ -76,8 +76,8 @@ const SubmitResignation = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left underline decoration-primary-300 underline-offset-8">Resignation Gateway</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 text-left">Formal Exit Protocol Initiation & Data Entry</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Resignation Gateway</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 text-left leading-none">Formal Exit Protocol Initiation & Data Entry</p>
                     </div>
                 </div>
             </div>

@@ -130,8 +130,8 @@ const AttendanceReports = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-primary-300 underline-offset-12">Strategic Insight Hub</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-4">Intelligence Archive & Diagnostic Generation Engine</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Strategic Insight Hub</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mt-1">Intelligence Archive & Diagnostic Generation Engine</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
@@ -158,7 +158,7 @@ const AttendanceReports = () => {
             {/* Live Chart Section */}
             <div className="card-soft bg-white p-8 border-slate-100 shadow-soft">
                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Global Trend</h3>
+                  <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Global Trend</h3>
                   <TrendingUp size={20} className="text-primary-500" />
                </div>
                <div className="h-32 w-full">

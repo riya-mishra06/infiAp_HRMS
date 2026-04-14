@@ -67,8 +67,8 @@ const ExitProcess = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left underline decoration-primary-300 underline-offset-8">Exit & Settlement Audit</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 text-left">Forensic Offboarding Diagnostic & Financial Finalization</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Exit & Settlement Audit</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 text-left leading-none">Forensic Offboarding Diagnostic & Financial Finalization</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-4 text-left">
@@ -94,8 +94,8 @@ const ExitProcess = () => {
                 </div>
                 <div className="flex items-center gap-10 text-right">
                     <div className="text-right">
-                        <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1 text-right">Clearance Nodes</p>
-                        <p className="text-lg font-black text-emerald-600 tracking-tighter text-right">75% Complete</p>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1 text-right">Clearance Nodes</p>
+                        <p className="text-2xl font-black text-emerald-600 tracking-tighter text-right leading-none">75% Complete</p>
                     </div>
                     <div className="w-16 h-16 rounded-full border-4 border-slate-50 flex items-center justify-center relative shadow-inner text-center">
                         <div className="absolute inset-0 border-4 border-emerald-500 rounded-full" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', transform: 'rotate(270deg)' }}></div>

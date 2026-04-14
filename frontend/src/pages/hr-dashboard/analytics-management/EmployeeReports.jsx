@@ -62,8 +62,8 @@ const EmployeeReports = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left underline decoration-primary-300 underline-offset-8">Employee Lifecycle Diagnostic</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 text-left">Demographic Distribution & Tenure Intelligence Index</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Employee Lifecycle Diagnostic</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 text-left leading-none">Demographic Distribution & Tenure Intelligence Index</p>
                     </div>
                 </div>
                 
@@ -71,7 +71,7 @@ const EmployeeReports = () => {
                     <button className="p-3 bg-white border border-slate-100 text-slate-400 rounded-2xl hover:text-slate-800 shadow-sm transition-all text-left">
                         <Filter size={20} />
                     </button>
-                    <button className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px] text-left">
+                    <button className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-[0.2em] text-[10px] text-left">
                         Export Dataset
                     </button>
                 </div>
@@ -83,8 +83,8 @@ const EmployeeReports = () => {
                 {/* 1. Departmental Distribution Pie */}
                 <div className="xl:col-span-4 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-[500px] text-left">
                     <div className="mb-10 shrink-0 text-left">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Node Distribution</h3>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 text-left">Headcount breakdown by department node</p>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Node Distribution</h3>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1 text-left">Headcount breakdown by department node</p>
                     </div>
                     <div className="flex-1 min-h-0 relative text-left">
                         <ResponsiveContainer width="100%" height="100%">
@@ -109,8 +109,8 @@ const EmployeeReports = () => {
                             </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
-                            <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mb-1 text-center">Total</p>
-                            <p className="text-2xl font-black text-slate-800 tracking-tighter leading-none text-center">348</p>
+                            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] leading-none mb-1 text-center">Total</p>
+                            <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none text-center">348</p>
                         </div>
                     </div>
                     <div className="mt-8 grid grid-cols-2 gap-4 shrink-0 text-left">
@@ -118,9 +118,9 @@ const EmployeeReports = () => {
                             <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl text-left">
                                 <div className="flex items-center gap-2 text-left">
                                     <div className="w-2 h-2 rounded-full" style={{backgroundColor: COLORS[i]}}></div>
-                                    <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest text-left">{d.name}</span>
+                                    <span className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] text-left">{d.name}</span>
                                 </div>
-                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">{d.value}</span>
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">{d.value}</span>
                             </div>
                         ))}
                     </div>
@@ -129,8 +129,8 @@ const EmployeeReports = () => {
                 {/* 2. Tenure Analytics Bar Chart */}
                 <div className="xl:col-span-5 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-[500px] text-left">
                     <div className="mb-10 shrink-0 text-left">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Tenure Intelligence</h3>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 text-left">Employee retention time-segments</p>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Tenure Intelligence</h3>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-1 text-left">Employee retention time-segments</p>
                     </div>
                     <div className="flex-1 min-h-0 text-left">
                         <ResponsiveContainer width="100%" height="100%">
@@ -159,7 +159,7 @@ const EmployeeReports = () => {
                     </div>
                     <div className="mt-8 p-6 bg-slate-900 rounded-[28px] text-white flex items-center justify-between shrink-0 text-left">
                         <div className="text-left">
-                            <p className="text-[9px] text-white/40 font-black uppercase tracking-widest text-left">Avg. Retention Node</p>
+                            <p className="text-[9px] text-white/40 font-black uppercase tracking-[0.2em] text-left">Avg. Retention Node</p>
                             <p className="text-xl font-black text-white tracking-tight text-left">3.4 Years</p>
                         </div>
                         <div className="flex items-center gap-2 text-emerald-400 text-left">

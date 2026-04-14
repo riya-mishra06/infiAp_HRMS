@@ -49,8 +49,8 @@ const MainDashboard = () => {
         )}
       </div>
       <div>
-        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">{title}</p>
-        <p className="text-xl font-black text-slate-800 tracking-tight">{value}</p>
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-2">{title}</p>
+        <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{value}</p>
       </div>
     </div>
   );
@@ -65,8 +65,8 @@ const MainDashboard = () => {
               <div className="w-2 h-2 rounded-full bg-indigo-600"></div>
               <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Global Platform Node</span>
            </div>
-           <h1 className="text-2xl font-black text-slate-800 tracking-tight uppercase">Main Admin Dashboard</h1>
-           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Enterprise Instance Overview & Control</p>
+           <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left uppercase">Main Admin Dashboard</h1>
+           <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none text-left">Enterprise Instance Overview & Control</p>
         </div>
         <div className="flex items-center gap-4">
            <div className="relative group">
@@ -127,7 +127,7 @@ const MainDashboard = () => {
            {/* Registered Companies List */}
            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
               <div className="flex items-center justify-between mb-6">
-                 <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Registered Companies</h3>
+                 <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Registered Companies</h3>
                  <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">View All</button>
               </div>
               <div className="space-y-4">
@@ -167,7 +167,7 @@ const MainDashboard = () => {
            
            {/* Quick Actions */}
            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-              <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-6">Quick Actions</h3>
+              <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-6">Quick Actions</h3>
               <div className="grid grid-cols-2 gap-3">
                  {[
                    { label: 'Add Company', icon: Plus, action: () => navigate('/main-admin/company-setup'), primary: true },
@@ -192,7 +192,7 @@ const MainDashboard = () => {
 
            {/* Active Integrations */}
            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-              <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-6">Active Integrations</h3>
+              <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-6">Active Integrations</h3>
               <div className="flex flex-wrap gap-2">
                  {[
                    { name: 'AWS S3', icon: Globe },
@@ -209,7 +209,7 @@ const MainDashboard = () => {
 
            {/* System Alerts */}
            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-              <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-6">System Alerts</h3>
+              <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-6">System Alerts</h3>
               <div className="space-y-4">
                  {[
                    { title: 'API Latency Spike', msg: 'System observed a 15% increase in response time across North America clusters.', type: 'WARN', color: 'amber' },

@@ -52,7 +52,7 @@ const SalaryStructure = () => {
             </div>
          </div>
          <div className="flex items-center gap-4">
-            <button className="flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-slate-800 transition-all shadow-2xl shadow-slate-100 active:scale-95 group">
+            <button className="flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-slate-800 transition-all shadow-2xl shadow-slate-100 active:scale-95 group">
                <Download size={16} className="group-hover:translate-y-1 transition-transform" />
                Download Structure (PDF)
             </button>
@@ -77,19 +77,19 @@ const SalaryStructure = () => {
                      <div>
                         <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">Alex Thompson</h2>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Senior Software Engineer • INF-9021</p>
-                        <span className="px-4 py-1.5 bg-indigo-50 text-indigo-600 text-[9px] font-black rounded-full uppercase tracking-widest border border-indigo-100">Full-time</span>
+                        <span className="px-4 py-1.5 bg-indigo-50 text-indigo-600 text-[9px] font-black rounded-full uppercase tracking-[0.2em] border border-indigo-100">Full-time</span>
                      </div>
                   </div>
 
                   <div className="bg-linear-to-br from-indigo-600 to-indigo-700 rounded-[44px] p-10 text-white shadow-3xl shadow-indigo-100 relative overflow-hidden group/gross">
-                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-100 mb-2">Current Monthly Gross</p>
+                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100 mb-2">Current Monthly Gross</p>
                      <div className="flex items-baseline gap-3 mb-6">
                         <h3 className="text-5xl font-black tracking-tighter leading-none">$8,500.00</h3>
                         <Zap size={14} className="text-indigo-300 fill-current" />
                      </div>
                      <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 w-fit">
                         <Calendar size={12} />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-indigo-50">Effective from Jan 2024</span>
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-50">Effective from Jan 2024</span>
                      </div>
                      {/* Decorative Elements */}
                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl group-hover/gross:scale-150 transition-transform duration-1000"></div>
@@ -101,7 +101,7 @@ const SalaryStructure = () => {
             <div className="bg-slate-900 rounded-[56px] p-12 text-white shadow-soft relative overflow-hidden border-b-8 border-b-indigo-500">
                <div className="flex justify-between items-start mb-10 relative z-10">
                   <div>
-                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-1">Annual CTC</p>
+                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1">Annual CTC</p>
                      <h3 className="text-4xl font-black tracking-tighter">$102,000.00</h3>
                   </div>
                   <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/ forced-colors:10 hover:bg-white/10 transition-all cursor-pointer">
@@ -110,18 +110,18 @@ const SalaryStructure = () => {
                </div>
 
                <div className="space-y-6 relative z-10">
-                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 border-b border-white/5 pb-4">Year-over-Year Comparison <span className="text-slate-700 ml-4 font-normal">2023 VS 2024</span></p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 border-b border-white/5 pb-4">Year-over-Year Comparison <span className="text-slate-700 ml-4 font-normal">2023 VS 2024</span></p>
                   
                   <div className="grid grid-cols-2 gap-6">
                      <div className="p-6 bg-white/5 rounded-[28px] border border-white/5">
-                        <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Monthly Gross</p>
+                        <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Monthly Gross</p>
                         <div className="flex items-center gap-2">
                            <span className="text-xl font-black">$8,500</span>
                            <span className="text-[8px] text-emerald-500 font-black">+4.2% VS '23</span>
                         </div>
                      </div>
                      <div className="p-6 bg-white/5 rounded-[28px] border border-white/5">
-                        <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Annual CTC</p>
+                        <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Annual CTC</p>
                         <div className="flex items-center gap-2">
                            <span className="text-xl font-black">$102k</span>
                            <span className="text-[8px] text-emerald-500 font-black">+5.8% VS '23</span>
@@ -131,7 +131,7 @@ const SalaryStructure = () => {
 
                   <div className="space-y-4 pt-4">
                      <div>
-                        <div className="flex justify-between text-[9px] font-black uppercase tracking-widest mb-2">
+                        <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.2em] mb-2">
                            <span className="text-slate-400">Basic Pay Growth</span>
                            <span className="text-emerald-500">+8.5%</span>
                         </div>
@@ -140,7 +140,7 @@ const SalaryStructure = () => {
                         </div>
                      </div>
                      <div>
-                        <div className="flex justify-between text-[9px] font-black uppercase tracking-widest mb-2">
+                        <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.2em] mb-2">
                            <span className="text-slate-400">Allowances Growth</span>
                            <span className="text-indigo-400">+4.2%</span>
                         </div>
@@ -168,21 +168,21 @@ const SalaryStructure = () => {
                      </div>
                      <div>
                         <h4 className="text-xl font-black uppercase tracking-tight text-slate-800 leading-none mb-1">Earnings</h4>
-                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Calculated Monthly Protocol</p>
+                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Calculated Monthly Protocol</p>
                      </div>
                   </div>
-                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">Monthly</span>
+                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Monthly</span>
                </div>
 
                <div className="p-10 space-y-6">
                   {earnings.map((item, idx) => (
                     <div key={idx} className="flex items-center justify-between group cursor-pointer hover:translate-x-1 transition-transform">
-                       <p className="text-xs font-black text-slate-500 uppercase tracking-widest group-hover:text-slate-800 transition-colors">{item.label}</p>
+                       <p className="text-xs font-black text-slate-500 uppercase tracking-[0.2em] group-hover:text-slate-800 transition-colors">{item.label}</p>
                        <p className="text-lg font-black text-slate-800 tracking-tight">{item.amount}</p>
                     </div>
                   ))}
                   <div className="pt-8 border-t border-slate-50 flex items-center justify-between">
-                     <p className="text-sm font-black text-slate-800 uppercase tracking-widest">Total Earnings</p>
+                     <p className="text-sm font-black text-slate-800 uppercase tracking-[0.2em]">Total Earnings</p>
                      <p className="text-2xl font-black text-indigo-600 tracking-tighter">$8,500.00</p>
                   </div>
                </div>
@@ -197,21 +197,21 @@ const SalaryStructure = () => {
                      </div>
                      <div>
                         <h4 className="text-xl font-black uppercase tracking-tight text-slate-800 leading-none mb-1">Deductions</h4>
-                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Compliance & Security Retention</p>
+                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Compliance & Security Retention</p>
                      </div>
                   </div>
-                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em]">Monthly</span>
+                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Monthly</span>
                </div>
 
                <div className="p-10 space-y-6">
                   {deductions.map((item, idx) => (
                     <div key={idx} className="flex items-center justify-between group cursor-pointer hover:translate-x-1 transition-transform">
-                       <p className="text-xs font-black text-slate-500 uppercase tracking-widest group-hover:text-slate-800 transition-colors">{item.label}</p>
+                       <p className="text-xs font-black text-slate-500 uppercase tracking-[0.2em] group-hover:text-slate-800 transition-colors">{item.label}</p>
                        <p className="text-lg font-black text-rose-500 tracking-tight">{item.amount}</p>
                     </div>
                   ))}
                   <div className="pt-8 border-t border-slate-50 flex items-center justify-between">
-                     <p className="text-sm font-black text-slate-800 uppercase tracking-widest">Total Deductions</p>
+                     <p className="text-sm font-black text-slate-800 uppercase tracking-[0.2em]">Total Deductions</p>
                      <p className="text-2xl font-black text-rose-500 tracking-tighter">$680.00</p>
                   </div>
                </div>
@@ -224,13 +224,13 @@ const SalaryStructure = () => {
                      <CheckCircle2 size={36} className="text-white" />
                   </div>
                   <div>
-                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-1">Estimated Monthly Net Pay</p>
+                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1">Estimated Monthly Net Pay</p>
                      <h3 className="text-5xl font-black tracking-tighter leading-none">$7,820.00</h3>
                   </div>
                </div>
                <div className="relative z-10 text-right">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 px-4">Secure Audit Ready</p>
-                  <button className="px-10 py-5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.3em] rounded-[24px] hover:bg-indigo-700 active:scale-95 transition-all shadow-2xl shadow-indigo-900/50">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-4 px-4">Secure Audit Ready</p>
+                  <button className="px-10 py-5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-[24px] hover:bg-indigo-700 active:scale-95 transition-all shadow-2xl shadow-indigo-900/50">
                      Approve Protocol
                   </button>
                </div>

@@ -30,7 +30,7 @@ const SplashScreen = () => {
                     <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain" />
                 </div>
 
-                <h1 className="text-3xl font-black text-[#1F2754] tracking-tight mb-8">InfiAP</h1>
+                <h1 className="text-4xl font-black text-[#1F2754] tracking-tight mb-8">InfiAP</h1>
 
                 <div className="w-64 h-2 bg-[#E7ECFB] rounded-full overflow-hidden">
                     <div
@@ -38,7 +38,7 @@ const SplashScreen = () => {
                         style={{ width: `${progress}%` }}
                     ></div>
                 </div>
-                <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8B96BC]">Loading workspace {Math.round(progress)}%</p>
+                <p className="mt-3 text-[11px] font-black uppercase tracking-[0.2em] text-[#8B96BC]">Loading workspace {Math.round(progress)}%</p>
             </div>
         </div>
     );

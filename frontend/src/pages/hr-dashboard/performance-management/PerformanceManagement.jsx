@@ -121,8 +121,8 @@ const PerformanceManagement = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-12">Growth & Oversight Diagnostic</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Employee Performance Lifecycle & Merit Logic Oversight</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Growth & Oversight Diagnostic</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 leading-none">Employee Performance Lifecycle & Merit Logic Oversight</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
@@ -148,7 +148,7 @@ const PerformanceManagement = () => {
             
             <div className="card-soft bg-white p-8 border-slate-100 shadow-soft">
                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Aggregate Radar</h3>
+                  <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Aggregate Radar</h3>
                   <TrendingUp size={20} className="text-yellow-500" />
                </div>
                <div className="h-48 w-full flex items-center justify-center">
@@ -162,10 +162,10 @@ const PerformanceManagement = () => {
                   </ResponsiveContainer>
                </div>
                <div className="mt-6 flex items-end justify-between">
-                  <div>
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Global Merit Score</p>
-                     <p className="text-2xl font-black text-slate-800 tracking-tighter">4.8 / 5.0</p>
-                  </div>
+                   <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">Global Merit Score</p>
+                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">4.8 / 5.0</p>
+                   </div>
                   <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg">+0.2%</span>
                </div>
             </div>

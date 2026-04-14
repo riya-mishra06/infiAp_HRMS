@@ -165,8 +165,8 @@ const LeaveManagement = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-orange-300 underline-offset-12">Absence Intelligence Hub</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Employee Leave Lifecycle & Diagnostic Oversight</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Absence Intelligence Hub</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Employee Leave Lifecycle & Diagnostic Oversight</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
@@ -209,11 +209,11 @@ const LeaveManagement = () => {
                   </ResponsiveContainer>
                </div>
                <div className="mt-6 flex items-end justify-between">
-                  <div>
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Today's Absence</p>
-                     <p className="text-2xl font-black text-slate-800 tracking-tighter">12 Employees</p>
-                  </div>
-                  <span className="px-3 py-1 bg-rose-50 text-rose-600 text-[10px] font-black rounded-lg">+4.1%</span>
+                   <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Today's Absence</p>
+                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">12 Employees</p>
+                   </div>
+                   <span className="px-3 py-1 bg-rose-50 text-rose-600 text-[10px] font-black rounded-lg">91% Uptime</span>
                </div>
             </div>
 
@@ -224,8 +224,8 @@ const LeaveManagement = () => {
                       className="card-soft bg-white p-5 flex flex-col gap-3 hover:border-primary-100 transition-all cursor-pointer active:scale-95 group">
                     <div className={`p-2 w-fit bg-slate-50 rounded-xl ${stat.color} shadow-inner group-hover:bg-white group-hover:shadow-soft`}><stat.icon size={16} /></div>
                     <div>
-                       <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{stat.label}</p>
-                       <p className="text-xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
+                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">{stat.label}</p>
+                       <p className="text-2xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
                     </div>
                  </div>
                ))}
@@ -234,9 +234,9 @@ const LeaveManagement = () => {
             <div className="card-soft bg-slate-900 p-8 border-none text-white relative overflow-hidden group mt-auto">
                <div className="relative z-10">
                   <AlertCircle className="mb-4 text-orange-400" size={24} />
-                  <h4 className="text-sm font-black uppercase tracking-widest leading-tight mb-2">Policy Warning</h4>
-                  <p className="text-[10px] opacity-60 font-medium leading-relaxed uppercase tracking-widest mb-6">4 departments have exceeded the seasonal leave threshold.</p>
-                  <button className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all">Review Hub</button>
+                   <h4 className="text-sm font-black uppercase tracking-widest leading-tight mb-2">Policy Warning</h4>
+                   <p className="text-[10px] opacity-60 font-black leading-relaxed uppercase tracking-widest mb-6">4 departments have exceeded the seasonal leave threshold.</p>
+                   <button className="w-full py-4 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-black uppercase tracking-[0.25em] transition-all">Review Hub</button>
                </div>
                <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-orange-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform"></div>
             </div>
@@ -291,8 +291,10 @@ const LeaveManagement = () => {
                                     {React.createElement(act.icon, { size: 24 })}
                                  </div>
                                  <div className="text-left">
-                                    <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-1">{act.title}</p>
-                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{act.category} • {act.size}</p>
+                                    <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-2">{act.title}</p>
+                                    <div className="flex items-center gap-2 text-indigo-400 font-black text-[9px] uppercase tracking-[0.1em]">
+                                       {act.category} • {act.size}
+                                    </div>
                                  </div>
                               </div>
                            </td>

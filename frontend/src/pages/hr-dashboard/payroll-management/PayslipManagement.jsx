@@ -25,11 +25,12 @@ const PayslipManagement = () => {
     const [notification, setNotification] = useState(null);
 
     const payslips = [
-        { id: 'PS-1024-001', name: 'Mark Wilson', date: 'Oct 2023', amount: 114500, status: 'Generated', type: 'Monthly' },
-        { id: 'PS-1024-002', name: 'Sarah Chen', date: 'Oct 2023', amount: 99100, status: 'Generated', type: 'Monthly' },
-        { id: 'PS-1024-003', name: 'Alex Rivers', date: 'Oct 2023', amount: 107000, status: 'Dispatched', type: 'Monthly' },
-        { id: 'PS-1024-004', name: 'Elena Rodriguez', date: 'Oct 2023', amount: 77000, status: 'Generated', type: 'Monthly' },
-        { id: 'PS-1024-005', name: 'Marcus Thompson', date: 'Oct 2023', amount: 88300, status: 'Generated', type: 'Monthly' },
+        { id: 'PS-1024-001', name: 'Mark Wilson', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 114500, status: 'Generated', type: 'Monthly' },
+        { id: 'PS-1024-002', name: 'Sarah Chen', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 99100, status: 'Generated', type: 'Monthly' },
+        { id: 'PS-1024-003', name: 'Alex Rivers', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 107000, status: 'Dispatched', type: 'Monthly' },
+        { id: 'PS-1024-004', name: 'Elena Rodriguez', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 77000, status: 'Generated', type: 'Monthly' },
+        { id: 'PS-1024-005', name: 'Marcus Thompson', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 88300, status: 'Generated', type: 'Monthly' },
+ Broadway 
     ];
 
     const showNotification = (msg) => {
@@ -49,7 +50,7 @@ const PayslipManagement = () => {
             {notification && (
                 <div className="fixed top-24 right-8 z-100 animate-in slide-in-from-right-8 fade-in flex items-center gap-3 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/10 text-left">
                     <CheckCircle2 size={20} className="text-emerald-400" />
-                    <span className="text-sm font-black uppercase tracking-widest text-left">{notification}</span>
+                    <span className="text-sm font-black uppercase tracking-[0.2em] text-left">{notification}</span>
                 </div>
             )}
 
@@ -63,15 +64,15 @@ const PayslipManagement = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left underline decoration-primary-300 underline-offset-8">Payslip Repository</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 text-left">Forensic Archive & Disbursement Management</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Payslip Repository</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 text-left leading-none">Forensic Archive & Disbursement Management</p>
                     </div>
                 </div>
                 
                 <div className="flex items-center gap-3 text-left">
                     <button 
                         onClick={() => showNotification("Initiating bulk cloud synchronization for all payslip nodes...")}
-                        className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px] active:scale-95 text-left"
+                        className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-[0.2em] text-[10px] active:scale-95 text-left"
                     >
                         Sync Repository
                     </button>
@@ -108,11 +109,11 @@ const PayslipManagement = () => {
                         <table className="w-full text-left">
                             <thead className="sticky top-0 z-20 bg-slate-50/80 backdrop-blur-md border-b border-slate-100 text-left">
                                 <tr className="text-left">
-                                    <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Archive Identity</th>
-                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Period</th>
-                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Net Amount</th>
-                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Synchronization</th>
-                                    <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                                    <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Archive Identity</th>
+                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Period</th>
+                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Net Amount</th>
+                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Synchronization</th>
+                                    <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50 text-left">
@@ -125,14 +126,14 @@ const PayslipManagement = () => {
                                                 </div>
                                                 <div className="text-left">
                                                     <p className="text-xs font-black text-slate-800 uppercase tracking-tight text-left">{ps.name}</p>
-                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-left">{ps.id}</p>
+                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] text-left">{ps.id}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-6 font-black text-slate-600 text-[10px] uppercase text-left">{ps.date}</td>
                                         <td className="px-6 py-6 font-black text-slate-800 text-xs text-left">₹{ps.amount.toLocaleString()}</td>
                                         <td className="px-6 py-6 text-left">
-                                            <span className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border ${ps.status === 'Dispatched' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'} text-left`}>
+                                            <span className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] border ${ps.status === 'Dispatched' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-blue-50 text-blue-600 border-blue-100'} text-left`}>
                                                 {ps.status}
                                             </span>
                                         </td>
@@ -151,13 +152,13 @@ const PayslipManagement = () => {
 
                     {/* Status Bar */}
                     <div className="px-10 py-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-left shrink-0">
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest flex items-center gap-2 text-left">
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] flex items-center gap-2 text-left">
                             <ShieldCheck size={14} className="text-emerald-500" />
                             All 348 archives cryptographically signed and verified.
                         </p>
                         <div className="flex items-center gap-6 text-right">
                             <div className="text-right">
-                                <p className="text-[8px] text-slate-400 font-black uppercase tracking-widest text-left">Node Availability</p>
+                                <p className="text-[8px] text-slate-400 font-black uppercase tracking-[0.2em] text-left">Node Availability</p>
                                 <p className="text-sm font-black text-slate-800 tracking-tighter text-left">Cloud Online</p>
                             </div>
                         </div>
@@ -169,16 +170,16 @@ const PayslipManagement = () => {
                     <div className="card-soft bg-slate-900 p-10 border-none text-white h-full relative overflow-hidden group text-left">
                         <div className="relative z-10 text-left h-full flex flex-col">
                             <ClipboardList className="mb-6 text-primary-400" size={32} />
-                            <h3 className="text-xl font-black uppercase tracking-widest text-left leading-tight mb-4 text-left">Payslip Repository</h3>
+                            <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-left leading-tight mb-4 text-left">Payslip Repository</h3>
                             <p className="text-xs opacity-60 font-medium leading-relaxed uppercase tracking-[0.2em] mb-10 text-left">Access the forensic archive of generated payslips for the current cycle. All files are cryptographically signed and ready for disbursement.</p>
                             <div className="space-y-4 text-left">
                                 <div className="flex justify-between py-4 border-b border-white/10 text-left">
-                                    <span className="text-[10px] font-black uppercase text-left tracking-widest">Current Node</span>
-                                    <span className="text-[10px] font-black uppercase text-right tracking-widest">Oct 2023</span>
+                                    <span className="text-[10px] font-black uppercase text-left tracking-[0.2em]">Current Node</span>
+                                    <span className="text-[10px] font-black uppercase text-right tracking-[0.2em]">Oct 2023</span>
                                 </div>
                                 <div className="flex justify-between py-4 border-b border-white/10 text-left text-right">
-                                    <span className="text-[10px] font-black uppercase text-left tracking-widest">Total Records</span>
-                                    <span className="text-[10px] font-black uppercase text-right tracking-widest">348</span>
+                                    <span className="text-[10px] font-black uppercase text-left tracking-[0.2em]">Total Records</span>
+                                    <span className="text-[10px] font-black uppercase text-right tracking-[0.2em]">348</span>
                                 </div>
                             </div>
                         </div>

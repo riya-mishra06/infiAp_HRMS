@@ -107,8 +107,8 @@ const CandidateProfile = () => {
                                 <CheckCircle2 size={14} className="text-white" />
                             </div>
                         </div>
-                        <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">{candidate.name}</h2>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-4">{candidate.role}</p>
+                        <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">{candidate.name}</h2>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">{candidate.role}</p>
                         <span className="px-5 py-2 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-xl uppercase tracking-[0.2em]">{candidate.status}</span>
                     </div>
 
@@ -141,7 +141,7 @@ const CandidateProfile = () => {
 
                     {/* Contact Info */}
                     <div className="card-soft bg-white p-10 border-slate-100 shadow-soft space-y-8">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-4">Contact Information</h3>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] border-b border-slate-50 pb-4">Contact Information</h3>
                         <div className="space-y-6">
                             {[
                                 { icon: Mail, label: 'Email', value: candidate.contact.email, color: 'text-primary-500' },
@@ -167,7 +167,7 @@ const CandidateProfile = () => {
                     {/* Professional Summary */}
                     <div className="card-soft bg-white p-12 border-slate-100 shadow-soft relative overflow-hidden">
                         <div className="relative z-10">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2">
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                                 <Award size={16} className="text-primary-500" />
                                 Professional Summary
                             </h3>
@@ -185,14 +185,14 @@ const CandidateProfile = () => {
                         
                         {/* Applied For */}
                         <div className="card-soft bg-slate-50/50 p-10 border-slate-100 border shadow-sm">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-8">Applied Position</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-8">Applied Position</h3>
                             <div className="flex items-start gap-5">
                                 <div className="p-5 bg-white rounded-[24px] shadow-soft text-primary-600">
                                     <ShieldCheck size={32} />
                                 </div>
                                 <div className="text-left">
-                                    <h4 className="text-xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">{candidate.appliedPosition.title}</h4>
-                                    <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest mb-4">{candidate.appliedPosition.dept}</p>
+                                    <h4 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">{candidate.appliedPosition.title}</h4>
+                                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mb-4 leading-none">{candidate.appliedPosition.dept}</p>
                                     <div className="flex items-center gap-2 text-[10px] font-black text-primary-600 uppercase tracking-widest bg-primary-50 w-fit px-3 py-1 rounded-lg">
                                         <Calendar size={12} />
                                         Applied {candidate.appliedPosition.appliedDate}
@@ -203,7 +203,7 @@ const CandidateProfile = () => {
 
                         {/* Experience Highlights */}
                         <div className="card-soft bg-white p-10 border-slate-100 shadow-soft">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-8">Experience Highlights</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-8">Experience Highlights</h3>
                             <div className="space-y-8 relative">
                                 <div className="absolute left-[23px] top-2 bottom-2 w-px bg-slate-100 border-l border-dashed border-slate-200"></div>
                                 {candidate.experience.map((exp, i) => (
@@ -225,7 +225,7 @@ const CandidateProfile = () => {
                     {/* Skill Tags & Education */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                          <div className="card-soft bg-white p-10 border-slate-100 shadow-soft">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-8">Skills Matrix</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-8">Skills Matrix</h3>
                             <div className="flex flex-wrap gap-3">
                                 {candidate.skills.map(skill => (
                                     <span key={skill} className="px-5 py-2.5 bg-slate-50 text-slate-600 text-[10px] font-black rounded-xl uppercase tracking-widest border border-slate-100 hover:border-indigo-200 hover:bg-white transition-all cursor-default">
@@ -239,7 +239,7 @@ const CandidateProfile = () => {
                                 <GraduationCap size={40} />
                              </div>
                              <div>
-                                <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-2">Education Background</h3>
+                                <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] mb-2">Education Background</h3>
                                 <h4 className="text-sm font-black text-primary-600 uppercase tracking-tight mb-1">{candidate.education.degree}</h4>
                                 <p className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">{candidate.education.school} • {candidate.education.period}</p>
                              </div>

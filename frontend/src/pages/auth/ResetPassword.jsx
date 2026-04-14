@@ -21,8 +21,8 @@ const ResetPassword = () => {
                     <div className="w-16 h-16 bg-[#6C5CE7]/10 text-[#6C5CE7] rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <Mail size={32} />
                     </div>
-                    <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tight mb-3">Reset password</h1>
-                    <p className="text-sm font-medium text-gray-400 leading-relaxed max-w-[320px] mx-auto">
+                    <h1 className="text-4xl font-black text-[#1A1A1A] tracking-tight mb-3 uppercase">Reset password</h1>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] leading-relaxed max-w-[320px] mx-auto">
                         Enter your corporate email address to receive a password recovery link.
                     </p>
                 </div>
@@ -31,7 +31,7 @@ const ResetPassword = () => {
                     
                     {/* Input Field */}
                     <div className="space-y-2">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Corporate Email</label>
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Corporate Email</label>
                         <div className="relative group">
                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#6C5CE7] transition-colors" size={18} />
                             <input

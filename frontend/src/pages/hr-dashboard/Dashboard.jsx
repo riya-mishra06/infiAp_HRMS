@@ -48,8 +48,8 @@ const Dashboard = () => {
           </div>
           <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg uppercase tracking-widest">{trend}</span>
        </div>
-       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{title}</p>
-       <h3 className="text-xl font-black text-slate-800 tracking-tight">{value}</h3>
+       <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-2">{title}</p>
+       <h3 className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{value}</h3>
     </div>
   );
 
@@ -58,8 +58,8 @@ const Dashboard = () => {
        
        <div className="flex items-center justify-between border-b border-slate-50 pb-8">
           <div>
-             <h1 className="text-2xl font-black text-slate-800 tracking-tight uppercase">HR Management Console</h1>
-             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Operational Insights & Workforce Orchestration</p>
+             <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">HR Management Console</h1>
+             <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none">Operational Insights & Workforce Orchestration</p>
           </div>
           <div className="flex items-center gap-3">
              <button className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-indigo-600 transition-all active:scale-95">
@@ -83,14 +83,14 @@ const Dashboard = () => {
              {/* Quick Operational Actions */}
              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
                 <div className="flex items-center justify-between pb-6 border-b border-slate-50">
-                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Precision Actions</h3>
-                   <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">Full Directory</button>
+                   <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Precision Actions</h3>
+                   <button className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.1em] hover:underline">Full Directory</button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                    {[
                       { label: 'Add Employee', icon: UserPlus, path: '/employees/add' },
                       { label: 'Create Department', icon: Building2, path: '/admin/department-management/create' },
-                      { label: 'Post Opportunity', icon: Send, path: '/recruitment/create' }
+                      { label: 'Job Posting', icon: Send, path: '/recruitment/post-job' }
                    ].map((action, i) => (
                       <button 
                          key={i}
@@ -109,7 +109,7 @@ const Dashboard = () => {
              {/* Recent Activity Stream */}
              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
                 <div className="flex items-center justify-between pb-6 border-b border-slate-50">
-                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Operational Stream</h3>
+                   <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Operational Stream</h3>
                    <Activity size={16} className="text-slate-300" />
                 </div>
                 <div className="space-y-4">
@@ -138,8 +138,8 @@ const Dashboard = () => {
              {/* Pending Leave Request Card */}
              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
                 <div className="flex items-center justify-between pb-6 border-b border-slate-50">
-                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Pending Approvals</h3>
-                   <span className="px-2 py-0.5 bg-amber-50 text-amber-500 text-[8px] font-black rounded uppercase">1 Urgent</span>
+                   <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Pending Approvals</h3>
+                   <span className="px-3 py-1 bg-amber-50 text-amber-600 text-[10px] font-black rounded-lg uppercase tracking-widest">1 Urgent</span>
                 </div>
                 <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-6">
                    <div className="flex items-center gap-4">

@@ -52,8 +52,8 @@ const SystemSettings = () => {
        {/* Premium Header */}
        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 px-4">
           <div>
-             <h1 className="text-5xl font-black text-slate-800 tracking-tighter leading-none mb-3 lowercase">Platform Settings</h1>
-             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Configure system preferences and platform controls</p>
+             <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">Platform Settings</h1>
+             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1 leading-none">Configure system preferences and platform controls</p>
           </div>
           <div className="flex items-center gap-4">
              <div className="relative group">
@@ -80,35 +80,35 @@ const SystemSettings = () => {
                    <Globe size={28} />
                 </div>
                 <div>
-                   <h3 className="text-2xl font-black text-slate-800 tracking-tight uppercase leading-none mb-1">General Settings</h3>
-                   <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Localization & Regional Controls</p>
+                   <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase leading-none mb-1">General Settings</h3>
+                   <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Localization & Regional Controls</p>
                 </div>
              </div>
 
              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Time Zone</label>
+                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Time Zone</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>UTC +05:30 (Chennai, Kolkata, Mumbai)</option>
                       <option>UTC +00:00 (GMT London)</option>
                    </select>
                 </div>
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Date Format</label>
+                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Date Format</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>DD/MM/YYYY</option>
                       <option>MM/DD/YYYY</option>
                    </select>
                 </div>
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Currency</label>
+                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Currency</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>INR (₹)</option>
                       <option>USD ($)</option>
                    </select>
                 </div>
                 <div className="space-y-4">
-                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Language</label>
+                   <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Language</label>
                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                       <option>English (US)</option>
                       <option>Hindi (HI)</option>
@@ -137,7 +137,7 @@ const SystemSettings = () => {
                      <div key={item.key} className="flex items-center justify-between">
                         <div>
                            <p className="text-sm font-black text-slate-800 leading-none mb-1">{item.label}</p>
-                           <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">{item.sub}</p>
+                           <p className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">{item.sub}</p>
                         </div>
                         <Toggle active={toggles[item.key]} onClick={() => handleToggle(item.key)} />
                      </div>
@@ -157,7 +157,7 @@ const SystemSettings = () => {
                    <div className="flex items-center justify-between">
                       <div>
                          <p className="text-sm font-black text-slate-800 leading-none mb-1">2-Factor Authentication</p>
-                         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Mandatory for all admins</p>
+                         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">Mandatory for all admins</p>
                       </div>
                       <Toggle active={toggles.twoFactor} onClick={() => handleToggle('twoFactor')} />
                    </div>
@@ -173,7 +173,7 @@ const SystemSettings = () => {
                    <div className="flex items-center justify-between">
                       <div>
                          <p className="text-sm font-black text-slate-800 leading-none mb-1">Login Monitoring</p>
-                         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Track IP geolocation</p>
+                         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">Track IP geolocation</p>
                       </div>
                       <Toggle active={toggles.loginMonitor} onClick={() => handleToggle('loginMonitor')} />
                    </div>
@@ -190,10 +190,10 @@ const SystemSettings = () => {
                    </div>
                    <div>
                       <h3 className="text-2xl font-black tracking-tight uppercase leading-none mb-1">Access Control</h3>
-                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">Permission Management Suites</p>
+                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] leading-none">Permission Management Suites</p>
                    </div>
                 </div>
-                <button className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.4em] hover:underline">Edit Global Access</button>
+                <button className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] hover:underline">Edit Global Access</button>
              </div>
 
              <div className="space-y-6 relative z-10">
@@ -207,7 +207,7 @@ const SystemSettings = () => {
                         <item.icon size={22} className="group-hover/link:text-indigo-600" />
                         <div>
                            <h4 className="text-sm font-black uppercase tracking-tight">{item.label}</h4>
-                           <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mt-1">{item.detail}</p>
+                           <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] leading-none mt-1">{item.detail}</p>
                         </div>
                      </div>
                      <ChevronRight size={20} className="text-slate-700 group-hover/link:translate-x-1 transition-transform" />
@@ -263,7 +263,7 @@ const SystemSettings = () => {
                         <div className="p-3 bg-white rounded-xl shadow-sm group-hover/btn:bg-white/10 group-hover/btn:text-white">
                            <btn.icon size={22} className="text-slate-400 group-hover/btn:text-white" />
                         </div>
-                        <span className="text-[11px] font-black uppercase tracking-widest">{btn.label} Data</span>
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em]">{btn.label} Data</span>
                      </button>
                    ))}
                 </div>
@@ -282,7 +282,7 @@ const SystemSettings = () => {
                       </div>
                       <div>
                          <h3 className="text-2xl font-black tracking-tight leading-none mb-1 uppercase">System Updates</h3>
-                         <span className="px-3 py-1 bg-white text-indigo-600 text-[9px] font-black rounded-full uppercase tracking-widest">Up to Date</span>
+                         <span className="px-3 py-1 bg-white text-indigo-600 text-[9px] font-black rounded-full uppercase tracking-[0.2em]">Up to Date</span>
                       </div>
                    </div>
                 </div>
@@ -298,7 +298,7 @@ const SystemSettings = () => {
                    </div>
                 </div>
 
-                <button className="w-full py-5 bg-white text-indigo-600 text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] hover:bg-slate-900 hover:text-white transition-all active:scale-95 relative z-10">Check for Updates</button>
+                <button className="w-full py-5 bg-white text-indigo-600 text-[11px] font-black uppercase tracking-[0.2em] rounded-[24px] hover:bg-slate-900 hover:text-white transition-all active:scale-95 relative z-10">Check for Updates</button>
                 <div className="absolute -right-12 bottom-[-100px] w-64 h-64 bg-white/5 rounded-full blur-[80px]"></div>
              </section>
 
@@ -319,7 +319,7 @@ const SystemSettings = () => {
                      <div key={idx} className="relative pl-10 group/log cursor-default">
                         <div className={`absolute left-0 top-1.5 w-4 h-4 rounded-full border-4 border-white shadow-sm ${log.dot} transition-transform group-hover/log:scale-125`}></div>
                         <p className="text-sm font-black text-slate-800 mb-1 group-hover/log:text-indigo-600 transition-colors uppercase leading-tight">{log.desc}</p>
-                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none">{log.time}</p>
+                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">{log.time}</p>
                      </div>
                    ))}
                 </div>
@@ -328,8 +328,8 @@ const SystemSettings = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t border-slate-50">
-             <button className="flex-1 py-6 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[32px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95">Save Global Settings</button>
-             <button className="px-16 py-6 bg-white border-2 border-slate-100 text-slate-400 text-[11px] font-black uppercase tracking-[0.4em] rounded-[32px] hover:bg-slate-50 transition-all">Reset to Defaults</button>
+             <button className="flex-1 py-6 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-[32px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95">Save Global Settings</button>
+             <button className="px-16 py-6 bg-white border-2 border-slate-100 text-slate-400 text-[11px] font-black uppercase tracking-[0.2em] rounded-[32px] hover:bg-slate-50 transition-all">Reset to Defaults</button>
           </div>
 
        </div>

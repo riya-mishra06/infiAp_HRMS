@@ -103,8 +103,8 @@ const ScheduleInterview = () => {
                     <Undo2 size={20} />
                 </button>
                 <div>
-                    <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-8">Initialize Interview Node</h1>
-                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Configure candidate acquisition protocols</p>
+                    <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Initialize Interview Node</h1>
+                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 leading-none">Configure candidate acquisition protocols</p>
                 </div>
             </div>
 
@@ -115,7 +115,7 @@ const ScheduleInterview = () => {
                     {/* Left Column: Candidate & Stage */}
                     <div className="space-y-8">
                         <div className="card-soft bg-white p-10 border-slate-100 shadow-soft space-y-8">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-4">Candidate Information</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] border-b border-slate-50 pb-4">Candidate Information</h3>
                             
                             {/* Candidate Select */}
                             <div className="space-y-3 relative">
@@ -183,7 +183,7 @@ const ScheduleInterview = () => {
                     {/* Right Column: Time & Interviewer */}
                     <div className="space-y-8">
                         <div className="card-soft bg-white p-10 border-slate-100 shadow-soft space-y-8">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-4">Schedule Details</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] border-b border-slate-50 pb-4">Schedule Details</h3>
                             
                             {/* Date & Time */}
                             <div className="grid grid-cols-2 gap-6">

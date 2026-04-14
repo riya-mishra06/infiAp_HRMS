@@ -32,12 +32,26 @@ const LeaveHistory = () => {
         { id: 'HIST-003', name: 'Ananya Iyer', type: 'Personal Trip', range: 'Sep 05 - Sep 10, 2023', status: 'Rejected', dept: 'Marketing', verifiedBy: 'HR Audit' },
         { id: 'HIST-004', name: 'Rohan Gupta', type: 'Casual Leave', range: 'Aug 20 - Aug 22, 2023', status: 'Approved', dept: 'Human Resources', verifiedBy: 'System Auto' },
         { id: 'HIST-005', name: 'Sarah Chen', type: 'Sick Leave', range: 'Jul 15, 2023', status: 'Approved', dept: 'Engineering', verifiedBy: 'Manager' },
+        { id: 'HIST-006', name: 'Amit Verma', type: 'Annual Leave', range: 'Dec 01 - Dec 05, 2023', status: 'Pending', dept: 'Sales', verifiedBy: 'Under Review' },
+        { id: 'HIST-007', name: 'Kavita Rao', type: 'Casual Leave', range: 'Nov 30, 2023', status: 'Pending', dept: 'Design', verifiedBy: 'Under Review' },
     ];
+
+    const filteredRecords = historicalRecords.filter(rec => {
+        const matchesSearch = rec.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                             rec.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             rec.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             rec.dept.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        const matchesStatus = filterStatus === 'All' || rec.status === filterStatus;
+        
+        return matchesSearch && matchesStatus;
+    });
 
     const getStatusStyles = (status) => {
         switch (status) {
             case 'Approved': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
             case 'Rejected': return 'bg-rose-50 text-rose-600 border-rose-100';
+            case 'Pending': return 'bg-orange-50 text-orange-600 border-orange-100';
             default: return 'bg-slate-50 text-slate-500 border-slate-100';
         }
     };
@@ -92,7 +106,7 @@ const LeaveHistory = () => {
                         </div>
                         <div className="flex items-center gap-4">
                             <div className="flex items-center gap-6 px-6 py-2 bg-white border border-slate-100 rounded-xl">
-                                {['All', 'Approved', 'Rejected'].map(s => (
+                                {['All', 'Approved', 'Rejected', 'Pending'].map(s => (
                                     <button 
                                         key={s} 
                                         onClick={() => setFilterStatus(s)}
@@ -120,7 +134,7 @@ const LeaveHistory = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50 relative z-10">
-                                {historicalRecords.map((rec) => (
+                                {filteredRecords.map((rec) => (
                                     <tr key={rec.id} className="group hover:bg-slate-50/50 transition-all cursor-pointer">
                                         <td className="px-10 py-8">
                                             <div className="flex items-center gap-4">

@@ -118,8 +118,8 @@ const PayrollManagement = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-emerald-300 underline-offset-12">Financial Integrity Hub</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Corporate Payroll Logistics & Compensation Diagnostic</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Financial Integrity Hub</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Corporate Payroll Logistics & Compensation Diagnostic</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
@@ -159,13 +159,13 @@ const PayrollManagement = () => {
                     </BarChart>
                   </ResponsiveContainer>
                </div>
-               <div className="mt-6 flex items-end justify-between">
-                  <div>
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Gross Payroll</p>
-                     <p className="text-2xl font-black text-slate-800 tracking-tighter">₹1.42 Cr</p>
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg">Target: 98%</span>
-               </div>
+                <div className="mt-6 flex items-end justify-between">
+                   <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Gross Payroll</p>
+                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">₹1.42 Cr</p>
+                   </div>
+                   <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg">98% COMP</span>
+                </div>
             </div>
 
             <div className="space-y-4">
@@ -176,8 +176,8 @@ const PayrollManagement = () => {
                  <div key={i} className="card-soft bg-white p-6 flex items-center gap-4 hover:border-primary-100 transition-all cursor-crosshair">
                     <div className={`p-3 bg-slate-50 rounded-2xl ${stat.color} shadow-inner`}><stat.icon size={20} /></div>
                     <div>
-                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{stat.label}</p>
-                       <p className="text-lg font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
+                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">{stat.label}</p>
+                       <p className="text-2xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
                     </div>
                  </div>
                ))}
@@ -187,8 +187,8 @@ const PayrollManagement = () => {
                <div className="relative z-10">
                   <AlertCircle className="mb-4 text-emerald-400" size={24} />
                   <h4 className="text-sm font-black uppercase tracking-widest leading-tight mb-2">Audit Synchronization</h4>
-                  <p className="text-[10px] opacity-60 font-medium leading-relaxed uppercase tracking-widest mb-6">Oct disbursement files are now locked for final diagnostic verification.</p>
-                  <button className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all">Init Sync</button>
+                  <p className="text-[10px] opacity-60 font-black leading-relaxed uppercase tracking-widest mb-6">Oct disbursement files are now locked for final diagnostic verification.</p>
+                  <button className="w-full py-4 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-black uppercase tracking-[0.25em] transition-all">Init Sync</button>
                </div>
                <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-emerald-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform"></div>
             </div>
@@ -243,8 +243,10 @@ const PayrollManagement = () => {
                                     <act.icon size={24} />
                                  </div>
                                  <div>
-                                    <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-1">{act.title}</p>
-                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{act.size} • Verified Archive</p>
+                                    <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-2">{act.title}</p>
+                                    <div className="flex items-center gap-2 text-indigo-400 font-black text-[9px] uppercase tracking-[0.1em]">
+                                       {act.size} • Verified Archive
+                                    </div>
                                  </div>
                               </div>
                            </td>

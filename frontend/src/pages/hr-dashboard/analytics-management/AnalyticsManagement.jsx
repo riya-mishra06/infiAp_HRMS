@@ -121,8 +121,8 @@ const AnalyticsManagement = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-12">Strategic Logic Hub</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Employee Ecosystem Analytics & Enterprise Diagnostic Forecasting</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Strategic Logic Hub</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 leading-none">Employee Ecosystem Analytics & Enterprise Diagnostic Forecasting</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
@@ -148,7 +148,7 @@ const AnalyticsManagement = () => {
             
             <div className="card-soft bg-white p-8 border-slate-100 shadow-soft">
                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Multi-Node Correlation</h3>
+                  <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Multi-Node Correlation</h3>
                   <TrendingUp size={20} className="text-indigo-500" />
                </div>
                <div className="h-32 w-full">
@@ -160,10 +160,10 @@ const AnalyticsManagement = () => {
                   </ResponsiveContainer>
                </div>
                <div className="mt-6 flex items-end justify-between">
-                  <div>
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Logic Accuracy</p>
-                     <p className="text-2xl font-black text-slate-800 tracking-tighter">98.2%</p>
-                  </div>
+                   <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">Logic Accuracy</p>
+                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">98.2%</p>
+                   </div>
                   <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-lg">AI Ready</span>
                </div>
             </div>

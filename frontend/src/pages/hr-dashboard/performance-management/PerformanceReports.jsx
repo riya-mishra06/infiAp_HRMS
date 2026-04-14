@@ -65,8 +65,8 @@ const PerformanceReports = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Performance Analytics & Reports</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 text-left">Forensic Growth Attribution & Merit Bell Curve Diagnostic</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Performance Analytics & Reports</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 text-left leading-none">Forensic Growth Attribution & Merit Bell Curve Diagnostic</p>
                     </div>
                 </div>
                 
@@ -86,7 +86,7 @@ const PerformanceReports = () => {
                 {/* 1. Merit Distribution Diagnostic */}
                 <div className="xl:col-span-12 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-[500px] text-left">
                     <div className="mb-10 shrink-0 text-left">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Merit Distribution Matrix</h3>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Merit Distribution Matrix</h3>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 text-left">Bell curve mapping of current performance nodes</p>
                     </div>
                     <div className="flex-1 min-h-0 text-left">
@@ -131,7 +131,7 @@ const PerformanceReports = () => {
                 {/* 2. Departmental Growth Velocity */}
                 <div className="xl:col-span-8 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-[500px] text-left">
                     <div className="mb-10 shrink-0 text-left">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Evolution Velocity by Node</h3>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Evolution Velocity by Node</h3>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 text-left">Quarterly growth scores across core departments</p>
                     </div>
                     <div className="flex-1 min-h-0 text-left">

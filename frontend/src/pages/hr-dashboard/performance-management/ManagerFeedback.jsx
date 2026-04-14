@@ -97,8 +97,8 @@ const ManagerFeedback = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left underline decoration-primary-300 underline-offset-8">Leadership Feedback Portal</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 text-left">Qualitative Diagnostics & Merit Score Validation</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Leadership Feedback Portal</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 text-left leading-none">Qualitative Diagnostics & Merit Score Validation</p>
                     </div>
                 </div>
             </div>
@@ -110,7 +110,7 @@ const ManagerFeedback = () => {
                     {/* Left Column: Target Selection */}
                     <div className="xl:col-span-4 space-y-10 text-left">
                         <div className="card-soft bg-white p-10 border-slate-100 shadow-soft space-y-8 text-left">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-4 text-left">Employee Target Identification</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Employee Target Identification</h3>
                             
                             <div className="relative text-left">
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Select Node for Review</label>
@@ -168,7 +168,7 @@ const ManagerFeedback = () => {
                         </div>
 
                         <div className="card-soft bg-white p-10 border-slate-100 shadow-soft text-left">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-4 text-left mb-8">Metric Validation</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Metric Validation</h3>
                             <div className="space-y-10 text-left">
                                 {[
                                     { id: 'velocity', label: 'Velocity & Speed', desc: 'Efficiency of task completion' },
@@ -203,7 +203,7 @@ const ManagerFeedback = () => {
                     {/* Right Column: Qualitative Notes */}
                     <div className="xl:col-span-8 space-y-10 text-left">
                         <div className="card-soft bg-white p-10 border-slate-100 shadow-soft h-full flex flex-col text-left min-h-[600px]">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-50 pb-4 text-left">Qualitative Diagnostics</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Qualitative Diagnostics</h3>
                             <div className="flex-1 mt-8 relative text-left">
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Manager's Narrative Statement</label>
                                 <textarea 

@@ -72,7 +72,7 @@ const RecruitmentHub = () => {
       {/* Recruitment Overview Section */}
       <section>
         <div className="flex items-center justify-between mb-8 px-2">
-          <h2 className="text-xl font-black text-slate-800 tracking-tight">Recruitment Overview</h2>
+          <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Recruitment Overview</h2>
           <button 
             onClick={() => navigate('/admin/recruitment-control/analytics')}
             className="text-sm font-black text-indigo-600 hover:underline transition-all"
@@ -93,7 +93,7 @@ const RecruitmentHub = () => {
                 </span>
               </div>
               <div>
-                <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">{stat.label}</p>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 leading-none">Open Jobs</p>
                 <h3 className="text-4xl font-black text-slate-800 tracking-tighter leading-none">{stat.value}</h3>
               </div>
             </div>
@@ -105,7 +105,7 @@ const RecruitmentHub = () => {
       <section className="relative">
         <div className="flex items-center justify-between mb-8 px-2">
           <div className="flex items-center gap-4">
-             <h2 className="text-xl font-black text-slate-800 tracking-tight">Active Job Postings</h2>
+             <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Active Job Postings</h2>
              <span className="bg-indigo-50 text-indigo-600 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">3 Active</span>
           </div>
         </div>

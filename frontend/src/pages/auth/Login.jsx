@@ -48,8 +48,8 @@ const Login = () => {
                 
                 {/* Header Cluster */}
                 <div className="text-center mb-6">
-                    <h1 className="text-3xl font-black text-[#1F2754] tracking-tight mb-2">Welcome Back</h1>
-                    <p className="text-sm font-medium text-[#7C87AE] leading-relaxed max-w-xs mx-auto">
+                    <h1 className="text-4xl font-black text-[#1F2754] tracking-tight mb-2">Welcome Back</h1>
+                    <p className="text-[10px] font-black text-[#7C87AE] uppercase tracking-[0.2em] leading-relaxed max-w-xs mx-auto">
                         Sign in to access your InfiAP HR dashboard.
                     </p>
                 </div>
@@ -59,7 +59,7 @@ const Login = () => {
                     {/* Form Fields */}
                     <div className="space-y-3">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-[#8E98BC] uppercase tracking-[0.22em] ml-1">Role</label>
+                            <label className="text-[10px] font-black text-[#8E98BC] uppercase tracking-[0.2em] ml-1">Role</label>
                             <div className="relative">
                                 <BriefcaseBusiness className="absolute left-4 top-1/2 -translate-y-1/2 text-[#93A0C7]" size={16} />
                                 <select
@@ -76,7 +76,7 @@ const Login = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-[#8E98BC] uppercase tracking-[0.22em] ml-1">Email</label>
+                            <label className="text-[10px] font-black text-[#8E98BC] uppercase tracking-[0.2em] ml-1">Email</label>
                             <div className="relative group">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#93A0C7] group-focus-within:text-[#4E63F0] transition-colors" size={16} />
                                 <input 
@@ -90,7 +90,7 @@ const Login = () => {
 
                         <div className="space-y-2">
                             <div className="flex items-center justify-between px-1">
-                                <label className="text-[10px] font-bold text-[#8E98BC] uppercase tracking-[0.22em]">Password</label>
+                                <label className="text-[10px] font-black text-[#8E98BC] uppercase tracking-[0.2em]">Password</label>
                                 <button 
                                     type="button"
                                     onClick={() => navigate('/reset-password')}

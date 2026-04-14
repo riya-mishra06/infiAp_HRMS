@@ -73,7 +73,7 @@ const SalaryProcessing = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Salary Processing Engine</h1>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Salary Processing Engine</h1>
                         <div className="flex items-center gap-4 text-left">
                             <span className="flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-[10px] font-black uppercase tracking-widest text-left font-sans">
                                 <DollarSign size={12} />
@@ -134,11 +134,11 @@ const SalaryProcessing = () => {
                         <table className="w-full text-left">
                             <thead className="sticky top-0 z-20 bg-slate-50/80 backdrop-blur-md border-b border-slate-100 text-left">
                                 <tr className="text-left">
-                                    <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Employee Diagnostic</th>
-                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Gross Pay</th>
-                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Deductions (Tax/PF)</th>
-                                    <th className="px-6 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">Net Payable</th>
-                                    <th className="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Verification</th>
+                                    <th className="px-10 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Employee Diagnostic</th>
+                                    <th className="px-6 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Gross Pay</th>
+                                    <th className="px-6 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Deductions (Tax/PF)</th>
+                                    <th className="px-6 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] text-left">Net Payable</th>
+                                    <th className="px-10 py-6 text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Verification</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-50 text-left">
@@ -214,15 +214,15 @@ const SalaryProcessing = () => {
                     <div className="card-soft bg-slate-900 p-10 border-none text-white h-full relative overflow-hidden group text-left">
                         <div className="relative z-10 text-left h-full flex flex-col">
                             <DollarSign className="mb-6 text-emerald-400" size={32} />
-                            <h3 className="text-xl font-black uppercase tracking-widest text-left leading-tight mb-4">Batch Finalization</h3>
+                            <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-left leading-tight mb-4">Batch Finalization</h3>
                             <p className="text-xs opacity-60 font-medium leading-relaxed uppercase tracking-[0.2em] mb-10 text-left">Confirming this batch will synchronize disbursement nodes with the banking gateway and generate payslip archives.</p>
                             <div className="space-y-4 text-left">
                                 <div className="flex justify-between py-4 border-b border-white/10 text-left">
-                                    <span className="text-[10px] font-black uppercase text-left tracking-widest">Net Total</span>
+                                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">Net Total</span>
                                     <span className="text-[10px] font-black uppercase text-right tracking-widest">₹1.14 Cr</span>
                                 </div>
                                 <div className="flex justify-between py-4 border-b border-white/10 text-left">
-                                    <span className="text-[10px] font-black uppercase text-left tracking-widest">Tax Nodes</span>
+                                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">Tax Nodes</span>
                                     <span className="text-[10px] font-black uppercase text-right tracking-widest">₹12.4 L</span>
                                 </div>
                             </div>

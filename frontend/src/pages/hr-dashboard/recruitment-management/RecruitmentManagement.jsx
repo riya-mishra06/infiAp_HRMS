@@ -37,9 +37,11 @@ import {
   Cell
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { useJobContext } from '../../../context/JobContext';
 
 const RecruitmentManagement = () => {
   const navigate = useNavigate();
+  const { jobs, totals: jobTotals } = useJobContext();
   const [notification, setNotification] = useState(null);
   const [activeTab, setActiveTab] = useState('Active');
   const [showConfigDrawer, setShowConfigDrawer] = useState(false);
@@ -67,6 +69,7 @@ const RecruitmentManagement = () => {
         ];
       default: // Active
         return [
+          { title: 'Job Postings', date: 'Active', category: 'Recruit', status: 'Live', size: `${jobTotals.activeCount} Active`, path: '/recruitment/active-jobs', icon: Briefcase, color: 'text-primary-600', bg: 'bg-primary-50' },
           { title: 'Candidate Pipeline', date: 'Oct 2023', category: 'Applicants', status: 'Priority', size: '348 Active', path: '/recruitment/candidates', icon: Users, color: 'text-indigo-600', bg: 'bg-indigo-50' },
           { title: 'Hiring Applications', date: 'Wk 42', category: 'Review', status: 'Required', size: '12 Direct', path: '/recruitment/applications', icon: ClipboardList, color: 'text-primary-600', bg: 'bg-primary-50' },
           { title: 'Interview Scheduling', date: 'Today', category: 'Operations', status: 'Live', size: '8 Slots', path: '/recruitment/interviews', icon: Calendar, color: 'text-orange-600', bg: 'bg-orange-50' },
@@ -141,8 +144,8 @@ const RecruitmentManagement = () => {
       {/* Header System */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
         <div>
-          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-12">Talent Acquisition Command</h1>
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Global Recruitment Pipelines & Vacancy Oversight</p>
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Talent Acquisition Command</h1>
+          <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Global Recruitment Pipelines & Vacancy Oversight</p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
@@ -182,13 +185,13 @@ const RecruitmentManagement = () => {
                     </BarChart>
                   </ResponsiveContainer>
                </div>
-               <div className="mt-6 flex items-end justify-between">
-                  <div>
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Direct Applicants</p>
-                     <p className="text-2xl font-black text-slate-800 tracking-tighter">348 Candidates</p>
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg">+12.5%</span>
-               </div>
+                <div className="mt-6 flex items-end justify-between">
+                   <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Active Applicants</p>
+                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{jobTotals.totalApplicants} Global</p>
+                   </div>
+                   <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg">94% EFF</span>
+                </div>
             </div>
 
             <div className="space-y-4">
@@ -199,8 +202,8 @@ const RecruitmentManagement = () => {
                  <div key={i} className="card-soft bg-white p-6 flex items-center gap-4 hover:border-primary-100 transition-all cursor-pointer active:scale-95 group">
                     <div className={`p-3 bg-slate-50 rounded-2xl ${stat.color} shadow-inner group-hover:bg-white group-hover:shadow-soft`}><stat.icon size={20} /></div>
                     <div>
-                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{stat.label}</p>
-                       <p className="text-lg font-black text-slate-800 tracking-tighter leading-none">{stat.value}</p>
+                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">{stat.label}</p>
+                       <p className="text-2xl font-black text-slate-800 tracking-tighter leading-none uppercase">{stat.value}</p>
                     </div>
                  </div>
                ))}
@@ -266,8 +269,10 @@ const RecruitmentManagement = () => {
                                     {act.icon ? <act.icon size={24} /> : <div className="w-6 h-6 bg-slate-200 rounded-full" />}
                                  </div>
                                  <div className="text-left">
-                                    <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-1">{act.title}</p>
-                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{act.size} • Verified Nodes</p>
+                                    <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-2">{act.title}</p>
+                                    <div className="flex items-center gap-2 text-indigo-400 font-black text-[9px] uppercase tracking-[0.1em]">
+                                       {act.size} • Verified Nodes
+                                    </div>
                                  </div>
                               </div>
                            </td>
@@ -305,10 +310,10 @@ const RecruitmentManagement = () => {
                   <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Recruit Node: TAL-MUM-SRV-01 Active</p>
                </div>
-               <div className="flex items-center gap-6">
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Total Active Vacancies: 12</p>
-                  <button className="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">Sync Pipeline</button>
-               </div>
+                <div className="flex items-center gap-6">
+                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Total Published Vacancies: {jobs.length}</p>
+                   <button className="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">Sync Pipeline</button>
+                </div>
             </div>
 
          </div>

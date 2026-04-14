@@ -77,8 +77,8 @@ const PayrollOverview = () => {
                         <Undo2 size={20} />
                     </button>
                     <div>
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2">Payroll Intelligence</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4">Forensic Financial Overview & Disbursement Analytics</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Payroll Intelligence</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 leading-none">Forensic Financial Overview & Disbursement Analytics</p>
                     </div>
                 </div>
                 
@@ -114,8 +114,8 @@ const PayrollOverview = () => {
                             </span>
                         </div>
                         <div className="relative z-10">
-                            <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">{card.label}</p>
-                            <h3 className="text-2xl font-black text-slate-800 tracking-tighter leading-none">{card.value}</h3>
+                            <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mb-2">{card.label}</p>
+                            <h3 className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{card.value}</h3>
                         </div>
                         <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-slate-50 rounded-full blur-2xl group-hover:scale-150 transition-transform opacity-50"></div>
                     </div>
@@ -136,7 +136,7 @@ const PayrollOverview = () => {
                 <div className="xl:col-span-9 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-0">
                     <div className="flex items-center justify-between mb-10 shrink-0">
                         <div>
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Disbursement Trajectory</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Disbursement Trajectory</h3>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Monthly payroll volume trends</p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -182,7 +182,7 @@ const PayrollOverview = () => {
                 {/* Departmental Allocation */}
                 <div className="xl:col-span-1 card-soft bg-white p-10 border-slate-100 shadow-soft flex flex-col min-h-0">
                     <div className="mb-10 shrink-0">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Budgetary Distribution</h3>
+                        <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Budgetary Distribution</h3>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Departmental payroll allocation</p>
                     </div>
                     <div className="flex-1 min-h-0 relative">

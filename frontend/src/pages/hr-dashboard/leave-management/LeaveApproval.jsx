@@ -58,11 +58,8 @@ const LeaveApproval = () => {
                         <ArrowLeft size={20} />
                     </button>
                     <div>
-                        <h1 className="text-3xl font-black tracking-tight leading-none mb-2 text-primary-600">Request Diagnostic</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                            <Clock size={12} className="text-orange-500" />
-                            Final Review Queue • {status}
-                        </p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2">Request Diagnostic</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 leading-none">Final Review Queue • {status}</p>
                     </div>
                 </div>
                 
@@ -88,7 +85,7 @@ const LeaveApproval = () => {
                             <div className="w-32 h-32 rounded-[48px] bg-slate-50 p-2 mb-8 group-hover:scale-105 transition-all">
                                 <img src={employee.avatar} className="w-full h-full rounded-[40px] border-4 border-white shadow-xl object-cover" alt="" />
                             </div>
-                            <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">{employee.name}</h2>
+                            <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">{employee.name}</h2>
                             <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-10">{employee.role}</p>
                             
                             <div className="w-full space-y-4">
@@ -128,7 +125,7 @@ const LeaveApproval = () => {
                     <div className="px-12 py-10 border-b border-slate-50 flex items-center justify-between bg-slate-100/30">
                         <div>
                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Diagnostic Target</p>
-                            <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">Leave Request Details</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Leave Request Details</h3>
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-100 rounded-xl shadow-sm">
                             <Calendar size={14} className="text-primary-500" />

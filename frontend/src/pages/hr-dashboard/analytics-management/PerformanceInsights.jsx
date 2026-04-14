@@ -76,8 +76,8 @@ const PerformanceInsights = () => {
                         <Undo2 size={20} />
                     </button>
                     <div className="text-left">
-                        <h1 className="text-3xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left underline decoration-indigo-300 underline-offset-8">Enterprise Predictive Hub</h1>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-4 text-left">AI-Driven Performance Forecasting & Operational Integrity Insights</p>
+                        <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Enterprise Predictive Hub</h1>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1 text-left leading-none">AI-Driven Performance Forecasting & Operational Integrity Insights</p>
                     </div>
                 </div>
                 
@@ -95,7 +95,7 @@ const PerformanceInsights = () => {
                 <div className="xl:col-span-3 flex flex-col gap-10 text-left">
                     <div className="card-soft bg-white p-10 border-slate-100 shadow-soft text-left flex flex-col min-h-[300px]">
                         <div className="flex items-center justify-between mb-8 text-left">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Turnover Probabilities</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Turnover Probabilities</h3>
                             <AlertCircle size={20} className="text-rose-500" />
                         </div>
                         <div className="space-y-6 text-left">
@@ -130,7 +130,7 @@ const PerformanceInsights = () => {
                 <div className="xl:col-span-9 card-soft bg-white border border-slate-100 shadow-soft overflow-hidden flex flex-col min-h-[600px] text-left">
                     <div className="px-10 py-8 border-b border-slate-50 flex items-center justify-between bg-slate-50/20 text-left shrink-0">
                         <div className="text-left">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest text-left">Trajectory Forecasting</h3>
+                            <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] text-left">Trajectory Forecasting</h3>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 text-left">Predicted growth velocity nodes vs current actuals</p>
                         </div>
                         <div className="flex items-center gap-6 text-left">

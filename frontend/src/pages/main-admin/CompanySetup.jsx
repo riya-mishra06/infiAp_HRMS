@@ -32,8 +32,8 @@ const CompanySetup = () => {
              <Icon size={18} />
           </div>
           <div>
-             <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest leading-none mb-1.5">{title}</h3>
-             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{desc}</p>
+             <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] leading-none mb-1.5">{title}</h3>
+             <p className="text-[10px] font-black uppercase tracking-[0.2em]">{desc}</p>
           </div>
        </div>
        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -64,11 +64,11 @@ const CompanySetup = () => {
        <div className="flex items-center justify-between mb-12 border-b border-slate-50 pb-8">
           <div>
              <h1 className="text-2xl font-black text-slate-800 tracking-tight uppercase">Company Setup</h1>
-             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Configure your workspace settings and preferences</p>
+             <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Configure your workspace settings and preferences</p>
           </div>
           <button 
              onClick={() => navigate('/main-admin/dashboard')}
-             className="flex items-center gap-2 px-5 py-3 bg-slate-50 text-slate-400 rounded-xl hover:text-indigo-600 transition-all text-[10px] font-black uppercase tracking-widest"
+             className="flex items-center gap-2 px-5 py-3 bg-slate-50 text-slate-400 rounded-xl hover:text-indigo-600 transition-all text-[10px] font-black uppercase tracking-[0.2em]"
           >
              <ChevronLeft size={16} /> Dashboard
           </button>
@@ -82,7 +82,7 @@ const CompanySetup = () => {
        >
           <FormInput label="Company Legal Name" placeholder="e.g. Acme Corp" />
           <div className="space-y-3">
-             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Company Size</label>
+             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Company Size</label>
              <select className="w-full bg-slate-50 border border-slate-100 rounded-xl px-6 py-4 text-xs font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
                 <option>1-50 Employees</option>
                 <option>51-200 Employees</option>
@@ -107,19 +107,19 @@ const CompanySetup = () => {
              </div>
              <div>
                 <p className="text-xs font-black text-slate-800 uppercase tracking-tight mb-1">Company Logo</p>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-4">PNG, JPG up to 5MB</p>
-                <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">Upload Logo</button>
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">PNG, JPG up to 5MB</p>
+                <button className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] hover:underline">Upload Logo</button>
              </div>
           </div>
           <div className="space-y-3">
-             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Primary Color</label>
+             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Primary Color</label>
              <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-indigo-600 cursor-pointer border-4 border-white shadow-sm hover:scale-105 transition-transform"></div>
                 <input type="text" value="#4F46E5" className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-6 py-3.5 text-xs font-bold outline-none" readOnly />
              </div>
           </div>
           <div className="space-y-3">
-             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Accent Color</label>
+             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Accent Color</label>
              <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500 cursor-pointer border-4 border-white shadow-sm hover:scale-105 transition-transform"></div>
                 <input type="text" value="#10B981" className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-6 py-3.5 text-xs font-bold outline-none" readOnly />
@@ -130,8 +130,8 @@ const CompanySetup = () => {
        {/* 3. Structure & Policies */}
        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="p-8 pb-4 border-b border-slate-50">
-             <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest leading-none mb-1.5">Structure & Policies</h3>
-             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Organisational nodes and compliance</p>
+             <h3 className="text-sm font-black text-slate-800 uppercase tracking-[0.2em] leading-none mb-1.5">Structure & Policies</h3>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Organisational nodes and compliance</p>
           </div>
           <div className="divide-y divide-slate-50">
              {[
@@ -145,7 +145,7 @@ const CompanySetup = () => {
                       </div>
                       <div>
                          <p className="text-xs font-black text-slate-800 uppercase tracking-tight mb-0.5">{node.title}</p>
-                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{node.desc}</p>
+                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em]">{node.desc}</p>
                       </div>
                    </div>
                    <ChevronRight size={16} className="text-slate-300" />
@@ -157,8 +157,8 @@ const CompanySetup = () => {
        {/* 4. Connected Apps */}
        <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="p-8 pb-4 border-b border-slate-50">
-             <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest leading-none mb-1.5">Connected Apps</h3>
-             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Third-party service integrations</p>
+             <h3 className="text-sm font-black text-slate-800 uppercase tracking-[0.2em] leading-none mb-1.5">Connected Apps</h3>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Third-party service integrations</p>
           </div>
           <div className="divide-y divide-slate-50">
              {[
@@ -188,15 +188,15 @@ const CompanySetup = () => {
                 <Lock size={18} />
              </div>
              <div>
-                <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest leading-none mb-1.5">Security & Privacy</h3>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Infrastructural protection and authentication</p>
+                <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] leading-none mb-1.5">Security & Privacy</h3>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em]">Infrastructural protection and authentication</p>
              </div>
           </div>
           <div className="space-y-6">
              <div className="flex items-center justify-between">
                 <div>
                    <p className="text-xs font-black text-slate-800 uppercase tracking-tight mb-0.5">Enforce 2FA</p>
-                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Require 2FA for all employees</p>
+                   <p className="text-[9px] font-black uppercase tracking-[0.2em] leading-none">Require 2FA for all employees</p>
                 </div>
                 <div className="w-10 h-5 bg-indigo-600 rounded-full relative p-1 cursor-pointer">
                    <div className="w-3 h-3 bg-white rounded-full absolute right-1 top-1"></div>
@@ -205,7 +205,7 @@ const CompanySetup = () => {
              <div className="flex items-center justify-between">
                 <div>
                    <p className="text-xs font-black text-slate-800 uppercase tracking-tight mb-0.5">SSO Login</p>
-                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Allow login via SAML/Okta</p>
+                   <p className="text-[9px] font-black uppercase tracking-[0.2em] leading-none">Allow login via SAML/Okta</p>
                 </div>
                 <div className="w-10 h-5 bg-slate-200 rounded-full relative p-1 cursor-pointer">
                    <div className="w-3 h-3 bg-white rounded-full absolute left-1 top-1"></div>

@@ -74,7 +74,7 @@ const InterviewManagement = () => {
           {['Upcoming', 'Completed', 'Cancelled'].map((tab) => (
             <button
               key={tab}
-              className={`px-8 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+              className={`px-8 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
                 tab === 'Upcoming' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'
               }`}
             >
@@ -96,12 +96,12 @@ const InterviewManagement = () => {
                     </div>
                     <h2 className="text-2xl font-black tracking-tight leading-none">Schedule Interview</h2>
                  </div>
-                 <p className="text-[10px] font-black uppercase tracking-widest text-indigo-100">Establish new interaction protocol</p>
+                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100">Establish new interaction protocol</p>
               </div>
 
               <div className="p-10 space-y-8">
                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Candidate Name</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Candidate Name</label>
                     <div className="relative group">
                        <User size={16} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" />
                        <input 
@@ -113,7 +113,7 @@ const InterviewManagement = () => {
                  </div>
 
                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Position</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Position</label>
                     <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all appearance-none cursor-pointer">
                        <option>Senior UI Designer</option>
                        <option>Frontend Architect</option>
@@ -123,31 +123,31 @@ const InterviewManagement = () => {
 
                  <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-3">
-                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Date</label>
+                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Date</label>
                        <input type="date" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all" />
                     </div>
                     <div className="space-y-3">
-                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Time</label>
+                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Time</label>
                        <input type="time" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all" />
                     </div>
                  </div>
 
                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interaction Mode</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Interaction Mode</label>
                     <div className="flex items-center gap-6">
                        <label className="flex items-center gap-3 cursor-pointer group">
                           <input type="radio" name="mode" className="w-5 h-5 text-indigo-600 border-2 border-slate-200 focus:ring-indigo-500 rounded-full" defaultChecked />
-                          <span className="text-xs font-black text-slate-600 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">Online</span>
+                          <span className="text-xs font-black text-slate-600 uppercase tracking-[0.2em] group-hover:text-indigo-600 transition-colors">Online</span>
                        </label>
                        <label className="flex items-center gap-3 cursor-pointer group">
                           <input type="radio" name="mode" className="w-5 h-5 text-indigo-600 border-2 border-slate-200 focus:ring-indigo-500 rounded-full" />
-                          <span className="text-xs font-black text-slate-600 uppercase tracking-widest group-hover:text-indigo-600 transition-colors">In-person</span>
+                          <span className="text-xs font-black text-slate-600 uppercase tracking-[0.2em] group-hover:text-indigo-600 transition-colors">In-person</span>
                        </label>
                     </div>
                  </div>
 
                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interviewer(s)</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Interviewer(s)</label>
                     <div className="relative group">
                        <Search size={16} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" />
                        <input 
@@ -175,7 +175,7 @@ const InterviewManagement = () => {
                  <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600">
                     <Zap size={16} className="fill-current" />
                  </div>
-                 <h3 className="text-lg font-black text-slate-800 tracking-widest uppercase">TODAY, OCT 24</h3>
+                 <h3 className="text-lg font-black text-slate-800 tracking-[0.2em] uppercase">TODAY, OCT 24</h3>
               </div>
 
               <div className="space-y-8">
@@ -186,8 +186,8 @@ const InterviewManagement = () => {
                           <img src={int.image} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                           <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
                           <div className="absolute bottom-6 left-6 right-6">
-                             <p className="text-[10px] font-black text-white/80 uppercase tracking-widest mb-1">Time Slice</p>
-                             <p className="text-sm font-black text-white tracking-widest leading-none">{int.time.split(' - ')[0]}</p>
+                             <p className="text-[10px] font-black text-white/80 uppercase tracking-[0.2em] mb-1">Time Slice</p>
+                             <p className="text-sm font-black text-white tracking-[0.2em] leading-none">{int.time.split(' - ')[0]}</p>
                           </div>
                        </div>
 
@@ -204,10 +204,10 @@ const InterviewManagement = () => {
                                 <p className="text-sm font-bold text-slate-400 italic mt-2">{int.role}</p>
                              </div>
                              <div className="flex flex-col items-end text-right">
-                                <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2 leading-none">Status</p>
+                                <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-2 leading-none">Status</p>
                                 <div className="flex items-center gap-2">
                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                                   <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Ready</span>
+                                   <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.2em]">Ready</span>
                                 </div>
                              </div>
                           </div>
@@ -218,7 +218,7 @@ const InterviewManagement = () => {
                                    <UserCheck size={18} />
                                 </div>
                                 <div className="overflow-hidden">
-                                   <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1 leading-none">Interviewer</p>
+                                   <p className="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em] mb-1 leading-none">Interviewer</p>
                                    <p className="text-xs font-black text-slate-700 truncate">{int.interviewer}</p>
                                 </div>
                              </div>
@@ -227,7 +227,7 @@ const InterviewManagement = () => {
                                    {int.mode === 'Online' ? <Monitor size={18} /> : <MapPin size={18} />}
                                 </div>
                                 <div className="overflow-hidden">
-                                   <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1 leading-none">Method</p>
+                                   <p className="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em] mb-1 leading-none">Method</p>
                                    <p className="text-xs font-black text-slate-700 truncate">{int.mode}</p>
                                 </div>
                              </div>
@@ -253,7 +253,7 @@ const InterviewManagement = () => {
                  <div className="p-3 bg-slate-100 rounded-xl text-slate-400">
                     <Clock size={16} />
                  </div>
-                 <h3 className="text-lg font-black text-slate-400 tracking-widest uppercase">TOMORROW, OCT 25</h3>
+                 <h3 className="text-lg font-black text-slate-400 tracking-[0.2em] uppercase">TOMORROW, OCT 25</h3>
               </div>
 
               {tomorrowInterviews.map((int) => (
@@ -263,7 +263,7 @@ const InterviewManagement = () => {
                           <img src={int.image} alt="" className="w-full h-full object-cover" />
                        </div>
                        <div>
-                          <span className="text-[8px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-widest border border-emerald-100">{int.status}</span>
+                          <span className="text-[8px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-[0.2em] border border-emerald-100">{int.status}</span>
                           <h4 className="text-xl font-black text-slate-700 mt-3 uppercase">{int.name}</h4>
                           <p className="text-xs font-bold text-slate-400 italic">{int.role}</p>
                        </div>
@@ -271,7 +271,7 @@ const InterviewManagement = () => {
 
                     <div className="flex items-center gap-12">
                        <div className="text-right">
-                          <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1">Time Slot</p>
+                          <p className="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em] mb-1">Time Slot</p>
                           <p className="text-sm font-black text-slate-800">{int.time.split(' - ')[0]}</p>
                        </div>
                        <button className="p-4 bg-white text-slate-400 rounded-2xl border border-slate-100 hover:border-indigo-500 hover:text-indigo-600 transition-all active:scale-90">

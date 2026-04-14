@@ -104,7 +104,7 @@ const MonthlyAttendance = () => {
             {notification && (
                 <div className="fixed top-24 right-8 z-[100] animate-in slide-in-from-right-8 fade-in flex items-center gap-3 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/10">
                     <Activity size={20} className="text-primary-400" />
-                    <span className="text-sm font-bold tracking-tight uppercase tracking-widest">{notification}</span>
+                    <span className="text-sm font-bold tracking-tight uppercase tracking-[0.2em]">{notification}</span>
                 </div>
             )}
 
@@ -114,8 +114,8 @@ const MonthlyAttendance = () => {
                     <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
                         <img src={tooltipData.avatar} className="w-8 h-8 rounded-xl object-cover" alt="" />
                         <div>
-                            <p className="text-[10px] font-black uppercase tracking-widest">{tooltipData.name}</p>
-                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Oct {tooltipData.day}, 2023</p>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em]">{tooltipData.name}</p>
+                            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em]">{new Date().toLocaleString('default', { month: 'short' })} {tooltipData.day}, {new Date().getFullYear()}</p>
                         </div>
                     </div>
                     <div className="space-y-2">
@@ -134,20 +134,20 @@ const MonthlyAttendance = () => {
             {/* Header System */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 shrink-0">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-primary-300 underline-offset-[12px]">Forensic Presence Matrix</h1>
-                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-4">Automated Employee synchronization & diagnostic reporting</p>
+                    <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 uppercase">Presence Matrix</h1>
+                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-2 leading-none">Automated Employee synchronization & diagnostic reporting</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="bg-white border border-slate-100 px-6 py-2.5 rounded-2xl shadow-soft flex items-center gap-6 group">
                         <button className="text-slate-300 hover:text-slate-800 transition-colors"><ChevronLeft size={18} /></button>
                         <div className="flex flex-col items-center min-w-[120px]">
-                            <span className="text-sm font-black text-slate-800">October 2023</span>
+                            <span className="text-sm font-black text-slate-800 uppercase tracking-[0.1em]">{new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
                         </div>
                         <button className="text-slate-300 hover:text-slate-800 transition-colors"><ChevronRight size={18} /></button>
                     </div>
                     <button
                         onClick={() => showNotification("Syncing Forensic Data Archive...")}
-                        className="flex items-center gap-3 px-8 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px]"
+                        className="flex items-center gap-3 px-8 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-[0.2em] text-[10px]"
                     >
                         <Download size={16} />
                         Export Hub
@@ -160,10 +160,10 @@ const MonthlyAttendance = () => {
 
                 {/* Grid Crosshair Legend */}
                 <div className="absolute top-0 right-0 p-8 z-[60] flex items-center gap-4 opacity-0 hover:opacity-100 transition-opacity">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/10 backdrop-blur-md rounded-xl text-[9px] font-black text-slate-800 uppercase tracking-widest">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/10 backdrop-blur-md rounded-xl text-[9px] font-black text-slate-800 uppercase tracking-[0.2em]">
                         Row: {hoveredRow !== null ? hoveredRow + 1 : '--'}
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/10 backdrop-blur-md rounded-xl text-[9px] font-black text-slate-800 uppercase tracking-widest">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/10 backdrop-blur-md rounded-xl text-[9px] font-black text-slate-800 uppercase tracking-[0.2em]">
                         Col: {hoveredCol !== null ? hoveredCol + 1 : '--'}
                     </div>
                 </div>
@@ -184,7 +184,7 @@ const MonthlyAttendance = () => {
                     <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-black text-[10px] shadow-lg">EM</div>
                         <div className="flex flex-col">
-                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Employee Member</span>
+                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Employee Member</span>
                             <span className="text-xs font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase italic underline decoration-primary-200 underline-offset-4">Interactive Perspective</span>
                         </div>
                     </div>
@@ -193,7 +193,7 @@ const MonthlyAttendance = () => {
                             {['P', 'A', 'L', 'W'].map(key => (
                                 <div key={key} className="flex items-center gap-2">
                                     <div className={`w-3 h-3 rounded-full ${getStatusStyle(key, false)}`}></div>
-                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{key === 'W' ? 'Weekend' : key === 'L' ? 'Late' : key === 'P' ? 'Present' : 'Absent'}</span>
+                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{key === 'W' ? 'Weekend' : key === 'L' ? 'Late' : key === 'P' ? 'Present' : 'Absent'}</span>
                                 </div>
                             ))}
                         </div>
@@ -209,7 +209,7 @@ const MonthlyAttendance = () => {
                     {/* 1. LEFT PANE: EMPLOYEE IDENTITY (SYNCED VERTICAL) */}
                     <div className="w-[320px] flex flex-col shrink-0 border-r border-slate-100 bg-white relative z-50 shadow-[8px_0_24px_rgba(0,0,0,0.02)]">
                         <div className="h-[60px] flex items-center px-10 border-b border-slate-50 bg-slate-50/30">
-                            <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest flex items-center gap-3">
+                            <span className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em] flex items-center gap-3">
                                 <ShieldCheck size={16} className="text-primary-500" />
                                 Employee Nodes
                             </span>
@@ -232,7 +232,7 @@ const MonthlyAttendance = () => {
                                         <img src={emp.avatar} className="w-12 h-14 rounded-2xl object-cover ring-4 ring-white shadow-xl shadow-slate-100 group-hover:scale-105 transition-transform" alt="" />
                                         <div>
                                             <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-1">{emp.name}</p>
-                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{emp.role} • Verified Employee Archive</p>
+                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">{emp.role} • Verified Employee Archive</p>
                                         </div>
                                     </div>
                                 </div>
@@ -264,7 +264,7 @@ const MonthlyAttendance = () => {
                                         {i + 1}
                                     </div>
                                 ))}
-                                <div className="w-[140px] flex items-center justify-center text-[11px] font-black text-slate-800 bg-slate-200/20 tracking-widest uppercase">
+                                <div className="w-[140px] flex items-center justify-center text-[11px] font-black text-slate-800 bg-slate-200/20 tracking-[0.2em] uppercase">
                                     Diagnostics
                                 </div>
                             </div>
@@ -327,16 +327,16 @@ const MonthlyAttendance = () => {
                     <div className="flex items-center gap-10 relative z-10">
                         <div className="flex items-center gap-4">
                             <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-glow shadow-green-500/50"></div>
-                            <span className="text-[11px] font-black uppercase tracking-widest text-slate-300">Synchronized Forensic Workspace</span>
+                            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300">Synchronized Forensic Workspace</span>
                         </div>
                         <div className="hidden md:flex items-center gap-3 text-slate-500 text-[11px] font-bold">
                             <Clock size={16} />
-                            Last Refresh: Oct 24, 02:45 PM
+                            Last Refresh: {new Date().toLocaleString('default', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </div>
                     </div>
                     <div className="flex items-center gap-8 relative z-10">
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">Real-time audit calculated for {filteredData.length} Employee nodes</p>
-                        <button className="px-10 py-3 bg-primary-600 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-700 transition-all shadow-2xl shadow-primary-500/30 active:scale-95">Re-Sync Engine</button>
+                        <button className="px-10 py-3 bg-primary-600 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-primary-700 transition-all shadow-2xl shadow-primary-500/30 active:scale-95">Re-Sync Engine</button>
                     </div>
                     <div className="absolute top-0 right-0 w-96 h-96 bg-primary-600/10 rounded-full blur-[120px] -mr-48 -mt-48"></div>
                 </div>
