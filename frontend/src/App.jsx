@@ -67,6 +67,17 @@ import CompanyPolicies from './pages/admin-dashboard/policies/CompanyPolicies';
 import SecurityDocuments from './pages/admin-dashboard/security/SecurityDocuments';
 import SystemSettings from './pages/admin-dashboard/settings/SystemSettings';
 
+// Main Admin (Super Admin) Pages
+import MainDashboard from './pages/main-admin/MainDashboard';
+import CompanySetup from './pages/main-admin/CompanySetup';
+import CompanyDetails from './pages/main-admin/CompanyDetails';
+import CompanySuccess from './pages/main-admin/CompanySuccess';
+import UserManagement from './pages/main-admin/UserManagement';
+import PlatformConfig from './pages/main-admin/PlatformConfig';
+import SystemIntegrations from './pages/main-admin/SystemIntegrations';
+import GlobalReports from './pages/main-admin/GlobalReports';
+import SystemMonitoring from './pages/main-admin/SystemMonitoring';
+
 // Auth
 import SplashScreen from './pages/auth/SplashScreen';
 import Login from './pages/auth/Login';
@@ -94,7 +105,7 @@ function App() {
       <EmployeeProvider>
         <Routes>
           {/* 1. Cinematic Auth Flow */}
-          <Route path="/" element={<Navigate to="/splash" replace />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/splash" element={<SplashScreen />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -135,6 +146,24 @@ function App() {
                 <Route path="/policies" element={<CompanyPolicies />} />
                 <Route path="/security" element={<SecurityDocuments />} />
                 <Route path="/settings" element={<SystemSettings />} />
+              </Routes>
+            </AdminLayout>
+          } />
+
+          {/* 4. Main Admin Panel (Super Admin) */}
+          <Route path="/main-admin/*" element={
+            <AdminLayout>
+              <Routes>
+                <Route path="/" element={<MainDashboard />} />
+                <Route path="/dashboard" element={<MainDashboard />} />
+                <Route path="/company-setup" element={<CompanySetup />} />
+                <Route path="/company/:id" element={<CompanyDetails />} />
+                <Route path="/success" element={<CompanySuccess />} />
+                <Route path="/user-management" element={<UserManagement />} />
+                <Route path="/platform-config" element={<PlatformConfig />} />
+                <Route path="/integrations" element={<SystemIntegrations />} />
+                <Route path="/reports" element={<GlobalReports />} />
+                <Route path="/monitoring" element={<SystemMonitoring />} />
               </Routes>
             </AdminLayout>
           } />

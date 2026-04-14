@@ -27,7 +27,12 @@ import {
   Activity,
   Building2,
   ShieldAlert,
-  LayoutGrid
+  LayoutGrid,
+  AlertCircle,
+  Lock,
+  Mail,
+  ShieldCheck,
+  Globe
 } from 'lucide-react';
 import Logo from '../../assets/logo_infi_ap.png';
 import { useAuth } from '../../context/AuthContext';
@@ -64,11 +69,70 @@ const Sidebar = () => {
 
   // Master Menu List with Role Mapping
   const allMenuItems = [
+    // --- MAIN ADMIN (SUPER ADMIN) PORTAL ---
     {
-      name: role === 'HR' ? 'Dashboard' : 'admin dashboard',
+      name: 'Main Admin Dashboard',
       icon: LayoutDashboard,
-      path: role === 'HR' ? '/' : '/admin/dashboard',
-      roles: ['HR', 'Admin', 'Main Admin']
+      path: '/main-admin/dashboard',
+      roles: ['Main Admin']
+    },
+    {
+      name: 'Company Setup',
+      icon: Building2,
+      path: '/main-admin/company-setup',
+      roles: ['Main Admin']
+    },
+    {
+      name: 'Global User Mgnt',
+      icon: Users,
+      path: '/main-admin/user-management',
+      key: 'user-management',
+      hasSubmenu: true,
+      roles: ['Main Admin'],
+      subItems: [
+        { name: 'Add Admin', icon: ShieldCheck, path: '/main-admin/user-management?view=add-admin' },
+        { name: 'Add HR', icon: UserPlus, path: '/main-admin/user-management?view=add-hr' },
+        { name: 'Manage Permissions', icon: Lock, path: '/main-admin/user-management?view=permissions' },
+      ]
+    },
+    {
+      name: 'Platform Configuration',
+      icon: Settings,
+      path: '/main-admin/platform-config',
+      roles: ['Main Admin']
+    },
+    {
+      name: 'System Integrations',
+      icon: Activity,
+      path: '/main-admin/integrations',
+      key: 'integrations',
+      hasSubmenu: true,
+      roles: ['Main Admin'],
+      subItems: [
+        { name: 'Cloud Services', icon: Globe, path: '/main-admin/integrations' },
+        { name: 'Email System', icon: Mail, path: '/main-admin/integrations' },
+        { name: 'Security Controls', icon: ShieldAlert, path: '/main-admin/integrations' },
+      ]
+    },
+    {
+      name: 'Global Reports & Analytics',
+      icon: BarChart3,
+      path: '/main-admin/reports',
+      roles: ['Main Admin']
+    },
+    {
+      name: 'System Monitoring',
+      icon: AlertCircle,
+      path: '/main-admin/monitoring',
+      roles: ['Main Admin']
+    },
+
+    // --- SHARED / COMPANY ADMIN TOOLS ---
+    {
+      name: role === 'HR' ? 'Dashboard' : 'Admin Dashboard',
+      icon: LayoutDashboard,
+      path: role === 'HR' ? '/dashboard' : '/admin/dashboard',
+      roles: ['HR', 'Admin']
     },
     {
       name: 'Employees',
@@ -86,7 +150,7 @@ const Sidebar = () => {
       path: '/admin/department-management',
       key: 'departments',
       hasSubmenu: true,
-      roles: ['HR', 'Admin', 'Main Admin'],
+      roles: ['HR', 'Admin'],
       subItems: [
         { name: 'Create Department', icon: PlusCircle, path: '/admin/department-management/create' },
         { name: 'Manage Teams', icon: LayoutGrid, path: '/admin/department-management/teams' },
@@ -126,7 +190,7 @@ const Sidebar = () => {
       path: role === 'HR' ? '/recruitment' : '/admin/recruitment-control/posting',
       key: 'recruitment',
       hasSubmenu: true,
-      roles: ['HR', 'Admin', 'Main Admin'],
+      roles: ['HR', 'Admin'],
       subItems: [
         { name: role === 'HR' ? 'Hub' : 'Hub', icon: LayoutDashboard, path: role === 'HR' ? '/recruitment' : '/admin/recruitment-control/hub' },
         { name: role === 'HR' ? 'Analytics' : 'Analytics', icon: PieChart, path: role === 'HR' ? '/recruitment/analytics' : '/admin/recruitment-control/analytics' },
@@ -141,7 +205,7 @@ const Sidebar = () => {
       path: role === 'HR' ? '/payroll' : '/admin/payroll-management',
       key: 'payroll',
       hasSubmenu: true,
-      roles: ['HR', 'Admin', 'Main Admin'],
+      roles: ['HR', 'Admin'],
       subItems: [
         { name: role === 'HR' ? 'Payroll Hub' : 'Salary Structure', icon: role === 'HR' ? LayoutDashboard : CreditCard, path: role === 'HR' ? '/payroll' : '/admin/payroll-management/structure' },
         { name: role === 'HR' ? 'Salary Structure' : 'Payslip Generation', icon: role === 'HR' ? CreditCard : FileText, path: role === 'HR' ? '/payroll/salary' : '/admin/payroll-management/generate' },
@@ -152,13 +216,13 @@ const Sidebar = () => {
       name: 'Company Policies',
       icon: FileText,
       path: '/admin/policies',
-      roles: ['Admin', 'Main Admin']
+      roles: ['Admin']
     },
     {
       name: 'Security Documents',
       icon: ShieldAlert,
       path: '/admin/security',
-      roles: ['Admin', 'Main Admin']
+      roles: ['Admin']
     },
     {
       name: 'Performance',
@@ -202,7 +266,7 @@ const Sidebar = () => {
       name: role === 'HR' ? 'Settings' : 'System Settings',
       icon: Settings,
       path: '/admin/settings',
-      roles: ['Admin', 'Main Admin']
+      roles: ['Admin']
     },
   ];
 
@@ -223,7 +287,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 bg-white h-screen fixed left-0 top-0 border-r border-slate-200 flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+    <div className="w-80 bg-white h-screen fixed left-0 top-0 border-r border-slate-200 flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
       {/* Premium Logo Section */}
       <div className="p-8 mb-4">
         <div className="flex items-center gap-4 mb-2">
@@ -259,7 +323,7 @@ const Sidebar = () => {
                       }`}
                   >
                     <item.icon size={18} className="transition-transform group-hover:scale-110" />
-                    <span className="font-bold text-sm tracking-tight">{item.name}</span>
+                    <span className="font-bold text-sm tracking-tight whitespace-nowrap">{item.name}</span>
                     <ChevronDown size={14} className={`ml-auto transition-transform duration-300 ${openSubmenu === item.key ? 'rotate-180' : ''}`} />
                   </button>
 

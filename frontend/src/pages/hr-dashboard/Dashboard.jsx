@@ -15,192 +15,166 @@ import {
   X,
   BellRing,
   CircleDot,
+  ArrowUpRight,
+  TrendingUp,
+  Layout,
+  BarChart3,
+  Activity,
+  UserCheck
 } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [leaveStatus, setLeaveStatus] = useState('pending');
 
-  const stats = useMemo(
-    () => [
-      { title: 'Departments', value: '08', icon: Building2, note: 'Active business units' },
-      { title: 'Employees', value: '320', icon: Users, note: 'Total workforce count' },
-      { title: 'Active Jobs', value: '12', icon: Briefcase, note: 'Open recruitment roles' },
-      { title: 'Payroll', value: '$85,000', icon: Wallet, note: '+4% vs last month' },
-    ],
-    []
-  );
+  const stats = [
+    { title: 'Departments', value: '08', icon: Building2, trend: '+1', color: 'text-indigo-600', bg: 'bg-indigo-50' },
+    { title: 'Employees', value: '320', icon: Users, trend: '+4.2%', color: 'text-emerald-500', bg: 'bg-emerald-50' },
+    { title: 'Active Jobs', value: '12', icon: Briefcase, trend: '+2', color: 'text-amber-500', bg: 'bg-amber-50' },
+    { title: 'Monthly Payroll', value: '$85.4k', icon: Wallet, trend: '+4%', color: 'text-rose-500', bg: 'bg-rose-50' },
+  ];
 
-  const departments = useMemo(
-    () => [
-      { name: 'Engineering', head: 'Rahul Sharma', teams: 5, employees: 85, tag: 'Tech', tagClass: 'bg-[#E8ECFF] text-[#4559E7]' },
-      { name: 'Marketing', head: 'Priya Kaur', teams: 3, employees: 42, tag: 'Creative', tagClass: 'bg-[#FFF0E4] text-[#DD7A2D]' },
-      { name: 'Human Resources', head: 'Anit Verma', teams: 2, employees: 16, tag: 'Admin', tagClass: 'bg-[#E7F7EE] text-[#2E9A63]' },
-    ],
-    []
-  );
+  const recentActivity = [
+    { title: 'Payroll processed for Sales Department', time: 'Today at 10:15 AM', type: 'PAYROLL' },
+    { title: 'New hire Michael Scott onboarded', time: 'Yesterday at 04:30 PM', type: 'HIRING' },
+    { title: 'Announcement: Friday team sync at 3 PM', time: 'Oct 10, 2023', type: 'SYSTEM' },
+  ];
 
-  const recentActivity = useMemo(
-    () => [
-      { title: 'Payroll processed for Sales Department', time: 'Today at 10:15 AM' },
-      { title: 'New hire Michael Scott onboarded', time: 'Yesterday at 04:30 PM' },
-      { title: 'Announcement: Friday team sync at 3 PM', time: 'Oct 10, 2023' },
-    ],
-    []
+  const StatCard = ({ title, value, trend, icon: Icon, color, bg }) => (
+    <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm group hover:border-indigo-600 hover:shadow-xl hover:shadow-indigo-50 transition-all">
+       <div className="flex items-center justify-between mb-4">
+          <div className={`w-10 h-10 ${bg} ${color} rounded-xl flex items-center justify-center transition-transform group-hover:scale-110`}>
+             {Icon ? <Icon size={18} /> : <div className="w-5 h-5 bg-slate-200 rounded-full" />}
+          </div>
+          <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg uppercase tracking-widest">{trend}</span>
+       </div>
+       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{title}</p>
+       <h3 className="text-xl font-black text-slate-800 tracking-tight">{value}</h3>
+    </div>
   );
 
   return (
-    <div className="space-y-8 pb-10">
-      <section className="grid grid-cols-4 gap-6">
-        {stats.map((stat) => (
-          <article
-            key={stat.title}
-            className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_26px_-16px_rgba(45,55,110,0.5)]"
-          >
-            <div className="mb-4 flex items-center justify-between">
-              <div className="rounded-xl bg-[#F2F5FD] p-2.5 text-[#4E63F0]">
-                <stat.icon size={18} />
-              </div>
-              <ChevronRight size={16} className="text-[#B1BCD9]" />
-            </div>
-            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#90A0C8]">{stat.title}</p>
-            <h3 className="mt-2 text-3xl font-black tracking-tight text-[#1E2A54]">{stat.value}</h3>
-            <p className="mt-1 text-xs font-semibold text-[#7A89B3]">{stat.note}</p>
-          </article>
-        ))}
-      </section>
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700 pb-40">
+       
+       <div className="flex items-center justify-between border-b border-slate-50 pb-8">
+          <div>
+             <h1 className="text-2xl font-black text-slate-800 tracking-tight uppercase">HR Management Console</h1>
+             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Operational Insights & Workforce Orchestration</p>
+          </div>
+          <div className="flex items-center gap-3">
+             <button className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-indigo-600 transition-all active:scale-95">
+                <PlusCircle size={14} /> New Action
+             </button>
+          </div>
+       </div>
 
-      <section className="grid grid-cols-[1.5fr_1fr] gap-6">
-        <div className="space-y-6">
-          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Quick Actions</h2>
-              <button className="text-xs font-black text-[#4E63F0]">View All</button>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <button
-                onClick={() => navigate('/employees/add')}
-                className="flex items-center gap-3 rounded-xl border border-[#E6ECF9] bg-[#F7F9FF] px-4 py-4 text-left transition hover:border-[#CAD5FA] hover:bg-[#F2F6FF]"
-              >
-                <UserPlus size={16} className="text-[#4E63F0]" />
-                <span className="text-xs font-bold text-[#273462]">Add Employee</span>
-              </button>
-              <button className="flex items-center gap-3 rounded-xl border border-[#E6ECF9] bg-[#F7F9FF] px-4 py-4 text-left transition hover:border-[#CAD5FA] hover:bg-[#F2F6FF]">
-                <PlusCircle size={16} className="text-[#4E63F0]" />
-                <span className="text-xs font-bold text-[#273462]">Create Department</span>
-              </button>
-              <button className="flex items-center gap-3 rounded-xl border border-[#E6ECF9] bg-[#F7F9FF] px-4 py-4 text-left transition hover:border-[#CAD5FA] hover:bg-[#F2F6FF]">
-                <Send size={16} className="text-[#4E63F0]" />
-                <span className="text-xs font-bold text-[#273462]">Post Job</span>
-              </button>
-            </div>
-          </article>
+       {/* Stats Grid */}
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat, i) => (
+             <StatCard key={i} {...stat} />
+          ))}
+       </div>
 
-          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Departments</h2>
-              <button onClick={() => navigate('/departments')} className="text-xs font-black text-[#4E63F0]">See All</button>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {departments.map((dept) => (
-                <div key={dept.name} className="rounded-xl border border-[#E8EDFA] bg-[#FCFDFF] p-4 transition hover:-translate-y-0.5 hover:shadow-md">
-                  <div className="mb-3 flex items-start justify-between">
-                    <h3 className="text-sm font-black text-[#22305F]">{dept.name}</h3>
-                    <span className={`rounded-full px-2 py-1 text-[10px] font-black uppercase tracking-widest ${dept.tagClass}`}>
-                      {dept.tag}
-                    </span>
-                  </div>
-                  <p className="text-xs font-semibold text-[#7383B0]">Head: {dept.head}</p>
-                  <p className="mt-1 text-xs font-semibold text-[#7383B0]">{dept.teams} Teams • {dept.employees} Employees</p>
-                  <button className="mt-4 w-full rounded-lg border border-[#E0E6F7] bg-white py-2 text-xs font-bold text-[#364575] transition hover:bg-[#F3F7FF]">
-                    View Teams
-                  </button>
+       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Main Feed Column */}
+          <div className="lg:col-span-8 space-y-8">
+             
+             {/* Quick Operational Actions */}
+             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
+                <div className="flex items-center justify-between pb-6 border-b border-slate-50">
+                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Precision Actions</h3>
+                   <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">Full Directory</button>
                 </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Recruitment</h2>
-              <button className="text-xs font-black text-[#4E63F0]">New Job</button>
-            </div>
-            <div className="rounded-xl border border-[#E8EDFA] bg-[#FCFDFF] p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-black text-[#22305F]">Frontend Developer</h3>
-                  <p className="mt-1 text-xs font-semibold text-[#7383B0]">Engineering • Remote</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                   {[
+                      { label: 'Add Employee', icon: UserPlus, path: '/employees/add' },
+                      { label: 'Create Department', icon: Building2, path: '/admin/department-management/create' },
+                      { label: 'Post Opportunity', icon: Send, path: '/recruitment/create' }
+                   ].map((action, i) => (
+                      <button 
+                         key={i}
+                         onClick={() => navigate(action.path)}
+                         className="flex items-center gap-4 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-indigo-600 hover:shadow-xl hover:shadow-indigo-50/50 transition-all group"
+                      >
+                         <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-indigo-600 shadow-sm transition-transform group-hover:scale-110">
+                            <action.icon size={18} />
+                         </div>
+                         <span className="text-[11px] font-black text-slate-800 uppercase tracking-tight">{action.label}</span>
+                      </button>
+                   ))}
                 </div>
-                <span className="rounded-full bg-[#DEF6E9] px-2 py-1 text-[10px] font-black uppercase tracking-widest text-[#299458]">New</span>
-              </div>
-              <button className="mt-4 rounded-lg bg-linear-to-r from-[#4E63F0] to-[#6855E8] px-4 py-2 text-xs font-bold text-white transition hover:shadow-lg hover:shadow-[#4E63F0]/20">
-                Review Candidates
-              </button>
-            </div>
-          </article>
-        </div>
+             </div>
 
-        <div className="space-y-6">
-          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Leave Request</h2>
-              <span className="text-xs font-black text-[#4E63F0]">Pending</span>
-            </div>
-            <div className="rounded-xl border border-[#E8EDFA] bg-[#FCFDFF] p-4">
-              <div className="mb-3 flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-black text-[#22305F]">Jessica Miller</h3>
-                  <p className="text-xs font-semibold text-[#7383B0]">Sick leave • 2 days</p>
+             {/* Recent Activity Stream */}
+             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
+                <div className="flex items-center justify-between pb-6 border-b border-slate-50">
+                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Operational Stream</h3>
+                   <Activity size={16} className="text-slate-300" />
                 </div>
-                <Clock3 size={16} className="text-[#90A0C8]" />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => setLeaveStatus('rejected')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#F1C7D0] bg-[#FFF5F7] py-2 text-xs font-bold text-[#CC4764] transition hover:bg-[#FFE9EE]"
-                >
-                  <X size={14} />
-                  Reject
-                </button>
-                <button
-                  onClick={() => setLeaveStatus('approved')}
-                  className="flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-[#4E63F0] to-[#6855E8] py-2 text-xs font-bold text-white transition hover:shadow-lg hover:shadow-[#4E63F0]/20"
-                >
-                  <Check size={14} />
-                  Approve
-                </button>
-              </div>
-              <p className="mt-3 text-[11px] font-bold uppercase tracking-widest text-[#8F9BC1]">Status: {leaveStatus}</p>
-            </div>
-          </article>
-
-          <article className="rounded-2xl border border-[#E6ECF9] bg-white p-6 shadow-[0_10px_24px_-18px_rgba(45,55,110,0.55)]">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-sm font-black uppercase tracking-[0.22em] text-[#8C9AC1]">Recent Activity</h2>
-              <BellRing size={16} className="text-[#6A79A8]" />
-            </div>
-            <div className="space-y-4">
-              {recentActivity.map((activity) => (
-                <div key={activity.title} className="flex gap-3">
-                  <CircleDot size={14} className="mt-1 text-[#4E63F0]" />
-                  <div>
-                    <p className="text-sm font-semibold text-[#22305F]">{activity.title}</p>
-                    <p className="text-xs font-medium text-[#8B97BC]">{activity.time}</p>
-                  </div>
+                <div className="space-y-4">
+                   {recentActivity.map((activity, i) => (
+                      <div key={i} className="flex items-start gap-5 p-4 rounded-2xl hover:bg-slate-50 transition-all group border border-transparent hover:border-slate-100">
+                         <div className="w-10 h-10 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center shrink-0">
+                            <CircleDot size={14} className="animate-pulse" />
+                         </div>
+                         <div className="flex-1">
+                            <p className="text-[11px] font-black text-slate-800 leading-relaxed uppercase tracking-tight">{activity.title}</p>
+                            <div className="flex items-center gap-3 mt-1.5">
+                               <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">{activity.time}</span>
+                               <span className="text-[8px] font-black text-indigo-300 uppercase tracking-widest">#{activity.type}</span>
+                            </div>
+                         </div>
+                         <ChevronRight size={14} className="text-slate-200 mt-2" />
+                      </div>
+                   ))}
                 </div>
-              ))}
-            </div>
-          </article>
+             </div>
+          </div>
 
-          <article className="rounded-2xl bg-linear-to-br from-[#4E63F0] to-[#6855E8] p-6 text-white shadow-[0_16px_28px_-14px_rgba(78,99,240,0.65)]">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-black uppercase tracking-[0.2em] text-white/80">Insights</h2>
-              <Sparkles size={16} className="text-white" />
-            </div>
-            <p className="mt-3 text-xl font-black">Workforce health is stable and trending upward this week.</p>
-          </article>
-        </div>
-      </section>
+          {/* Right/Sidebar Column */}
+          <div className="lg:col-span-4 space-y-8">
+             
+             {/* Pending Leave Request Card */}
+             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
+                <div className="flex items-center justify-between pb-6 border-b border-slate-50">
+                   <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Pending Approvals</h3>
+                   <span className="px-2 py-0.5 bg-amber-50 text-amber-500 text-[8px] font-black rounded uppercase">1 Urgent</span>
+                </div>
+                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-6">
+                   <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-black">JM</div>
+                      <div>
+                         <p className="text-xs font-black text-slate-800 uppercase tracking-tight mb-0.5">Jessica Miller</p>
+                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sick Leave • 2 Days</p>
+                      </div>
+                   </div>
+                   <div className="grid grid-cols-2 gap-3">
+                      <button className="py-3 bg-white border border-slate-200 text-slate-400 text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 transition-all">Reject</button>
+                      <button className="py-3 bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-slate-900 transition-all">Approve</button>
+                   </div>
+                </div>
+             </div>
+
+             {/* Workforce Insight Card */}
+             <div className="bg-slate-900 p-8 rounded-3xl text-white shadow-xl shadow-slate-100 relative overflow-hidden group">
+                <div className="flex items-center justify-between mb-8">
+                   <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400">System Insights</h3>
+                   <Sparkles size={16} className="text-indigo-400" />
+                </div>
+                <p className="text-lg font-black tracking-tight leading-tight uppercase">Workforce health is stable and trending <span className="text-emerald-400">upward</span> this week.</p>
+                <div className="mt-8 flex items-center gap-3">
+                   <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                      <TrendingUp size={16} className="text-white" />
+                   </div>
+                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Efficiency +8.4%</span>
+                </div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-600/10 rounded-full blur-[80px]"></div>
+             </div>
+
+          </div>
+
+       </div>
     </div>
   );
 };

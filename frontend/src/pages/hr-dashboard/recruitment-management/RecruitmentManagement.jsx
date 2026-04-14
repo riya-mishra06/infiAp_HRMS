@@ -23,6 +23,7 @@ import {
   Briefcase,
   Users,
   UserPlus,
+  ShieldCheck,
   Target
 } from 'lucide-react';
 import { 
@@ -262,7 +263,7 @@ const RecruitmentManagement = () => {
                            <td className="px-10 py-8">
                               <div className="flex items-center gap-5">
                                  <div className={`p-4 rounded-2xl ${act.bg} ${act.color} border border-slate-100 shadow-sm group-hover:scale-110 transition-all`}>
-                                    <act.icon size={24} />
+                                    {act.icon ? <act.icon size={24} /> : <div className="w-6 h-6 bg-slate-200 rounded-full" />}
                                  </div>
                                  <div className="text-left">
                                     <p className="text-sm font-black text-slate-800 tracking-tight leading-none group-hover:text-primary-600 transition-colors uppercase mb-1">{act.title}</p>

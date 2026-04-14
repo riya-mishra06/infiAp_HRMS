@@ -9,7 +9,7 @@ const AdminLayout = ({ children }) => {
       <Sidebar />
       
       {/* Right Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 ml-64">
+      <div className="flex-1 flex flex-col min-w-0 ml-80">
         <AdminNavbar />
         <main className="p-10 w-full animate-in fade-in duration-500">
           <div className="w-full max-w-[1440px] mx-auto">

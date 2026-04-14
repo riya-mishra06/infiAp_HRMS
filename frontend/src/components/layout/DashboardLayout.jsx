@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }) => {
       <Sidebar />
       
       {/* Right Column (Navbar + Content) */}
-      <div className="flex-1 flex flex-col min-w-0 ml-64">
+      <div className="flex-1 flex flex-col min-w-0 ml-80">
         <Navbar />
         <main className="p-8 w-full">
           <div className="w-full">

@@ -195,8 +195,8 @@ const LeaveManagement = () => {
                   <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Absence Trend</h3>
                   <TrendingUp size={20} className="text-orange-500" />
                </div>
-               <div className="h-32 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
+               <div className="h-32 w-full min-h-[128px] overflow-hidden">
+                  <ResponsiveContainer width="99%" height="100%" minWidth={0}>
                     <AreaChart data={trendData}>
                        <defs>
                           <linearGradient id="colorAbsence" x1="0" y1="0" x2="0" y2="1">
