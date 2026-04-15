@@ -16,7 +16,7 @@ const AdminNavbar = () => {
     if (path.includes('/security')) return 'Security Documents';
     if (path.includes('/settings')) return 'System Settings';
     if (path.includes('/departments')) return 'Departments';
-    return 'Admin Control';
+    return 'Institutional Hub';
   };
 
   return (

@@ -71,7 +71,7 @@ const Sidebar = () => {
   const allMenuItems = [
     // --- MAIN ADMIN (SUPER ADMIN) PORTAL ---
     {
-      name: 'Main Admin Dashboard',
+      name: 'Platform Hub',
       icon: LayoutDashboard,
       path: '/main-admin/dashboard',
       roles: ['Main Admin']
@@ -109,9 +109,9 @@ const Sidebar = () => {
       hasSubmenu: true,
       roles: ['Main Admin'],
       subItems: [
-        { name: 'Cloud Services', icon: Globe, path: '/main-admin/integrations' },
-        { name: 'Email System', icon: Mail, path: '/main-admin/integrations' },
-        { name: 'Security Controls', icon: ShieldAlert, path: '/main-admin/integrations' },
+        { name: 'Cloud Services', icon: Globe, path: '/main-admin/integrations?view=cloud' },
+        { name: 'Email System', icon: Mail, path: '/main-admin/integrations?view=email' },
+        { name: 'Security Controls', icon: ShieldAlert, path: '/main-admin/integrations?view=security' },
       ]
     },
     {
@@ -129,7 +129,7 @@ const Sidebar = () => {
 
     // --- SHARED / COMPANY ADMIN TOOLS ---
     {
-      name: role === 'HR' ? 'Dashboard' : 'Admin Dashboard',
+      name: role === 'HR' ? 'Dashboard' : 'Management Hub',
       icon: LayoutDashboard,
       path: role === 'HR' ? '/dashboard' : '/admin/dashboard',
       roles: ['HR', 'Admin']

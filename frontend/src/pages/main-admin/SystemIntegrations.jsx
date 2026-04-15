@@ -4,7 +4,7 @@ import {
   RefreshCw, Key, Lock, Search, AlertTriangle, HelpCircle, HardDrive, Cpu, 
   MoreVertical, Settings, Users, LogOut, ChevronRight, Activity, Server
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const ToggleButton = ({ active, onClick }) => (
   <button onClick={onClick} className={`w-12 h-6 flex items-center rounded-full px-1 transition-all duration-300 ${active ? 'bg-indigo-600' : 'bg-slate-200'}`}>
@@ -313,6 +313,108 @@ const CloudView = ({ setView }) => {
   );
 };
 
+const SecurityView = ({ setView }) => (
+  <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in pb-20">
+    <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center gap-4">
+        <button onClick={() => setView('hub')} className="p-2 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+          <ChevronLeft size={20} className="text-slate-600" />
+        </button>
+        <h1 className="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-2">
+          <ShieldAlert className="text-indigo-600" /> Security Controls
+        </h1>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-[10px] font-black uppercase tracking-widest border border-emerald-100 flex items-center gap-2">
+          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+          System Hardened
+        </div>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <div className="md:col-span-8 space-y-6">
+        <div className="bg-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl">
+          <div className="relative z-10 space-y-6">
+            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest">Global Security Status</h3>
+            <div className="flex items-end gap-3">
+              <span className="text-6xl font-black tracking-tighter">A+</span>
+              <span className="text-emerald-400 text-sm font-black mb-2 uppercase tracking-widest">Reliability Score</span>
+            </div>
+            <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
+              All infrastructure nodes are currently encrypted with AES-256 GCM. Automated threat detection is active across 14 clusters.
+            </p>
+          </div>
+          <ShieldCheck className="absolute right-[-20px] bottom-[-20px] text-white/5" size={240} />
+        </div>
+
+        <div className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm">
+          <h3 className="text-lg font-black text-slate-800 mb-6">Protocols & Nodes</h3>
+          <div className="space-y-4">
+            {[
+              { name: 'Multi-Factor Auth', status: 'Active', desc: 'Enforced for all administrative accounts.', icon: ShieldCheck, color: 'text-emerald-500' },
+              { name: 'IAM Governance', status: 'Active', desc: 'Role-based access control with monthly audit logs.', icon: Key, color: 'text-blue-500' },
+              { name: 'Endpoint Protection', status: 'Standby', desc: 'Real-time monitoring for unauthorized node access.', icon: Activity, color: 'text-amber-500' }
+            ].map((p, i) => (
+              <div key={i} className="flex items-center justify-between p-5 border border-slate-50 rounded-2xl bg-slate-50/50 hover:bg-white hover:border-indigo-100 transition-all cursor-pointer group">
+                <div className="flex items-center gap-5">
+                  <div className={`w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm ${p.color} group-hover:bg-indigo-600 group-hover:text-white transition-all`}>
+                    <p.icon size={22} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-black text-slate-800 leading-none mb-1.5">{p.name}</h4>
+                    <p className="text-xs font-bold text-slate-400 leading-none">{p.desc}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="px-3 py-1 bg-white border border-slate-200 rounded-lg text-[9px] font-black text-slate-400 uppercase tracking-widest">{p.status}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="md:col-span-4 space-y-6">
+        <div className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm">
+          <h3 className="text-lg font-black text-slate-800 mb-6 font-display">System Logs</h3>
+          <div className="space-y-6">
+            {[
+              { msg: 'Unauthorized Login Attempt', time: '12m ago', level: 'CRITICAL', color: 'text-rose-500' },
+              { msg: 'API Key Rotated: AWS-PRD', time: '1h ago', level: 'INFO', color: 'text-indigo-500' },
+              { msg: 'New Admin Provisioned', time: '3h ago', level: 'AUDIT', color: 'text-emerald-500' }
+            ].map((log, i) => (
+              <div key={i} className="space-y-1">
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+                  <span className={log.color}>{log.level}</span>
+                  <span className="text-slate-300">{log.time}</span>
+                </div>
+                <p className="text-xs font-bold text-slate-600 line-clamp-1">{log.msg}</p>
+              </div>
+            ))}
+          </div>
+          <button className="w-full mt-10 py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200">
+            Export Audit Trail
+          </button>
+        </div>
+
+        <div className="bg-indigo-600 rounded-[32px] p-8 text-white">
+          <div className="flex items-center gap-3 mb-4 text-indigo-200">
+            <Lock size={18} />
+            <span className="text-[10px] font-black uppercase tracking-widest">Security Tip</span>
+          </div>
+          <p className="text-sm font-bold leading-relaxed mb-6">
+            Regularly audit your IAM nodes to prevent permission creep across administrative roles.
+          </p>
+          <button className="text-xs font-black uppercase tracking-widest hover:underline text-white flex items-center gap-2">
+            Read Security Manual <ChevronRight size={14} />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const EmailView = ({ setView }) => (
   <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in pb-20">
     <div className="flex items-center justify-between mb-8">
@@ -579,8 +681,23 @@ const HubView = ({ setView }) => (
 );
 
 const SystemIntegrations = () => {
-  const navigate = useNavigate();
-  const [view, setView] = useState('hub'); 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialView = searchParams.get('view') || 'hub';
+  const [view, setViewInternal] = useState(initialView); 
+
+  React.useEffect(() => {
+     setViewInternal(searchParams.get('view') || 'hub');
+  }, [searchParams]);
+
+  const setView = (newView) => {
+     if (newView === 'hub') {
+        setSearchParams({});
+     } else {
+        setSearchParams({ view: newView });
+     }
+     setViewInternal(newView);
+     window.scrollTo(0, 0);
+  };
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
@@ -590,6 +707,7 @@ const SystemIntegrations = () => {
           {view === 'config-google' && <ConfigGoogleView setView={setView} />}
           {view === 'config-aws' && <ConfigAwsView setView={setView} />}
           {view === 'email' && <EmailView setView={setView} />}
+          {view === 'security' && <SecurityView setView={setView} />}
        </div>
     </div>
   );

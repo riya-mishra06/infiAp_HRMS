@@ -124,7 +124,7 @@ function App() {
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/auth-success" element={<Success />} />
 
-              {/* 2. Admin Panel (Company Level Admin) */}
+              {/* 2. Management Portal (Company Level) */}
               <Route path="/admin/*" element={
                 <AdminLayout>
                   <Routes>
@@ -167,7 +167,7 @@ function App() {
                 </AdminLayout>
               } />
 
-              {/* 4. Main Admin Panel (Super Admin) */}
+              {/* 4. Main Institutional Portal (Super Portal) */}
               <Route path="/main-admin/*" element={
                 <AdminLayout>
                   <Routes>

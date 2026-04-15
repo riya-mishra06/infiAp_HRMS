@@ -49,7 +49,7 @@ const AdminSidebar = () => {
           </div>
           <div>
             <span className="text-2xl font-black text-slate-800 tracking-tighter leading-none block">InfiAP</span>
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Admin Panel</span>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Solutions Center</span>
           </div>
         </div>
       </div>
