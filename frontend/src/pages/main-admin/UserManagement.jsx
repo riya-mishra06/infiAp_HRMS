@@ -42,6 +42,7 @@ import {
    Clock
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 // Externalized Sub-components to prevent focus loss
 const HubView = ({ setView, searchTerm, setSearchTerm, filterStatus, setFilterStatus, filteredUsers, setSelectedUser }) => (
@@ -463,16 +464,60 @@ const ProfileView = ({ setView, selectedUser, handleDeleteUser, showNotification
    </div>
 );
 
-const AddHRView = ({ setView }) => (
-   <div className="max-w-xl mx-auto space-y-12 animate-in fade-in slide-in-from-right-8 duration-1000 pb-40 text-center">
-      <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-3xl flex items-center justify-center mx-auto shadow-inner">
-         <UserPlus size={40} />
+const AddHRView = ({ setView, hrForm, setHrForm, handleCreateHR }) => (
+   <div className="max-w-xl mx-auto space-y-12 animate-in fade-in slide-in-from-right-8 duration-1000 pb-40">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-slate-50 pb-12">
+         <div className="flex items-center gap-6">
+            <button onClick={() => setView('hub')} className="w-12 h-12 bg-slate-50 text-slate-400 rounded-2xl hover:bg-slate-900 hover:text-white transition-all flex items-center justify-center">
+               <ChevronLeft size={24} />
+            </button>
+            <div>
+               <h1 className="text-3xl font-black text-slate-800 tracking-tighter uppercase leading-none mb-2">New HR Director Profile</h1>
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] leading-none">Global HCM Leadership Node</p>
+            </div>
+         </div>
+         <button onClick={() => setView('hub')} className="p-3 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all active:scale-90">
+            <CloseIcon size={20} />
+         </button>
       </div>
-      <div className="space-y-4">
-         <h1 className="text-3xl font-black text-slate-800 tracking-tighter uppercase leading-none">New HR Director Profile</h1>
-         <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] leading-relaxed max-w-sm mx-auto">This module is designated for core HCM leadership nodes. Please use the Add Admin workflow for engineering and financial resource provisioning.</p>
-      </div>
-      <button onClick={() => setView('hub')} className="px-10 py-5 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] hover:bg-emerald-600 transition-all active:scale-95">Return to Hub</button>
+
+      <form onSubmit={handleCreateHR} className="bg-white p-12 rounded-[48px] border border-slate-100 shadow-soft space-y-10">
+         <div className="p-6 bg-emerald-50/50 rounded-3xl border border-dashed border-emerald-200">
+            <p className="text-[10px] font-black text-emerald-600 leading-relaxed uppercase tracking-[0.2em] text-center">Identity synchronization protocol initialized. Please input administrative credentials for HR node authorization.</p>
+         </div>
+         
+         <div className="space-y-8">
+            {[
+              { label: 'Full Institution Name', name: 'fullName', type: 'text', icon: UserPlus, placeholder: 'e.g. Jane Doe' },
+              { label: 'Master Access Email', name: 'email', type: 'email', icon: Mail, placeholder: 'hr@infiap.com' },
+              { label: 'Direct Protocol Node (Phone)', name: 'phone', type: 'text', icon: Phone, placeholder: 'Direct Contact Number' }
+            ].map((field) => (
+               <div key={field.name} className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.25em] ml-1">{field.label}</label>
+                  <div className="relative group">
+                     <field.icon className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={20} />
+                     <input 
+                        type={field.type} 
+                        value={hrForm[field.name]}
+                        onChange={(e) => setHrForm({...hrForm, [field.name]: e.target.value})}
+                        placeholder={field.placeholder} 
+                        autoComplete="off"
+                        className="w-full bg-slate-50/50 border border-slate-100 rounded-2xl pl-16 pr-8 py-5 text-sm font-bold focus:ring-4 focus:ring-emerald-500/5 focus:bg-white outline-none transition-all tracking-tight" 
+                     />
+                  </div>
+               </div>
+            ))}
+
+            <div className="grid grid-cols-2 gap-6 pt-6">
+               <button type="submit" className="flex-1 py-6 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-3xl hover:bg-emerald-500 transition-all flex items-center justify-center gap-4 border border-slate-800">
+                  Deploy Node <ArrowRight size={18} />
+               </button>
+               <button type="button" onClick={() => setView('hub')} className="px-8 py-6 bg-white border border-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-[0.25em] rounded-[24px] hover:bg-slate-50 transition-all">
+                  Abort
+               </button>
+            </div>
+         </div>
+      </form>
    </div>
 );
 
@@ -481,16 +526,50 @@ const UserManagement = () => {
    const navigate = useNavigate();
    const [searchParams, setSearchParams] = useSearchParams();
    const viewParam = searchParams.get('view') || 'hub';
+
+   const { fetchAllUsers, deleteUser, register, loading: authLoading } = useAuth();
    
    const [view, setViewInternal] = useState(viewParam);
    const [notification, setNotification] = useState(null);
    const [searchTerm, setSearchTerm] = useState('');
    const [filterStatus, setFilterStatus] = useState('All Users');
+   const [users, setUsers] = useState([]);
+   const [isLoading, setIsLoading] = useState(true);
 
    // Sync local view state with search params
    useEffect(() => {
       setViewInternal(viewParam);
    }, [viewParam]);
+
+   // Fetch users from backend
+   const loadUsers = async () => {
+      setIsLoading(true);
+      const res = await fetchAllUsers();
+      if (res.success) {
+         // Map backend users to UI expected fields
+         const mappedUsers = res.data.map(u => ({
+            id: u._id,
+            name: u.name,
+            role: u.role,
+            email: u.email,
+            status: u.role === 'Main Admin' ? 'ACTIVE' : 'ACTIVE', // Simple logic for now
+            lastLogin: 'Active',
+            avatar: u.name.split(' ').map(n=>n[0]).join('').toUpperCase(),
+            empId: u._id.substring(0, 8).toUpperCase(),
+            phone: '+Internal',
+            dept: u.role === 'hr' ? 'HR' : 'Engineering',
+            permissions: { empMgmt: true, payroll: true, recruitment: true, reports: true, settings: true }
+         }));
+         setUsers(mappedUsers);
+      } else {
+         showNotification('Identity Error: Failed to synchronize master directory.');
+      }
+      setIsLoading(false);
+   };
+
+   useEffect(() => {
+      loadUsers();
+   }, []);
 
    const showNotification = (msg) => {
       setNotification(msg);
@@ -510,15 +589,8 @@ const UserManagement = () => {
    const [selectedUser, setSelectedUser] = useState(null);
    const [showPassword, setShowPassword] = useState(false);
 
-   const [users, setUsers] = useState([
-      { id: 1, name: 'Alex Rivera', role: 'Senior Software Engineer', email: 'alex.r@infiap.com', status: 'ACTIVE', lastLogin: '12m ago', avatar: 'AR', empId: 'EMP-1024', phone: '+1 (555) 012-3456', dob: 'May 12, 1992', address: '742 Evergreen Terrace, Springfield, OR', dept: 'Engineering', manager: 'Sarah Jenkins', joinDate: 'Jan 15, 2021', type: 'FULL-TIME', permissions: { empMgmt: true, payroll: true, recruitment: true, reports: true, settings: false } },
-      { id: 2, name: 'Sarah Johnson', role: 'HR Operations Manager', email: 'sarah.j@infiap.com', status: 'ACTIVE', lastLogin: '2h ago', avatar: 'SJ', empId: 'EMP-1025', phone: '+1 (555) 012-3457', dob: 'June 20, 1988', address: '123 Oak St, Portland, OR', dept: 'HR', manager: 'Jonathan Reeves', joinDate: 'Mar 10, 2020', type: 'FULL-TIME', permissions: { empMgmt: true, payroll: true, recruitment: true, reports: true, settings: false } },
-      { id: 3, name: 'Marcus Chen', role: 'UI/UX Designer', email: 'm.chen@infiap.com', status: 'PENDING', lastLogin: '3 days ago', avatar: 'MC', empId: 'EMP-1026', phone: '+1 (555) 012-3458', dob: 'Oct 05, 1995', address: '456 Pine St, Seattle, WA', dept: 'Design', manager: 'Sarah Jenkins', joinDate: 'Feb 01, 2024', type: 'CONTRACT', permissions: { empMgmt: true, payroll: false, recruitment: true, reports: false, settings: false } },
-      { id: 4, name: 'David Miller', role: 'Finance Lead', email: 'd.miller@infiap.com', status: 'INACTIVE', lastLogin: '1 week ago', avatar: 'DM', empId: 'EMP-1027', phone: '+1 (555) 012-3459', dob: 'Jan 15, 1985', address: '789 Maple Ave, Austin, TX', dept: 'Finance', manager: 'Jonathan Reeves', joinDate: 'Nov 20, 2019', type: 'FULL-TIME', permissions: { empMgmt: false, payroll: true, recruitment: false, reports: true, settings: false } },
-      { id: 5, name: 'Elena Rodriguez', role: 'Product Marketing Specialist', email: 'elena.r@infiap.com', status: 'ACTIVE', lastLogin: '5h ago', avatar: 'ER', empId: 'EMP-1028', phone: '+1 (555) 012-3460', dob: 'Dec 02, 1993', address: '321 Elm St, Denver, CO', dept: 'Marketing', manager: 'Jonathan Reeves', joinDate: 'May 05, 2022', type: 'FULL-TIME', permissions: { empMgmt: true, payroll: false, recruitment: true, reports: true, settings: false } },
-   ]);
-
    const [adminForm, setAdminForm] = useState({ fullName: '', email: '', phone: '', company: '', role: 'Full Admin' });
+   const [hrForm, setHrForm] = useState({ fullName: '', email: '', phone: '', department: 'HR', role: 'HR Director' });
 
    const filteredUsers = users.filter(user => {
       const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -545,36 +617,59 @@ const UserManagement = () => {
       showNotification(`Identity Hub: ${key} access level updated for node ${updatedUser.avatar}.`);
    };
 
-   const handleDeleteUser = (id) => {
+   const handleDeleteUser = async (id) => {
       if (window.confirm('Institutional Security Alert: Are you absolutely certain you want to terminate this resource access? This action is irreversible.')) {
-         setUsers(prev => prev.filter(u => u.id !== id));
-         showNotification('Resource Protocol: Node access permanently decommissioned.');
-         setView('hub');
+         const res = await deleteUser(id);
+         if (res.success) {
+            showNotification('Resource Protocol: Node access permanently decommissioned.');
+            loadUsers();
+            setView('hub');
+         } else {
+            showNotification('Security Breach: Failed to decommission access node.');
+         }
       }
    };
 
-   const handleCreateAdmin = (e) => {
+   const handleCreateAdmin = async (e) => {
       e.preventDefault();
       if (!adminForm.fullName || !adminForm.email) return;
       showNotification('Provisioning Engine: Synergizing administrative credentials...');
-      setTimeout(() => {
-         const newUser = {
-            id: users.length + 1,
-            name: adminForm.fullName,
-            role: adminForm.role,
-            email: adminForm.email,
-            status: 'PENDING',
-            lastLogin: 'Never',
-            avatar: adminForm.fullName.split(' ').map(n=>n[0]).join('').toUpperCase(),
-            empId: `EMP-${1030 + users.length}`,
-            phone: adminForm.phone,
-            dept: 'Engineering',
-            permissions: { empMgmt: true, payroll: true, recruitment: true, reports: true, settings: true }
-         };
-         setUsers([newUser, ...users]);
+      
+      const res = await register({
+         name: adminForm.fullName,
+         email: adminForm.email,
+         password: 'TemporaryPassword123!', // Admin created users should reset this
+         role: adminForm.role === 'Full Admin' ? 'Main Admin' : 'admin'
+      });
+
+      if (res.success) {
+         showNotification(`Access Protocol: Node successfully provisioned.`);
+         loadUsers();
          setView('hub');
-         showNotification(`Access Protocol: Node ${newUser.avatar} successfully provisioned.`);
-      }, 1500);
+      } else {
+         showNotification(`Access Denied: ${res.error}`);
+      }
+   };
+
+   const handleCreateHR = async (e) => {
+      e.preventDefault();
+      if (!hrForm.fullName || !hrForm.email) return;
+      showNotification('Provisioning Engine: Synergizing HR credentials...');
+      
+      const res = await register({
+         name: hrForm.fullName,
+         email: hrForm.email,
+         password: 'TemporaryPassword123!', // HR created users should reset this
+         role: 'hr'
+      });
+
+      if (res.success) {
+         showNotification(`Access Protocol: HR Node successfully provisioned.`);
+         loadUsers();
+         setView('hub');
+      } else {
+         showNotification(`Access Denied: ${res.error}`);
+      }
    };
 
    return (
@@ -615,7 +710,14 @@ const UserManagement = () => {
                   handleCreateAdmin={handleCreateAdmin} 
                />
             )}
-            {view === 'add-hr' && <AddHRView setView={setView} />}
+            {view === 'add-hr' && (
+               <AddHRView 
+                  setView={setView} 
+                  hrForm={hrForm} 
+                  setHrForm={setHrForm} 
+                  handleCreateHR={handleCreateHR} 
+               />
+            )}
             {view === 'permissions' && (
                <PermissionsView 
                   setView={setView} 

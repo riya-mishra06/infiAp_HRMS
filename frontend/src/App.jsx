@@ -91,6 +91,7 @@ import ResetPassword from './pages/auth/ResetPassword';
 import Success from './pages/auth/Success';
 
 import { EmployeeProvider } from './context/EmployeeContext';
+import { PolicyProvider } from './context/PolicyContext';
 
 // Placeholder components for Settings
 const Placeholder = ({ title }) => (
@@ -112,6 +113,7 @@ function App() {
       <EmployeeProvider>
         <DepartmentProvider>
           <JobProvider>
+          <PolicyProvider>
             <Routes>
               {/* 1. Cinematic Auth Flow */}
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -244,6 +246,7 @@ function App() {
                 </DashboardLayout>
               } />
             </Routes>
+            </PolicyProvider>
           </JobProvider>
         </DepartmentProvider>
       </EmployeeProvider>

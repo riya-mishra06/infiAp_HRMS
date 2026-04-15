@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useAuth } from '../../context/AuthContext';
+import { useEmployeeContext } from '../../context/EmployeeContext';
 
 const MainDashboard = () => {
   const navigate = useNavigate();
@@ -66,7 +68,30 @@ const MainDashboard = () => {
     showNotification('System Alert: Security event acknowledged and archived.');
   };
 
+  const { fetchAllUsers } = useAuth();
+  const { employees } = useEmployeeContext();
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
+    const loadPlatformData = async () => {
+      setIsLoading(true);
+      const res = await fetchAllUsers();
+      if (res.success) {
+        const users = res.data;
+        const hrCount = users.filter(u => u.role === 'hr').length;
+        
+        setStats(prev => ({
+          ...prev,
+          employees: { value: employees.length.toString(), change: '+4.1%', pos: true },
+          hrManagers: { value: hrCount.toString(), change: '+1.2%', pos: true },
+          activeUsers: { value: users.length.toString(), change: '+0.5%', pos: true }
+        }));
+      }
+      setIsLoading(false);
+    };
+
+    loadPlatformData();
+
     // Simulate live health monitoring
     const interval = setInterval(() => {
       setStats(prev => ({
@@ -75,7 +100,7 @@ const MainDashboard = () => {
       }));
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [employees.length]);
 
   const handleRangeChange = (range) => {
     setFilterRange(range);

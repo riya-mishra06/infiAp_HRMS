@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEmployeeContext } from '../../context/EmployeeContext';
+import { useJobContext } from '../../context/JobContext';
+import { useDepartmentContext } from '../../context/DepartmentContext';
 import {
    Building2,
    Users,
@@ -30,12 +33,15 @@ import {
 
 const AdminDashboard = () => {
    const navigate = useNavigate();
+   const { employees } = useEmployeeContext();
+   const { jobs } = useJobContext();
+   const { departments } = useDepartmentContext();
 
-   const stats = [
-      { label: 'Departments', value: '12', trend: '+1', color: 'text-indigo-400' },
-      { label: 'Hiring Roles', value: '08', trend: 'Active', color: 'text-emerald-400' },
-      { label: 'Active Staff', value: '142', trend: '+4.1%', color: 'text-amber-400' },
-   ];
+   const stats = useMemo(() => [
+      { label: 'Departments', value: departments.length.toString(), trend: '+0', color: 'text-indigo-400' },
+      { label: 'Hiring Roles', value: jobs.length.toString().padStart(2, '0'), trend: 'Active', color: 'text-emerald-400' },
+      { label: 'Active Staff', value: employees.length.toString(), trend: '+4.1%', color: 'text-amber-400' },
+   ], [departments.length, jobs.length, employees.length]);
 
    const coreModules = [
       {

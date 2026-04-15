@@ -10,7 +10,8 @@ import {
   ShieldCheck,
   Check,
   RefreshCw,
-  Copy
+  Copy,
+  Plus
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
