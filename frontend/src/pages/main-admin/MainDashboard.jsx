@@ -109,135 +109,114 @@ const MainDashboard = () => {
     showNotification(`Platform Metrics: Timeframe synchronized to ${range}.`);
   };
 
-  const StatCard = ({ title, data, icon: Icon }) => (
-    <div className="bg-white p-6 rounded-[24px] border border-slate-100 shadow-soft hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-      <div className="flex items-center justify-between mb-4">
-        <div className="w-12 h-12 bg-slate-50 text-slate-400 rounded-[16px] flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all">
-          {Icon ? <Icon size={20} /> : <div className="w-6 h-6 bg-slate-200 rounded-full" />}
+  const StatCard = ({ title, data, icon: Icon, iconBg, iconColor }) => (
+    <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div className="flex items-center justify-between mb-3">
+        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${iconBg} ${iconColor}`}>
+          {Icon && <Icon size={18} />}
         </div>
         {data.change && (
-          <div className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-widest ${data.pos ? 'text-emerald-500' : 'text-rose-500'}`}>
-            {data.pos ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+          <div className={`flex items-center gap-1 text-[11px] font-bold ${data.pos ? 'text-emerald-500' : 'text-rose-500'}`}>
             {data.change}
+            {data.pos ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
           </div>
         )}
       </div>
       <div>
-        <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.25em] leading-none mb-2">{title}</p>
-        <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{data.value}</p>
+        <p className="text-xl font-black text-slate-800 tracking-tight leading-none mb-1.5">{data.value}</p>
+        <p className="text-xs font-bold text-slate-400 capitalize">{title}</p>
       </div>
     </div>
   );
 
   return (
-    <div className="max-w-[1440px] mx-auto space-y-12 animate-in fade-in duration-1000 pb-32 relative">
+    <div className="max-w-[1280px] mx-auto space-y-6 animate-in fade-in pb-12">
       
-      {/* Premium Notification Toast */}
-      {notification && (
-        <div className="fixed top-24 right-8 z-[100] animate-in slide-in-from-right-8 fade-in flex items-center gap-3 bg-slate-900 text-white px-8 py-5 rounded-[24px] shadow-3xl border border-white/10">
-          <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
-          <span className="text-[10px] font-black uppercase tracking-[0.2em]">{notification}</span>
-        </div>
-      )}
-
       {/* Header Section */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 px-4">
-        <div>
-           <div className="flex items-center gap-3 mb-4">
-              <div className="px-3 py-1 bg-indigo-600 text-white text-[8px] font-black rounded-full uppercase tracking-widest animate-pulse">LIVE INSTANCE</div>
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Master Governance Node</span>
-           </div>
-           <h1 className="text-5xl font-black text-slate-800 tracking-tighter leading-none mb-3 uppercase">Master Admin Panel</h1>
-           <p className="text-xs font-black text-slate-400 uppercase tracking-[0.25em] leading-none">Global HCM Enterprise Instance Overview</p>
-        </div>
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-4">
-           <div className="relative group">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={18} />
+           <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md">
+              <Users size={20} />
+           </div>
+           <div>
+              <h1 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-1">Main Admin Dashboard</h1>
+              <p className="text-xs font-bold text-slate-400">Manage system access and resources</p>
+           </div>
+        </div>
+        <div className="flex items-center gap-3">
+           <div className="relative">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
               <input 
                 type="text" 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search master logs, nodes, entities..." 
-                className="bg-white border border-slate-100 rounded-[20px] pl-14 pr-8 py-4 text-xs font-bold w-full md:w-[320px] focus:ring-4 focus:ring-indigo-500/5 outline-none tracking-tight transition-all shadow-soft" 
+                placeholder="Search..." 
+                className="bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-bold w-48 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all shadow-sm" 
               />
            </div>
-           <div className="w-14 h-14 bg-white border border-slate-100 rounded-[20px] flex items-center justify-center text-slate-400 shadow-soft cursor-pointer hover:bg-slate-900 hover:text-white transition-all active:scale-95">
-              <Bell size={22} />
-           </div>
+           <button className="w-10 h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 shadow-sm hover:bg-slate-50 transition-colors">
+              <Bell size={18} />
+           </button>
         </div>
       </div>
 
-      {/* Stats Matrix */}
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6 px-2">
-        <StatCard title="Companies" data={stats.companies} icon={Building2} />
-        <StatCard title="Personnel" data={stats.employees} icon={Users} />
-        <StatCard title="HR Agents" data={stats.hrManagers} icon={UserPlus} />
-        <StatCard title="Live Users" data={stats.activeUsers} icon={Activity} />
-        <StatCard title="Backlog" data={stats.pending} icon={History} />
-        <StatCard title="Node Health" data={stats.health} icon={Monitor} />
+      {/* Stats Matrix Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <StatCard title="Companies" data={stats.companies} icon={Building2} iconBg="bg-indigo-50" iconColor="text-indigo-600" />
+        <StatCard title="Employees" data={stats.employees} icon={Users} iconBg="bg-indigo-50" iconColor="text-indigo-600" />
+        <StatCard title="HR Managers" data={stats.hrManagers} icon={UserPlus} iconBg="bg-amber-50" iconColor="text-amber-500" />
+        <StatCard title="Active Users" data={stats.activeUsers} icon={CheckCircle2} iconBg="bg-emerald-50" iconColor="text-emerald-500" />
+        <StatCard title="Pending" data={stats.pending} icon={AlertCircle} iconBg="bg-rose-50" iconColor="text-rose-500" />
+        <StatCard title="Health" data={stats.health} icon={Activity} iconBg="bg-blue-50" iconColor="text-blue-500" />
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 px-2">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        {/* Platform Activity Graph */}
-        <div className="xl:col-span-8 space-y-10">
-           <div className="bg-white p-10 rounded-[48px] border border-slate-100 shadow-soft group relative overflow-hidden">
-              <div className="flex items-center justify-between mb-10 relative z-10">
-                 <div>
-                    <h3 className="text-[12px] font-black text-slate-800 uppercase tracking-[0.3em] mb-1">Platform Throughput</h3>
-                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Live activity metrics across all clusters</p>
-                 </div>
-                 <div className="relative">
-                    <select 
-                      value={filterRange}
-                      onChange={(e) => handleRangeChange(e.target.value)}
-                      className="bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 text-[10px] font-black text-slate-600 uppercase tracking-widest outline-none cursor-pointer hover:bg-white transition-all"
-                    >
-                       <option>Last 7 Days</option>
-                       <option>Last 30 Days</option>
-                       <option>Quarterly</option>
-                    </select>
-                 </div>
+        {/* Left Column (Chart and Companies) */}
+        <div className="lg:col-span-8 flex flex-col gap-6">
+           
+           {/* Chart */}
+           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-[320px]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                 <h3 className="text-[15px] font-black text-slate-800 tracking-tight">Platform Activity</h3>
+                 <select 
+                   value={filterRange}
+                   onChange={(e) => handleRangeChange(e.target.value)}
+                   className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-600 outline-none cursor-pointer shadow-sm"
+                 >
+                    <option>Last 7 Days</option>
+                    <option>Last 30 Days</option>
+                    <option>Quarterly</option>
+                 </select>
               </div>
-              <div className="h-[320px] w-full relative z-10">
+              <div className="flex-1 w-full min-h-0">
                  <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={platformActivityData}>
-                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F8FAFC" />
+                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                        <XAxis 
                           dataKey="name" 
                           axisLine={false} 
                           tickLine={false} 
-                          tick={{ fontSize: 10, fontWeight: 900, fill: '#CBD5E1' }} 
-                          dy={15}
-                       />
-                       <YAxis 
-                          axisLine={false} 
-                          tickLine={false} 
-                          tick={{ fontSize: 10, fontWeight: 900, fill: '#CBD5E1' }} 
+                          tick={{ fontSize: 11, fontWeight: 700, fill: '#94a3b8' }} 
+                          dy={10}
                        />
                        <Tooltip 
-                          cursor={{ fill: 'rgba(99, 102, 241, 0.05)', radius: 12 }}
-                          contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)', padding: '20px' }}
+                          cursor={{ fill: 'rgba(99, 102, 241, 0.05)', radius: 8 }}
+                          contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)', padding: '12px' }}
                        />
-                       <Bar dataKey="value" fill="#6366F1" radius={[8, 8, 0, 0]} barSize={44} />
+                       <Bar dataKey="value" fill="#6366F1" radius={[6, 6, 0, 0]} barSize={32} />
                     </BarChart>
                  </ResponsiveContainer>
               </div>
-              <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50/50 rounded-full blur-[100px] -mr-32 -mt-32"></div>
            </div>
 
-           {/* Registered Companies List */}
-           <div className="bg-white p-10 rounded-[48px] border border-slate-100 shadow-soft">
-              <div className="flex items-center justify-between mb-8">
-                 <h3 className="text-[12px] font-black text-slate-800 uppercase tracking-[0.3em]">Institutional Nodes</h3>
-                 <button 
-                  onClick={() => showNotification('Audit Hub: Loading comprehensive node directory...')}
-                  className="px-6 py-2.5 bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-slate-900 hover:text-white transition-all"
-                 >
-                   View Master Directory
-                 </button>
+           {/* Registered Companies */}
+           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex-1">
+              <div className="flex items-center justify-between mb-4">
+                 <h3 className="text-[15px] font-black text-slate-800 tracking-tight">Registered Companies</h3>
+                 <button className="text-[11px] font-black text-indigo-600 hover:text-indigo-700">View All</button>
               </div>
-              <div className="divide-y divide-slate-50">
+              <div className="flex flex-col gap-3">
                  {[
                    { id: 'velocity-tech', name: 'Velocity Tech', size: '1,200 Employees', status: 'ACTIVE', color: 'emerald' },
                    { id: 'nexus-logistics', name: 'Nexus Logistics', size: '840 Employees', status: 'PENDING', color: 'amber' },
@@ -246,113 +225,96 @@ const MainDashboard = () => {
                    <div 
                      key={i} 
                      onClick={() => navigate(`/main-admin/company/${company.id}`)}
-                     className="flex items-center justify-between py-6 group cursor-pointer"
+                     className="flex items-center justify-between p-3 border border-slate-100 rounded-2xl hover:bg-slate-50 cursor-pointer transition-colors"
                    >
-                      <div className="flex items-center gap-6">
-                         <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-[20px] flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                            <Building2 size={24} />
+                      <div className="flex items-center gap-4">
+                         <div className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-[12px] flex items-center justify-center text-slate-400">
+                            <Building2 size={18} />
                          </div>
                          <div>
-                            <p className="text-[13px] font-black text-slate-800 leading-none mb-1.5 group-hover:text-indigo-600 transition-colors uppercase tracking-tight">{company.name}</p>
-                            <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">{company.size}</p>
+                            <p className="text-sm font-black text-slate-800 leading-none mb-1">{company.name}</p>
+                            <p className="text-[11px] font-bold text-slate-400">{company.size}</p>
                          </div>
                       </div>
-                      <div className="flex items-center gap-6">
-                         <span className={`px-5 py-2 rounded-full text-[9px] font-black tracking-[0.2em] bg-${company.color}-50 text-${company.color}-600 border border-${company.color}-100`}>
-                           {company.status}
-                         </span>
-                         <div className="w-10 h-10 border border-slate-50 rounded-xl flex items-center justify-center text-slate-200 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all">
-                            <ChevronRight size={18} />
-                         </div>
-                      </div>
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-black bg-${company.color}-50 text-${company.color}-600`}>
+                        {company.status}
+                      </span>
                    </div>
                  ))}
               </div>
            </div>
+
         </div>
 
-        {/* Right Sidebar Elements */}
-        <div className="xl:col-span-4 space-y-10">
+        {/* Right Column */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
            
            {/* Quick Actions */}
-           <div className="bg-slate-900 p-10 rounded-[48px] shadow-3xl shadow-slate-200 relative overflow-hidden group">
-              <h3 className="text-[12px] font-black text-white uppercase tracking-[0.3em] mb-10 relative z-10">Command Center</h3>
-              <div className="grid grid-cols-2 gap-4 relative z-10">
+           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+              <h3 className="text-[15px] font-black text-slate-800 tracking-tight mb-4">Quick Actions</h3>
+              <div className="grid grid-cols-2 gap-3">
                  {[
-                   { label: 'Add Node', icon: Plus, action: () => navigate('/main-admin/company-setup'), primary: true },
-                   { label: 'Provision User', icon: UserPlus, action: () => navigate('/main-admin/user-management?view=add-admin') },
-                   { label: 'Deep Audit', icon: BarChart3, action: () => showNotification('Audit Engine: Initializing deep packet inspection across all nodes...') },
-                   { label: 'Broadcaster', icon: Radio, action: () => showNotification('Communication Hub: Preparing global institutional broadcast payload...') }
+                   { label: 'Add Node',  primary: true },
+                   { label: 'Provision User' },
+                   { label: 'Deep Audit' },
+                   { label: 'Broadcast' }
                  ].map((btn, i) => (
                    <button 
                      key={i} 
-                     onClick={btn.action}
-                     className={`flex flex-col items-center justify-center gap-4 p-8 rounded-[32px] transition-all active:scale-95 border-2
+                     className={`py-6 flex flex-col items-center justify-center gap-2 rounded-2xl border transition-colors
                         ${btn.primary 
-                          ? 'bg-indigo-600 border-indigo-500 text-white shadow-xl shadow-indigo-900/40 hover:bg-white hover:text-indigo-600 hover:border-white' 
-                          : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white hover:text-slate-900 hover:border-white'}`}
+                          ? 'bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-600/20' 
+                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                    >
-                      <btn.icon size={24} />
-                      <span className="text-[9px] font-black uppercase tracking-[0.25em]">{btn.label}</span>
+                      {btn.primary ? <Plus size={20} /> : <Settings size={20} className="text-indigo-600" />}
+                      <span className="text-[11px] font-black tracking-wide">{btn.label}</span>
                    </button>
                  ))}
               </div>
-              <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-600/10 rounded-full blur-[80px]"></div>
            </div>
 
-           {/* System Health / Integrations */}
-           <div className="bg-white p-10 rounded-[48px] border border-slate-100 shadow-soft space-y-8">
-              <div className="flex items-center justify-between">
-                <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.3em]">Master Interconnects</h3>
-                <RefreshCw size={14} className="text-slate-300 animate-spin-slow" />
-              </div>
-              <div className="space-y-4">
+           {/* Integrations */}
+           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+              <h3 className="text-[15px] font-black text-slate-800 tracking-tight mb-4">System Integrations</h3>
+              <div className="flex flex-col gap-3">
                  {[
-                   { name: 'AWS Cloud Engine', status: 'Operational', icon: Globe, color: 'emerald' },
-                   { name: 'Slack Protocol', status: 'Operational', icon: Activity, color: 'emerald' },
-                   { name: 'SendGrid Grid', status: 'Inbound Only', icon: Mail, color: 'amber' }
+                   { name: 'AWS Cloud Engine', status: 'Operational', color: 'bg-emerald-500' },
+                   { name: 'Slack Protocol', status: 'Operational', color: 'bg-emerald-500' }
                  ].map((int, i) => (
-                   <div key={i} className="flex items-center justify-between p-5 bg-slate-50 border border-slate-100 rounded-[24px] group hover:border-indigo-100 transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-indigo-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
-                          <int.icon size={16} />
-                        </div>
-                        <div>
-                          <p className="text-[11px] font-black text-slate-800 uppercase tracking-tight">{int.name}</p>
-                          <div className="flex items-center gap-1.5 mt-0.5">
-                            <div className={`w-1.5 h-1.5 rounded-full bg-${int.color}-500`}></div>
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{int.status}</span>
-                          </div>
-                        </div>
+                   <div key={i} className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+                      <div className="w-8 h-8 bg-white rounded-[10px] shadow-sm flex items-center justify-center text-indigo-500">
+                        <Activity size={14} />
                       </div>
-                      <ChevronRight size={14} className="text-slate-200" />
+                      <div className="flex-1 flex items-center justify-between">
+                         <span className="text-xs font-black text-slate-800">{int.name}</span>
+                         <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                            <div className={`w-1.5 h-1.5 rounded-full ${int.color}`}></div> {int.status}
+                         </span>
+                      </div>
                    </div>
                  ))}
               </div>
            </div>
 
-           {/* System Alerts */}
-           <div className="bg-white p-10 rounded-[48px] border border-slate-100 shadow-soft">
-              <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.3em] mb-10">Threat Intelligence</h3>
-              <div className="space-y-10 relative before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-50">
-                 {alerts.map((alert, i) => (
-                   <div key={alert.id} className="relative pl-8 group cursor-pointer" onClick={() => dismissAlert(alert.id)}>
-                      <div className={`absolute left-[-4px] top-1.5 w-2 h-2 rounded-full shadow-lg transition-transform group-hover:scale-150 ring-4 ring-white ${
-                        alert.type === 'WARN' ? 'bg-amber-500 shadow-amber-200' : 
-                        alert.type === 'SUCCESS' ? 'bg-emerald-500 shadow-emerald-200' : 
-                        'bg-blue-500 shadow-blue-200'
+           {/* Alerts */}
+           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex-1">
+              <h3 className="text-[15px] font-black text-slate-800 tracking-tight mb-5">System Alerts</h3>
+              <div className="space-y-6 relative before:absolute before:left-1 before:top-2 before:bottom-2 before:w-px before:bg-slate-100">
+                 {alerts.map((alert) => (
+                   <div key={alert.id} className="relative pl-6">
+                      <div className={`absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full ring-4 ring-white ${
+                        alert.type === 'WARN' ? 'bg-amber-500' : 
+                        alert.type === 'SUCCESS' ? 'bg-emerald-500' : 
+                        'bg-blue-500'
                       }`}></div>
-                      <h4 className="text-sm font-black text-slate-800 mb-1.5 uppercase tracking-tight group-hover:text-indigo-600 transition-colors">{alert.title}</h4>
-                      <p className="text-[10px] font-black text-slate-400 leading-relaxed uppercase tracking-widest">{alert.msg}</p>
-                      <div className="mt-3 opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 text-[8px] font-black text-slate-300 uppercase tracking-widest">
-                         <RefreshCw size={10} /> Click to Ack Protocol
-                      </div>
+                      <h4 className="text-sm font-black text-slate-800 mb-1 leading-tight">{alert.title}</h4>
+                      <p className="text-[11px] font-semibold text-slate-500 leading-relaxed pr-2">{alert.msg}</p>
                    </div>
                  ))}
                  {alerts.length === 0 && (
-                   <div className="py-20 text-center">
-                      <CheckCircle2 size={40} className="mx-auto text-emerald-500 mb-4 opacity-50" />
-                      <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">All protocols nominal</p>
+                   <div className="py-10 text-center">
+                      <CheckCircle2 size={32} className="mx-auto text-emerald-500 mb-2 opacity-80" />
+                      <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest">All Clear</p>
                    </div>
                  )}
               </div>

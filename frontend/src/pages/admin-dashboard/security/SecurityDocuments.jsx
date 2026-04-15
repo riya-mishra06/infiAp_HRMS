@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { usePolicyContext } from '../../../context/PolicyContext';
 import { 
   ShieldCheck, 
   Lock, 
   Search, 
-  Bell, 
   Plus, 
   FileText, 
   MoreVertical, 
@@ -16,33 +16,61 @@ import {
   ChevronLeft, 
   X,
   PlusCircle,
-  Eye,
-  CheckCircle2,
-  RefreshCw,
-  HardDrive,
   Settings,
-  AlertCircle,
   Edit3
 } from 'lucide-react';
 
 const SecurityDocuments = () => {
+  const { policies, fetchPolicies, addPolicy } = usePolicyContext();
   const [view, setView] = useState('hub'); // 'hub', 'upload', 'bulk', 'details'
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [showAlert, setShowAlert] = useState(true);
 
+  // New Document State
+  const [newDoc, setNewDoc] = useState({
+    title: '',
+    category: 'General',
+    description: '',
+    status: 'Confidential',
+    department: 'Engineering'
+  });
+
+  useEffect(() => {
+    fetchPolicies();
+  }, []);
+
   const stats = [
-    { label: 'Total Documents', value: '45', icon: FileText, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-    { label: 'Confidential', value: '12', icon: Lock, color: 'text-amber-500', bg: 'bg-amber-50' },
-    { label: 'Compliance', value: '8', icon: ShieldCheck, color: 'text-emerald-500', bg: 'bg-emerald-50' },
+    { label: 'Total Documents', value: policies?.length > 0 ? policies.length : '45', icon: FileText, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+    { label: 'Confidential', value: policies?.filter(p => p.status === 'Confidential').length || '12', icon: Lock, color: 'text-amber-500', bg: 'bg-amber-50' },
+    { label: 'Compliance', value: policies?.filter(p => p.status === 'Compliance').length || '8', icon: ShieldCheck, color: 'text-emerald-500', bg: 'bg-emerald-50' },
     { label: 'Recently Updated', value: '5', icon: Clock, color: 'text-blue-500', bg: 'bg-blue-50' },
   ];
 
-  const recentDocs = [
+  const getTagColor = (status) => {
+    switch(status?.toLowerCase()) {
+      case 'confidential': return 'text-amber-600 bg-amber-50';
+      case 'compliance': return 'text-emerald-600 bg-emerald-50';
+      case 'public': return 'text-indigo-600 bg-indigo-50';
+      default: return 'text-slate-500 bg-slate-50';
+    }
+  };
+
+  const mockDocs = [
     { id: 1, title: 'Employee NDA Agreement', author: 'Sarah Jenkins', dept: 'Legal', date: '2h ago', tag: 'CONFIDENTIAL', tagColor: 'text-amber-600 bg-amber-50' },
     { id: 2, title: 'Security Audit 2024', author: 'Mike Ross', dept: 'IT Ops', date: 'Oct 12, 2023', tag: 'COMPLIANCE', tagColor: 'text-emerald-600 bg-emerald-50' },
     { id: 3, title: 'Infrastructure Diagram', author: 'David Chen', dept: 'Dev', date: 'Oct 10, 2023', tag: 'CONFIDENTIAL', tagColor: 'text-amber-600 bg-amber-50' },
     { id: 4, title: 'Vendor Security Policy', author: 'Sarah Jenkins', dept: 'Legal', date: 'Oct 05, 2023', tag: 'INTERNAL', tagColor: 'text-slate-500 bg-slate-50' },
   ];
+
+  const recentDocs = policies?.length > 0 ? policies.map(p => ({
+     id: p._id,
+     title: p.title,
+     author: p.author || 'Admin User',
+     dept: p.department,
+     date: new Date(p.createdAt).toLocaleDateString(),
+     tag: p.status?.toUpperCase() || 'INTERNAL',
+     tagColor: getTagColor(p.status)
+  })) : mockDocs;
 
   const queue = [
     { name: 'employment_contract_john.pdf', size: '2.4 MB', status: 'Syncing...', progress: 65, type: 'pdf' },
@@ -56,6 +84,37 @@ const SecurityDocuments = () => {
     { title: 'File Accessed', detail: 'Michael Chen (HR) viewed the document', time: '5h ago' },
     { title: 'Initial Upload', detail: 'System created base security document', time: 'Oct 12' },
   ];
+
+  const handleUploadSubmit = async () => {
+     await addPolicy({
+         title: newDoc.title || 'Untitled Document',
+         author: 'Master Admin',
+         department: newDoc.department,
+         status: newDoc.status,
+         category: newDoc.category,
+         description: newDoc.description
+     });
+     setView('hub');
+     fetchPolicies();
+  };
+
+  const handleBulkUpload = async () => {
+    const validFiles = queue.filter(f => f.type !== 'error');
+    if(validFiles.length === 0) return;
+
+    for (let file of validFiles) {
+       await addPolicy({
+         title: file.name,
+         author: 'Batch Processor',
+         department: 'System Default',
+         status: 'Confidential',
+         category: 'Bulk Ingestion (Automated)',
+         description: `Ingested document artifact. Registered file size: ${file.size}. Checksum verified.`
+       });
+    }
+    setView('hub');
+    fetchPolicies();
+  };
 
   // --- SUB-VIEWS ---
 
@@ -236,7 +295,7 @@ const SecurityDocuments = () => {
              <div className="flex items-center gap-4">
                 <button onClick={() => setView('hub')} className="px-10 py-4 bg-slate-50 text-slate-400 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-white border border-transparent hover:border-slate-100 transition-all">Save Draft</button>
                 <button 
-                  onClick={() => alert('Batch Processing Initialized: Synchronizing files with secure cloud storage...')}
+                  onClick={handleBulkUpload}
                   className="px-10 py-4 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-indigo-100 hover:bg-slate-900 transition-all flex items-center gap-3"
                 >
                    <Upload size={16} strokeWidth={2.5} /> Upload All Files
@@ -267,29 +326,49 @@ const SecurityDocuments = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
              <div className="space-y-4">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Document Title</label>
-                <input type="text" placeholder="e.g. Annual Security Audit 2023" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-200" />
+                <input 
+                  type="text" 
+                  value={newDoc.title}
+                  onChange={(e) => setNewDoc({...newDoc, title: e.target.value})}
+                  placeholder="e.g. Annual Security Audit 2023" 
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-200" 
+                />
              </div>
              <div className="space-y-4">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Category</label>
-                <div className="relative group">
-                   <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-black text-slate-400 flex items-center justify-between group-hover:bg-white group-hover:shadow-lg transition-all cursor-pointer">
-                      Select category
-                      <ChevronLeft className="-rotate-90 text-slate-300" size={18} />
-                   </div>
-                </div>
+                <select 
+                  value={newDoc.category}
+                  onChange={(e) => setNewDoc({...newDoc, category: e.target.value})}
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-black text-slate-400 flex items-center justify-between hover:bg-white transition-all cursor-pointer outline-none appearance-none"
+                >
+                   <option value="General">General</option>
+                   <option value="Engineering">Engineering</option>
+                   <option value="HR">Human Resources</option>
+                   <option value="Legal">Legal</option>
+                </select>
              </div>
           </div>
 
           <div className="space-y-4">
              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Description</label>
-             <textarea placeholder="Briefly describe the purpose of this document..." rows={4} className="w-full bg-slate-50 border border-slate-100 rounded-3xl px-8 py-6 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-200 resize-none" />
+             <textarea 
+               value={newDoc.description}
+               onChange={(e) => setNewDoc({...newDoc, description: e.target.value})}
+               placeholder="Briefly describe the purpose of this document..." 
+               rows={4} 
+               className="w-full bg-slate-50 border border-slate-100 rounded-3xl px-8 py-6 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all placeholder:text-slate-200 resize-none" 
+             />
           </div>
 
           <div className="space-y-6">
              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Security Level</label>
              <div className="flex gap-4">
-                {['Public', 'Restricted', 'Confidential'].map((lvl) => (
-                  <button key={lvl} className={`px-10 py-5 rounded-[20px] text-[11px] font-black uppercase tracking-widest border transition-all ${lvl === 'Public' ? 'bg-indigo-600 text-white border-indigo-600 shadow-xl shadow-indigo-100' : 'bg-slate-50 text-slate-400 border-slate-100 hover:bg-white'}`}>
+                {['Public', 'Compliance', 'Confidential'].map((lvl) => (
+                  <button 
+                    key={lvl} 
+                    onClick={() => setNewDoc({...newDoc, status: lvl})}
+                    className={`px-10 py-5 rounded-[20px] text-[11px] font-black uppercase tracking-widest border transition-all ${newDoc.status === lvl ? 'bg-indigo-600 text-white border-indigo-600 shadow-xl shadow-indigo-100' : 'bg-slate-50 text-slate-400 border-slate-100 hover:bg-white'}`}
+                  >
                     {lvl}
                   </button>
                 ))}
@@ -300,7 +379,7 @@ const SecurityDocuments = () => {
              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Department Access</label>
              <div className="flex flex-wrap gap-3">
                 {['Engineering', 'HR'].map((dept) => (
-                   <div key={dept} className="flex items-center gap-3 px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[11px] font-black uppercase text-slate-600">
+                   <div key={dept} className={`flex items-center gap-3 px-5 py-3 ${newDoc.department === dept ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 'bg-slate-50 text-slate-600 border-slate-100'} border rounded-xl text-[11px] font-black uppercase cursor-pointer`} onClick={() => setNewDoc({...newDoc, department: dept})}>
                       {dept} <X size={14} className="text-slate-300 hover:text-rose-500 cursor-pointer" />
                    </div>
                 ))}
@@ -325,8 +404,9 @@ const SecurityDocuments = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 pt-10 border-t border-slate-50">
              <button 
-               onClick={() => alert('Institutional Ingestion Node: Encrypting and uploading single document...')}
-               className="flex-1 py-6 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[28px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-4"
+               onClick={handleUploadSubmit}
+               disabled={!newDoc.title}
+               className={`flex-1 py-6 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[28px] shadow-3xl shadow-indigo-100 transition-all flex items-center justify-center gap-4 ${newDoc.title ? 'bg-indigo-600 hover:bg-slate-900 active:scale-95' : 'bg-slate-300 cursor-not-allowed'}`}
              >
                 <ShieldCheck size={18} /> Upload Document
              </button>
@@ -353,11 +433,11 @@ const SecurityDocuments = () => {
                       </div>
                       <div>
                          <div className="flex gap-4 mb-4">
-                            <span className="px-4 py-1.5 bg-emerald-50 text-emerald-500 text-[9px] font-black rounded-full uppercase tracking-widest">Active</span>
-                            <span className="px-4 py-1.5 bg-indigo-50 text-indigo-500 text-[9px] font-black rounded-full uppercase tracking-widest">Confidential</span>
-                         </div>
-                          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase leading-none">InfiAP Security Protocol 2024</h1>
-                          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-4 leading-none">Cybersecurity Policy • v2.4.0 • Vault Node</p>
+                             <span className="px-4 py-1.5 bg-emerald-50 text-emerald-500 text-[9px] font-black rounded-full uppercase tracking-widest">Active</span>
+                             <span className={`px-4 py-1.5 ${selectedDoc?.tagColor} text-[9px] font-black rounded-full uppercase tracking-widest`}>{selectedDoc?.tag || 'CONFIDENTIAL'}</span>
+                          </div>
+                          <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-none mb-2 underline decoration-indigo-300 underline-offset-4 uppercase leading-none">{selectedDoc?.title || 'InfiAP Security Protocol 2024'}</h1>
+                          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-4 leading-none">{selectedDoc?.dept || 'Cybersecurity Policy'} • v2.4.0 • Vault Node</p>
                       </div>
                    </div>
                    <button className="p-4 bg-slate-50 text-slate-300 rounded-2xl hover:text-indigo-600 transition-all"><MoreVertical size={24} /></button>
@@ -366,11 +446,11 @@ const SecurityDocuments = () => {
                 <div className="grid grid-cols-2 gap-10 pt-10 border-t border-slate-50">
                    <div>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Uploaded By</p>
-                      <h4 className="text-xl font-black text-slate-800 tracking-tight">Sarah Jenkins</h4>
+                      <h4 className="text-xl font-black text-slate-800 tracking-tight">{selectedDoc?.author || 'Sarah Jenkins'}</h4>
                    </div>
                    <div>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Upload Date</p>
-                      <h4 className="text-xl font-black text-slate-800 tracking-tight">Oct 12, 2023</h4>
+                      <h4 className="text-xl font-black text-slate-800 tracking-tight">{selectedDoc?.date || 'Oct 12, 2023'}</h4>
                    </div>
                 </div>
 
