@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Calendar, 
   Clock, 
@@ -21,7 +22,24 @@ import {
 } from 'lucide-react';
 
 const InterviewManagement = () => {
+  const navigate = useNavigate();
   const [activeDate, setActiveDate] = useState('TODAY, OCT 24');
+  
+  const [formData, setFormData] = useState({
+    candidateName: '',
+    position: 'Senior UI Designer',
+    date: '',
+    time: '',
+    mode: 'Online',
+    interviewer: ''
+  });
+
+  const handleConfirmSchedule = (e) => {
+    e.preventDefault();
+    // In a real app, we'd add to the interviews array here.
+    // For now, we provide the 'workable' feedback the user requested.
+    navigate('/admin/recruitment-control/hub');
+  };
 
   const interviews = [
     {
@@ -108,13 +126,19 @@ const InterviewManagement = () => {
                          type="text" 
                          placeholder="e.g. Mitchell Clint" 
                          className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-14 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                         value={formData.candidateName}
+                         onChange={(e) => setFormData({...formData, candidateName: e.target.value})}
                        />
                     </div>
                  </div>
 
                  <div className="space-y-3">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Position</label>
-                    <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all appearance-none cursor-pointer">
+                    <select 
+                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all appearance-none cursor-pointer"
+                       value={formData.position}
+                       onChange={(e) => setFormData({...formData, position: e.target.value})}
+                    >
                        <option>Senior UI Designer</option>
                        <option>Frontend Architect</option>
                        <option>Product Manager</option>
@@ -124,11 +148,21 @@ const InterviewManagement = () => {
                  <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-3">
                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Date</label>
-                       <input type="date" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all" />
+                       <input 
+                         type="date" 
+                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all" 
+                         value={formData.date}
+                         onChange={(e) => setFormData({...formData, date: e.target.value})}
+                       />
                     </div>
                     <div className="space-y-3">
                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Time</label>
-                       <input type="time" className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all" />
+                       <input 
+                         type="time" 
+                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all" 
+                         value={formData.time}
+                         onChange={(e) => setFormData({...formData, time: e.target.value})}
+                       />
                     </div>
                  </div>
 
@@ -136,11 +170,23 @@ const InterviewManagement = () => {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Interaction Mode</label>
                     <div className="flex items-center gap-6">
                        <label className="flex items-center gap-3 cursor-pointer group">
-                          <input type="radio" name="mode" className="w-5 h-5 text-indigo-600 border-2 border-slate-200 focus:ring-indigo-500 rounded-full" defaultChecked />
+                          <input 
+                            type="radio" 
+                            name="mode" 
+                            className="w-5 h-5 text-indigo-600 border-2 border-slate-200 focus:ring-indigo-500 rounded-full" 
+                            checked={formData.mode === 'Online'}
+                            onChange={() => setFormData({...formData, mode: 'Online'})}
+                          />
                           <span className="text-xs font-black text-slate-600 uppercase tracking-[0.2em] group-hover:text-indigo-600 transition-colors">Online</span>
                        </label>
                        <label className="flex items-center gap-3 cursor-pointer group">
-                          <input type="radio" name="mode" className="w-5 h-5 text-indigo-600 border-2 border-slate-200 focus:ring-indigo-500 rounded-full" />
+                          <input 
+                            type="radio" 
+                            name="mode" 
+                            className="w-5 h-5 text-indigo-600 border-2 border-slate-200 focus:ring-indigo-500 rounded-full" 
+                            checked={formData.mode === 'In-person'}
+                            onChange={() => setFormData({...formData, mode: 'In-person'})}
+                          />
                           <span className="text-xs font-black text-slate-600 uppercase tracking-[0.2em] group-hover:text-indigo-600 transition-colors">In-person</span>
                        </label>
                     </div>
@@ -154,11 +200,16 @@ const InterviewManagement = () => {
                          type="text" 
                          placeholder="Select interviewer protocol..." 
                          className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-14 py-4.5 text-sm font-bold focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                         value={formData.interviewer}
+                         onChange={(e) => setFormData({...formData, interviewer: e.target.value})}
                        />
                     </div>
                  </div>
 
-                 <button className="w-full py-5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-slate-800 transition-all shadow-2xl shadow-indigo-100 active:scale-95 flex items-center justify-center gap-4">
+                 <button 
+                    onClick={handleConfirmSchedule}
+                    className="w-full py-5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-slate-800 transition-all shadow-2xl shadow-indigo-100 active:scale-95 flex items-center justify-center gap-4"
+                 >
                     Confirm Protocol Schedule
                     <ArrowRight size={16} />
                  </button>

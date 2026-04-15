@@ -56,7 +56,10 @@ const SecureDocument = () => {
                     </div>
                  </div>
 
-                  <button className="w-full py-5.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-2xl shadow-slate-200 hover:bg-indigo-600 hover:shadow-indigo-100 active:scale-95 transition-all flex items-center justify-center gap-4">
+                  <button 
+                    onClick={() => navigate('/admin/payroll-management/structure')}
+                    className="w-full py-5.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-[24px] shadow-2xl shadow-slate-200 hover:bg-indigo-600 hover:shadow-indigo-100 active:scale-95 transition-all flex items-center justify-center gap-4"
+                  >
                      View Document
                      <ArrowRight size={16} />
                   </button>
@@ -81,7 +84,7 @@ const SecureDocument = () => {
         </div>
 
         <button 
-          onClick={() => navigate('/admin/payroll-management')}
+          onClick={() => navigate('/admin/payroll-management/hub')}
           className="mx-auto flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-800 transition-all group"
         >
            <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" />

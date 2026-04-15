@@ -21,12 +21,14 @@ import {
   RefreshCw,
   HardDrive,
   Settings,
-  AlertCircle
+  AlertCircle,
+  Edit3
 } from 'lucide-react';
 
 const SecurityDocuments = () => {
   const [view, setView] = useState('hub'); // 'hub', 'upload', 'bulk', 'details'
   const [selectedDoc, setSelectedDoc] = useState(null);
+  const [showAlert, setShowAlert] = useState(true);
 
   const stats = [
     { label: 'Total Documents', value: '45', icon: FileText, color: 'text-indigo-600', bg: 'bg-indigo-50' },
@@ -98,7 +100,12 @@ const SecurityDocuments = () => {
       <div className="px-2">
          <div className="flex items-center justify-between mb-8 px-4">
             <h2 className="text-[12px] font-black uppercase tracking-[0.3em] text-slate-400">Recent Documents</h2>
-            <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">View All</button>
+            <button 
+              onClick={() => alert('Accessing Institutional Vault: Redirecting to complete document ledger...')}
+              className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline"
+            >
+              View All
+            </button>
          </div>
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {recentDocs.map((doc) => (
@@ -228,7 +235,10 @@ const SecurityDocuments = () => {
              </div>
              <div className="flex items-center gap-4">
                 <button onClick={() => setView('hub')} className="px-10 py-4 bg-slate-50 text-slate-400 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-white border border-transparent hover:border-slate-100 transition-all">Save Draft</button>
-                <button className="px-10 py-4 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-indigo-100 hover:bg-slate-900 transition-all flex items-center gap-3">
+                <button 
+                  onClick={() => alert('Batch Processing Initialized: Synchronizing files with secure cloud storage...')}
+                  className="px-10 py-4 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-indigo-100 hover:bg-slate-900 transition-all flex items-center gap-3"
+                >
                    <Upload size={16} strokeWidth={2.5} /> Upload All Files
                 </button>
              </div>
@@ -294,7 +304,10 @@ const SecurityDocuments = () => {
                       {dept} <X size={14} className="text-slate-300 hover:text-rose-500 cursor-pointer" />
                    </div>
                 ))}
-                <button className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-dashed border-slate-100 rounded-xl text-[10px] font-black text-indigo-500 hover:bg-indigo-50 hover:border-indigo-100 transition-all">
+                <button 
+                  onClick={() => alert('Departmental Access Matrix: Adding new organizational node...')}
+                  className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-dashed border-slate-100 rounded-xl text-[10px] font-black text-indigo-500 hover:bg-indigo-50 hover:border-indigo-100 transition-all"
+                >
                    <Plus size={14} /> Add Dept
                 </button>
              </div>
@@ -311,7 +324,10 @@ const SecurityDocuments = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-10 border-t border-slate-50">
-             <button className="flex-1 py-6 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[28px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-4">
+             <button 
+               onClick={() => alert('Institutional Ingestion Node: Encrypting and uploading single document...')}
+               className="flex-1 py-6 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[28px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-4"
+             >
                 <ShieldCheck size={18} /> Upload Document
              </button>
              <button onClick={() => setView('hub')} className="px-12 py-6 bg-slate-50 text-slate-400 text-[11px] font-black uppercase tracking-[0.4em] rounded-[28px] hover:bg-white border border-transparent hover:border-slate-100 transition-all">Cancel</button>
@@ -358,23 +374,28 @@ const SecurityDocuments = () => {
                    </div>
                 </div>
 
-                <button className="w-full py-6 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[32px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-4">
+                <button 
+                  onClick={() => alert('Secure Download Node: Synchronizing with Vault... Document will be exported currently.')}
+                  className="w-full py-6 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-[32px] shadow-3xl shadow-indigo-100 hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-4"
+                >
                    <Download size={20} strokeWidth={2.5} /> Download Document
                 </button>
              </div>
 
-             <div className="bg-rose-50 border-1.5 border-rose-100 p-10 rounded-[48px] flex items-center justify-between text-rose-500 shadow-xl shadow-rose-100/20 group relative overflow-hidden">
-                <div className="flex items-center gap-8 relative z-10">
-                   <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center shadow-sm">
-                      <AlertTriangle size={32} className="animate-bounce" />
-                   </div>
-                   <div>
-                      <h3 className="text-[13px] font-black uppercase tracking-tight leading-none mb-1">Security Alert</h3>
-                      <p className="text-[11px] font-bold opacity-80 leading-relaxed max-w-[400px]">3 unauthorized access attempts detected from IP 192.168.1.45 in the last 24 hours.</p>
-                   </div>
-                </div>
-                <button className="p-4 hover:bg-rose-100 rounded-2xl transition-all relative z-10"><X size={20} /></button>
-             </div>
+             {showAlert && (
+               <div className="bg-rose-50 border-1.5 border-rose-100 p-10 rounded-[48px] flex items-center justify-between text-rose-500 shadow-xl shadow-rose-100/20 group relative overflow-hidden">
+                  <div className="flex items-center gap-8 relative z-10">
+                     <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center shadow-sm">
+                        <AlertTriangle size={32} className="animate-bounce" />
+                     </div>
+                     <div>
+                        <h3 className="text-[13px] font-black uppercase tracking-tight leading-none mb-1">Security Alert</h3>
+                        <p className="text-[11px] font-bold opacity-80 leading-relaxed max-w-[400px]">3 unauthorized access attempts detected from IP 192.168.1.45 in the last 24 hours.</p>
+                     </div>
+                  </div>
+                  <button onClick={() => setShowAlert(false)} className="p-4 hover:bg-rose-100 rounded-2xl transition-all relative z-10"><X size={20} /></button>
+               </div>
+             )}
 
              <div className="bg-white p-16 rounded-[64px] border border-slate-100 shadow-soft">
                 <h3 className="text-2xl font-black text-slate-800 uppercase tracking-tight mb-12">Document Activity Log</h3>
@@ -402,7 +423,10 @@ const SecurityDocuments = () => {
              <div className="bg-white p-12 rounded-[56px] border border-slate-50 shadow-soft space-y-10">
                 <div className="flex items-center justify-between mb-2">
                    <h3 className="text-[12px] font-black uppercase tracking-[0.3em] text-slate-800">Access Control</h3>
-                   <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline flex items-center gap-2">
+                   <button 
+                     onClick={() => alert('Access Control Matrix: Requesting administrative modification permission...')}
+                     className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline flex items-center gap-2"
+                   >
                       <Edit3 size={14} /> Edit Access
                    </button>
                 </div>

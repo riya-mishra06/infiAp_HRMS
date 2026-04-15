@@ -11,40 +11,20 @@ import {
   Search,
   ChevronDown
 } from 'lucide-react';
+import { useJobContext } from '../../../context/JobContext';
 
 const RecruitmentHub = () => {
   const navigate = useNavigate();
+  const { jobs, totals } = useJobContext();
 
   const overviewStats = [
-    { label: 'Open Jobs', value: '12', trend: '+2%', icon: Briefcase, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-    { label: 'Total Candidates', value: '458', trend: '-5%', icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: 'Open Jobs', value: totals.activeCount.toString(), trend: '+2%', icon: Briefcase, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+    { label: 'Total Candidates', value: totals.totalApplicants.toString(), trend: '-5%', icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
     { label: 'Interviews', value: '24', trend: '+12%', icon: Calendar, color: 'text-orange-600', bg: 'bg-orange-50' },
     { label: 'Filled', value: '8', trend: '+4%', icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
   ];
 
-  const jobPostings = [
-    {
-      id: 1,
-      title: 'Senior Product Designer',
-      team: 'Design Team • Remote',
-      applicants: 15,
-      avatars: [
-        'https://i.pravatar.cc/150?u=1',
-        'https://i.pravatar.cc/150?u=2',
-        'https://i.pravatar.cc/150?u=3'
-      ]
-    },
-    {
-      id: 2,
-      title: 'Fullstack Engineer',
-      team: 'Engineering • Austin, TX',
-      applicants: 10,
-      avatars: [
-        'https://i.pravatar.cc/150?u=4',
-        'https://i.pravatar.cc/150?u=5'
-      ]
-    }
-  ];
+
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
@@ -106,42 +86,52 @@ const RecruitmentHub = () => {
         <div className="flex items-center justify-between mb-8 px-2">
           <div className="flex items-center gap-4">
              <h2 className="text-xs font-black text-slate-800 uppercase tracking-widest leading-none">Active Job Postings Nodes</h2>
-             <span className="bg-indigo-50 text-indigo-600 text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">3 Active</span>
+             <span className="bg-indigo-50 text-indigo-600 text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">{jobs.length} Active</span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          {jobPostings.map((job) => (
+          {jobs.map((job) => (
             <div key={job.id} className="bg-white p-10 rounded-[48px] border border-slate-50 shadow-soft hover:shadow-3xl transition-all duration-700 hover:-translate-y-2 group relative overflow-hidden">
               <div className="flex justify-between items-start mb-10 relative z-10">
                 <div>
-                  <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-1 group-hover:text-indigo-600 transition-colors">{job.title}</h3>
-                  <p className="text-sm font-bold text-slate-400 italic">{job.team}</p>
+                  <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-1 group-hover:text-indigo-600 transition-colors uppercase">{job.title}</h3>
+                  <p className="text-sm font-bold text-slate-400 italic">{job.department} • {job.location || 'Remote'}</p>
                 </div>
                 <button className="text-slate-200 hover:text-slate-400 transition-colors p-2 hover:bg-slate-50 rounded-xl">
                   <MoreVertical size={20} />
                 </button>
               </div>
-
+              
               <div className="flex items-center gap-6 mb-12 relative z-10">
                 <div className="flex -space-x-4">
-                  {job.avatars.map((avatar, i) => (
+                  {(job.avatars || [
+                     'https://i.pravatar.cc/150?u=a',
+                     'https://i.pravatar.cc/150?u=b',
+                     'https://i.pravatar.cc/150?u=c'
+                  ]).slice(0, 3).map((avatar, i) => (
                     <div key={i} className="w-12 h-12 rounded-full border-4 border-white overflow-hidden shadow-lg group-hover:scale-110 transition-transform" style={{ transitionDelay: `${i * 100}ms` }}>
                       <img src={avatar} alt="" className="w-full h-full object-cover" />
                     </div>
                   ))}
                   <div className="w-12 h-12 rounded-full border-4 border-white bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-400">
-                    +{job.applicants}
+                    +{job.applicants + (job.avatars ? 0 : 5)}
                   </div>
                 </div>
-                <span className="text-sm font-black text-slate-300 uppercase tracking-widest">{job.applicants} Applicants</span>
+                <span className="text-sm font-black text-slate-300 uppercase tracking-widest">{job.applicants + (job.avatars ? 0 : 5)} Applicants</span>
               </div>
 
               <div className="flex items-center gap-4 relative z-10">
-                <button className="flex-1 py-5 bg-[#4E63F0] text-white text-[10px] font-black uppercase tracking-widest rounded-[24px] shadow-2xl shadow-indigo-100 hover:bg-indigo-700 hover:shadow-indigo-200 transition-all active:scale-95">
+                <button 
+                  onClick={() => navigate('/admin/recruitment-control/tracking')}
+                  className="flex-1 py-5 bg-[#4E63F0] text-white text-[10px] font-black uppercase tracking-widest rounded-[24px] shadow-2xl shadow-indigo-100 hover:bg-indigo-700 hover:shadow-indigo-200 transition-all active:scale-95"
+                >
                   View Applicants
                 </button>
-                <button className="px-8 py-5 border-2 border-slate-100 text-slate-400 hover:border-indigo-500 hover:text-indigo-500 text-[10px] font-black uppercase tracking-widest rounded-[24px] transition-all hover:bg-indigo-50/50 active:scale-95">
+                <button 
+                  onClick={() => navigate('/admin/recruitment-control/create')}
+                  className="px-8 py-5 border-2 border-slate-100 text-slate-400 hover:border-indigo-500 hover:text-indigo-500 text-[10px] font-black uppercase tracking-widest rounded-[24px] transition-all hover:bg-indigo-50/50 active:scale-95"
+                >
                   Edit
                 </button>
               </div>

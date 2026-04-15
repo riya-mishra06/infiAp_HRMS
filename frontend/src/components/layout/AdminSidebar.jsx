@@ -14,7 +14,7 @@ import {
   LogOut,
   HelpCircle
 } from 'lucide-react';
-import Logo from '../../assets/logo_infi_ap.png';
+
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -44,12 +44,12 @@ const AdminSidebar = () => {
       {/* Branding */}
       <div className="p-8 mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-xl shadow-soft flex items-center justify-center border border-slate-50 transition-transform hover:scale-105">
-            <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain p-1" />
+          <div className="w-14 h-14 bg-white rounded-2xl shadow-soft flex items-center justify-center border border-slate-50 transition-transform hover:scale-105">
+            <img src="/logo1.jpeg" alt="InfiAP Logo" className="w-full h-full object-contain p-2" />
           </div>
           <div>
-            <span className="text-xl font-black text-slate-800 tracking-tighter leading-none block">InfiAP</span>
-            <span className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Admin Panel</span>
+            <span className="text-2xl font-black text-slate-800 tracking-tighter leading-none block">InfiAP</span>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Admin Panel</span>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@ const AdminSidebar = () => {
                     className={`w-full flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 group ${location.pathname.startsWith(item.path)
                       ? 'bg-slate-900 text-white shadow-xl shadow-slate-200'
                       : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
-                    }`}
+                      }`}
                   >
                     <item.icon size={18} className="transition-transform group-hover:scale-110" />
                     <span className="font-black text-[11px] tracking-widest uppercase">{item.name}</span>

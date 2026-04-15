@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../../assets/logo_infi_ap.png';
+
 
 const AuthLayout = ({ children }) => {
     const navigate = useNavigate();
@@ -19,12 +19,12 @@ const AuthLayout = ({ children }) => {
                             onClick={() => navigate('/splash')}
                             className="flex w-fit items-center gap-3"
                         >
-                            <div className="h-12 w-12 rounded-2xl bg-white p-2.5 shadow-lg">
-                                <img src={Logo} alt="InfiAP" className="h-full w-full object-contain" />
+                            <div className="h-16 w-16 rounded-3xl bg-white p-3 shadow-lg">
+                                <img src="/logo1.jpeg" alt="InfiAP" className="h-full w-full object-contain" />
                             </div>
                             <div>
-                                <p className="text-xl font-black tracking-tight">InfiAP</p>
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-white/70">HR Management Suite</p>
+                                <p className="text-2xl font-black tracking-tight">InfiAP</p>
+                                <p className="text-[11px] uppercase tracking-[0.2em] text-white/70">HR Management Suite</p>
                             </div>
                         </button>
 

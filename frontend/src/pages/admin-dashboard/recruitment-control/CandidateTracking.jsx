@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, 
   Filter, 
@@ -15,11 +16,11 @@ import {
 } from 'lucide-react';
 
 const CandidateTracking = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('All Candidates');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const tabs = ['All Candidates', 'Shortlisted', 'Interviewed', 'Rejected', 'Hired'];
-
-  const candidates = [
+  const [candidateList, setCandidateList] = useState([
     {
       id: 1,
       name: 'Alex Rivera',
@@ -80,7 +81,31 @@ const CandidateTracking = () => {
       appliedDate: '2 days ago',
       experience: '6+ years'
     }
+  ]);
+
+  const tabs = [
+    { label: 'All Candidates', value: 'All Candidates' },
+    { label: 'Shortlisted', value: 'SHORTLISTED' },
+    { label: 'Interviewed', value: 'INTERVIEW SCHEDULED' },
+    { label: 'Rejected', value: 'REJECTED' },
+    { label: 'Hired', value: 'HIRED' }
   ];
+
+  const getFilteredCandidates = () => {
+    if (activeTab === 'All Candidates') return candidateList;
+    return candidateList.filter(c => c.status === activeTab);
+  };
+
+  const getCountForTab = (tabValue) => {
+    if (tabValue === 'All Candidates') return candidateList.length;
+    return candidateList.filter(c => c.status === tabValue).length;
+  };
+
+  const handleStatusUpdate = (id, newStatus) => {
+    setCandidateList(prev => prev.map(c => 
+      c.id === id ? { ...c, status: newStatus } : c
+    ));
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -92,6 +117,8 @@ const CandidateTracking = () => {
       default: return 'bg-slate-50 text-slate-600 border-slate-100';
     }
   };
+
+  const filteredCandidates = getFilteredCandidates();
 
   return (
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
@@ -106,7 +133,10 @@ const CandidateTracking = () => {
              <Filter size={16} className="group-hover:text-indigo-500 transition-colors" />
              Filtering Logic
           </button>
-          <button className="flex items-center gap-3 px-8 py-3.5 bg-indigo-600 text-white font-black rounded-2xl hover:bg-indigo-700 transition-all shadow-2xl shadow-indigo-100 uppercase tracking-widest text-[10px] active:scale-95 group">
+          <button 
+            onClick={() => navigate('/admin/recruitment-control/create')}
+            className="flex items-center gap-3 px-8 py-3.5 bg-indigo-600 text-white font-black rounded-2xl hover:bg-indigo-700 transition-all shadow-2xl shadow-indigo-100 uppercase tracking-widest text-[10px] active:scale-95 group"
+          >
             <Plus size={16} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
             Add Candidate Node
           </button>
@@ -117,15 +147,15 @@ const CandidateTracking = () => {
       <div className="flex flex-wrap items-center gap-4 bg-white p-3 rounded-2xl border border-slate-50 shadow-soft w-fit">
         {tabs.map((tab) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
+            key={tab.value}
+            onClick={() => setActiveTab(tab.value)}
             className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-              activeTab === tab ? 'bg-slate-900 text-white shadow-xl' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50/50'
+              activeTab === tab.value ? 'bg-slate-900 text-white shadow-xl' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50/50'
             }`}
           >
-            {tab}
-            <span className={`ml-3 px-2 py-0.5 rounded-md text-[8px] ${activeTab === tab ? 'bg-white/20 text-white' : 'bg-slate-50 text-slate-400'}`}>
-              {tab === 'All Candidates' ? '154' : Math.floor(Math.random() * 40)}
+            {tab.label}
+            <span className={`ml-3 px-2 py-0.5 rounded-md text-[8px] ${activeTab === tab.value ? 'bg-white/20 text-white' : 'bg-slate-50 text-slate-400'}`}>
+              {getCountForTab(tab.value)}
             </span>
           </button>
         ))}
@@ -133,7 +163,7 @@ const CandidateTracking = () => {
 
       {/* Grid Architecture */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-        {candidates.map((can) => (
+        {filteredCandidates.map((can) => (
           <div key={can.id} className="bg-white rounded-[48px] border border-slate-50 shadow-soft hover:shadow-3xl transition-all duration-750 hover:-translate-y-2 group relative overflow-hidden flex flex-col h-full">
             {/* Image Cluster */}
             <div className="p-8 pb-0 flex-1">
@@ -180,14 +210,25 @@ const CandidateTracking = () => {
 
                {/* Global Actions */}
                <div className="flex items-center gap-3">
-                  <button className="flex-1 py-4.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-slate-100 hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-3 group/btn">
-                     {can.status === 'APPLIED' ? 'Interview' : 
-                      can.status === 'INTERVIEW SCHEDULED' ? 'Start Meeting' : 
-                      can.status === 'SHORTLISTED' ? 'Schedule Interview' : 'Start Tracking'}
+                  <button 
+                    onClick={() => {
+                        if (can.status === 'APPLIED') handleStatusUpdate(can.id, 'SHORTLISTED');
+                        else if (can.status === 'SHORTLISTED') handleStatusUpdate(can.id, 'INTERVIEW SCHEDULED');
+                        else if (can.status === 'INTERVIEW SCHEDULED') handleStatusUpdate(can.id, 'HIRED');
+                        else handleStatusUpdate(can.id, 'APPLIED');
+                    }}
+                    className="flex-1 py-4.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-slate-100 hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-3 group/btn"
+                  >
+                     {can.status === 'APPLIED' ? 'Shortlist' : 
+                      can.status === 'INTERVIEW SCHEDULED' ? 'Hire Candidate' : 
+                      can.status === 'SHORTLISTED' ? 'Schedule Interview' : 'Re-Apply'}
                      <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
                   </button>
-                  <button className="p-4.5 bg-indigo-50 text-indigo-600 rounded-2xl hover:bg-indigo-100 transition-all active:scale-95 shadow-soft border border-indigo-100 border-opacity-40">
-                     <MessageSquare size={18} />
+                  <button 
+                    onClick={() => handleStatusUpdate(can.id, 'REJECTED')}
+                    className="p-4.5 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-100 transition-all active:scale-95 shadow-soft border border-rose-100 border-opacity-40"
+                  >
+                     <Mail size={18} />
                   </button>
                </div>
             </div>
@@ -201,14 +242,18 @@ const CandidateTracking = () => {
       {/* Desktop Pagination */}
       <div className="flex items-center justify-between px-10 py-12 bg-white rounded-[44px] border border-slate-100 shadow-soft">
          <div className="flex items-center gap-4">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Displaying 1 - 6 of 154 candidates</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Displaying {filteredCandidates.length} potential talent nodes</p>
          </div>
          <div className="flex items-center gap-2">
             <button className="p-3 text-slate-300 hover:text-slate-800 transition-all">
                <ChevronLeft size={20} />
             </button>
-            {[1, 2, 3, '...', 12].map((num, idx) => (
-              <button key={idx} className={`w-10 h-10 rounded-xl text-xs font-black transition-all ${num === 1 ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-800'}`}>
+            {[1, 2, 3].map((num) => (
+              <button 
+                key={num} 
+                onClick={() => setCurrentPage(num)}
+                className={`w-10 h-10 rounded-xl text-xs font-black transition-all ${currentPage === num ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-800'}`}
+              >
                 {num}
               </button>
             ))}

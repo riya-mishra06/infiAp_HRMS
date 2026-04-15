@@ -38,6 +38,28 @@ export const DepartmentProvider = ({ children }) => {
     }
   ]);
 
+  const [teams, setTeams] = useState([
+    {
+      name: 'Frontend Team',
+      lead: 'Sneha Desai',
+      members: 12,
+      type: 'Development',
+      keyMembers: [
+        { name: 'Arjun Mehta', role: 'Senior React Dev', status: 'ACTIVE', img: 'https://ui-avatars.com/api/?name=Arjun+Mehta&background=random' },
+        { name: 'Priya Singh', role: 'UI/UX Designer', status: 'ACTIVE', img: 'https://ui-avatars.com/api/?name=Priya+Singh&background=random' }
+      ]
+    },
+    {
+      name: 'Backend Team',
+      lead: 'Rohan Sharma',
+      members: 8,
+      type: 'Development',
+      keyMembers: [
+        { name: 'Vikas Roy', role: 'Node.js Expert', status: 'ACTIVE', img: 'https://ui-avatars.com/api/?name=Vikas+Roy&background=random' }
+      ]
+    }
+  ]);
+
   const addDepartment = (newDept) => {
     // Map manager ID to name for display
     const managerMap = {
@@ -58,13 +80,33 @@ export const DepartmentProvider = ({ children }) => {
     setDepartments(prev => [...prev, formattedDept]);
   };
 
+  const addTeam = (newTeam) => {
+    // Lead map for display names
+    const leadMap = {
+      'sneha': 'Sneha Desai',
+      'rohan': 'Rohan Sharma',
+      'vikas': 'Vikas Roy'
+    };
+
+    const formattedTeam = {
+      name: newTeam.name,
+      lead: leadMap[newTeam.lead] || newTeam.lead,
+      members: 0, // New teams start empty
+      type: newTeam.department === 'engineering' ? 'Development' : 
+            newTeam.department === 'marketing' ? 'Design' : 'Development',
+      keyMembers: []
+    };
+
+    setTeams(prev => [...prev, formattedTeam]);
+  };
+
   const totals = {
     deptCount: departments.length,
     teamCount: departments.reduce((acc, current) => acc + current.teams, 0)
   };
 
   return (
-    <DepartmentContext.Provider value={{ departments, addDepartment, totals }}>
+    <DepartmentContext.Provider value={{ departments, addDepartment, teams, addTeam, totals }}>
       {children}
     </DepartmentContext.Provider>
   );

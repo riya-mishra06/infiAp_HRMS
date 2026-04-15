@@ -71,11 +71,17 @@ const FinanceReports = () => {
             <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1 leading-none">Institutional Disbursement Intelligence</p>
          </div>
          <div className="flex items-center gap-4">
-            <button className="flex items-center gap-3 px-8 py-3.5 bg-slate-50 text-slate-500 font-black rounded-2xl border border-slate-100 hover:bg-white transition-all text-[10px] uppercase tracking-widest">
+            <button 
+              onClick={() => alert('Fiscal Period Selector: Switching to Fiscal 2024 Intelligence Node...')}
+              className="flex items-center gap-3 px-8 py-3.5 bg-slate-50 text-slate-500 font-black rounded-2xl border border-slate-100 hover:bg-white transition-all text-[10px] uppercase tracking-widest"
+            >
                <Calendar size={16} />
                Fiscal 2024
             </button>
-            <button className="flex items-center gap-3 px-8 py-3.5 bg-slate-900 text-white font-black rounded-2xl shadow-xl shadow-slate-100 hover:bg-slate-800 transition-all active:scale-95 text-[10px] uppercase tracking-widest">
+            <button 
+              onClick={() => alert('Exporting Financial Audit Protocol... Report will be downloaded shortly.')}
+              className="flex items-center gap-3 px-8 py-3.5 bg-slate-900 text-white font-black rounded-2xl shadow-xl shadow-slate-100 hover:bg-slate-800 transition-all active:scale-95 text-[10px] uppercase tracking-widest"
+            >
                <Download size={16} />
                Export Audit
             </button>
@@ -193,7 +199,10 @@ const FinanceReports = () => {
                </div>
             </div>
 
-            <button className="w-full mt-16 py-6 border-2 border-slate-100 bg-slate-50/50 text-slate-400 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all rounded-[32px] font-black text-[10px] uppercase tracking-[0.4em] flex items-center justify-center gap-4 group shadow-xl shadow-transparent hover:shadow-indigo-100/20 active:scale-95">
+            <button 
+              onClick={() => alert('Accessing Deep Financial Audit Logs... Redirecting to Secure Infrastructure.')}
+              className="w-full mt-16 py-6 border-2 border-slate-100 bg-slate-50/50 text-slate-400 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all rounded-[32px] font-black text-[10px] uppercase tracking-[0.4em] flex items-center justify-center gap-4 group shadow-xl shadow-transparent hover:shadow-indigo-100/20 active:scale-95"
+            >
                Full Financial Audit
                <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
             </button>

@@ -33,6 +33,24 @@ const SystemSettings = () => {
     maintenanceMode: false
   });
 
+  const [notification, setNotification] = useState(null);
+  const [config, setConfig] = useState({
+    timezone: 'UTC +05:30 (Chennai, Kolkata, Mumbai)',
+    dateFormat: 'DD/MM/YYYY',
+    currency: 'INR (₹)',
+    language: 'English (US)',
+    sessionTimeout: '15 Minutes'
+  });
+
+  const showNotification = (msg) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3000);
+  };
+
+  const handleConfigChange = (key, value) => {
+    setConfig(prev => ({ ...prev, [key]: value }));
+  };
+
   const handleToggle = (key) => {
     setToggles(prev => ({ ...prev, [key]: !prev[key] }));
   };
@@ -47,7 +65,15 @@ const SystemSettings = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-32">
+    <div className="max-w-4xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-32 relative">
+       
+       {/* Global Notification Toast */}
+       {notification && (
+         <div className="fixed top-24 right-8 z-[100] animate-in slide-in-from-right-8 fade-in flex items-center gap-3 bg-slate-900 text-white px-8 py-5 rounded-2xl shadow-3xl border border-white/10">
+           <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
+           <span className="text-[10px] font-black uppercase tracking-[0.2em]">{notification}</span>
+         </div>
+       )}
        
        {/* Premium Header */}
        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 px-4">
@@ -59,12 +85,12 @@ const SystemSettings = () => {
              <div className="relative group">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-hover:text-indigo-500 transition-colors" size={18} />
                 <input 
-                  type="text" 
-                  placeholder="Find setting..."
-                  className="bg-white border border-slate-100 rounded-2xl pl-12 pr-6 py-3.5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all w-[240px] shadow-soft"
+                   type="text" 
+                   placeholder="Find setting..."
+                   className="bg-white border border-slate-100 rounded-2xl pl-12 pr-6 py-3.5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all w-[240px] shadow-soft"
                 />
              </div>
-             <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100/50 shadow-soft">
+             <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100/50 shadow-soft cursor-pointer hover:bg-white transition-all shadow-lg active:scale-95" onClick={() => showNotification('System Diagnostic: Accessing Interface Metadata...')}>
                 <Settings size={22} className="animate-spin-slow" />
              </div>
           </div>
@@ -88,28 +114,44 @@ const SystemSettings = () => {
              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-4">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Time Zone</label>
-                   <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
+                   <select 
+                     value={config.timezone}
+                     onChange={(e) => handleConfigChange('timezone', e.target.value)}
+                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer"
+                   >
                       <option>UTC +05:30 (Chennai, Kolkata, Mumbai)</option>
                       <option>UTC +00:00 (GMT London)</option>
                    </select>
                 </div>
                 <div className="space-y-4">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Date Format</label>
-                   <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
+                   <select 
+                     value={config.dateFormat}
+                     onChange={(e) => handleConfigChange('dateFormat', e.target.value)}
+                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer"
+                   >
                       <option>DD/MM/YYYY</option>
                       <option>MM/DD/YYYY</option>
                    </select>
                 </div>
                 <div className="space-y-4">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Currency</label>
-                   <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
+                   <select 
+                     value={config.currency}
+                     onChange={(e) => handleConfigChange('currency', e.target.value)}
+                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer"
+                   >
                       <option>INR (₹)</option>
                       <option>USD ($)</option>
                    </select>
                 </div>
                 <div className="space-y-4">
                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Language</label>
-                   <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer">
+                   <select 
+                     value={config.language}
+                     onChange={(e) => handleConfigChange('language', e.target.value)}
+                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-8 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all appearance-none cursor-pointer"
+                   >
                       <option>English (US)</option>
                       <option>Hindi (HI)</option>
                    </select>
@@ -165,7 +207,11 @@ const SystemSettings = () => {
                       <div className="flex items-center justify-between">
                          <p className="text-sm font-black text-slate-800 leading-none mb-1">Session Timeout</p>
                       </div>
-                      <select className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-[11px] font-black text-slate-400 outline-none">
+                      <select 
+                        value={config.sessionTimeout}
+                        onChange={(e) => handleConfigChange('sessionTimeout', e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-[11px] font-black text-slate-400 outline-none hover:bg-white transition-all cursor-pointer"
+                      >
                          <option>15 Minutes</option>
                          <option>30 Minutes</option>
                       </select>
@@ -193,7 +239,12 @@ const SystemSettings = () => {
                       <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] leading-none">Permission Management Suites</p>
                    </div>
                 </div>
-                <button className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] hover:underline">Edit Global Access</button>
+                <button 
+                  onClick={() => showNotification('Access Matrix: Opening Global Permission Management Hub...')}
+                  className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] hover:underline"
+                >
+                  Edit Global Access
+                </button>
              </div>
 
              <div className="space-y-6 relative z-10">
@@ -202,7 +253,7 @@ const SystemSettings = () => {
                   { label: 'Department Access', icon: Monitor, detail: 'Define data visibility borders' },
                   { label: 'Document Access Control', icon: Archive, detail: 'End-to-end audit tracking' }
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-8 bg-white/5 rounded-[32px] border border-white/5 hover:bg-white transition-all hover:text-slate-900 group/link cursor-pointer">
+                  <div key={idx} className="flex items-center justify-between p-8 bg-white/5 rounded-[32px] border border-white/5 hover:bg-white transition-all hover:text-slate-900 group/link cursor-pointer" onClick={() => showNotification(`Access Control: Opening ${item.label} Module...`)}>
                      <div className="flex items-center gap-6">
                         <item.icon size={22} className="group-hover/link:text-indigo-600" />
                         <div>
@@ -259,7 +310,11 @@ const SystemSettings = () => {
                      { label: 'Export', icon: Download },
                      { label: 'Import', icon: Upload }
                    ].map((btn) => (
-                     <button key={btn.label} className="p-8 bg-slate-50 rounded-[32px] border border-slate-100/50 flex flex-col items-center justify-center gap-4 hover:bg-slate-900 hover:text-white transition-all group/btn active:scale-95">
+                     <button 
+                       key={btn.label} 
+                       onClick={() => showNotification(`Institutional Audit: Initializing ${btn.label} Node Protocol...`)}
+                       className="p-8 bg-slate-50 rounded-[32px] border border-slate-100/50 flex flex-col items-center justify-center gap-4 hover:bg-slate-900 hover:text-white transition-all group/btn active:scale-95"
+                     >
                         <div className="p-3 bg-white rounded-xl shadow-sm group-hover/btn:bg-white/10 group-hover/btn:text-white">
                            <btn.icon size={22} className="text-slate-400 group-hover/btn:text-white" />
                         </div>
@@ -298,7 +353,12 @@ const SystemSettings = () => {
                    </div>
                 </div>
 
-                <button className="w-full py-5 bg-white text-indigo-600 text-[11px] font-black uppercase tracking-[0.2em] rounded-[24px] hover:bg-slate-900 hover:text-white transition-all active:scale-95 relative z-10">Check for Updates</button>
+                <button 
+                  onClick={() => showNotification('Cluster Intelligence: Searching for Institutional v2.5.SL Payload... System Up-to-Date.')}
+                  className="w-full py-5 bg-white text-indigo-600 text-[11px] font-black uppercase tracking-[0.2em] rounded-[24px] hover:bg-slate-900 hover:text-white transition-all active:scale-95 relative z-10"
+                >
+                  Check for Updates
+                </button>
                 <div className="absolute -right-12 bottom-[-100px] w-64 h-64 bg-white/5 rounded-full blur-[80px]"></div>
              </section>
 
@@ -328,8 +388,22 @@ const SystemSettings = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t border-slate-50">
-             <button className="flex-1 py-6 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-[32px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95">Save Global Settings</button>
-             <button className="px-16 py-6 bg-white border-2 border-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-[32px] hover:bg-slate-50 transition-all">Reset to Defaults</button>
+             <button 
+               onClick={() => showNotification('Success: Institutional Global Settings Synchronized with Master Core.')}
+               className="flex-1 py-6 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-[32px] shadow-3xl shadow-slate-200 hover:bg-indigo-600 transition-all active:scale-95"
+             >
+               Save Global Settings
+             </button>
+             <button 
+               onClick={() => {
+                 if(window.confirm('Institutional Alert: Are you sure you want to revert all configurations to factory defaults?')) {
+                   showNotification('Resetting: Platform configurations restored to factory baselines.');
+                 }
+               }}
+               className="px-16 py-6 bg-white border-2 border-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-[32px] hover:bg-slate-50 transition-all active:scale-95"
+             >
+               Reset to Defaults
+             </button>
           </div>
 
        </div>

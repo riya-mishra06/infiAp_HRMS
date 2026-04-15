@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../../assets/logo_infi_ap.png';
+
 
 const SplashScreen = () => {
     const navigate = useNavigate();
@@ -26,8 +26,8 @@ const SplashScreen = () => {
             <div className="absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-[#6F8DFF]/10 blur-3xl"></div>
 
             <div className="relative z-10 flex flex-col items-center animate-in fade-in duration-1000">
-                <div className="w-24 h-24 bg-white rounded-3xl shadow-[0_20px_40px_-12px_rgba(68,83,162,0.2)] flex items-center justify-center p-5 mb-6 border border-[#EDF1FC]">
-                    <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain" />
+                <div className="w-32 h-32 bg-white rounded-[2rem] shadow-[0_20px_40px_-12px_rgba(68,83,162,0.2)] flex items-center justify-center p-6 mb-8 border border-[#EDF1FC]">
+                    <img src="/logo1.jpeg" alt="InfiAP Logo" className="w-full h-full object-contain" />
                 </div>
 
                 <h1 className="text-4xl font-black text-[#1F2754] tracking-tight mb-8">InfiAP</h1>

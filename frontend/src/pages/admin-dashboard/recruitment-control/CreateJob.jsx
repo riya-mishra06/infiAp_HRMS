@@ -8,14 +8,24 @@ import {
   Rocket, 
   Save, 
   ChevronDown,
-  Sparkles,
-  LayoutDashboard
 } from 'lucide-react';
+import { useJobContext } from '../../../context/JobContext';
 
 const CreateJob = () => {
   const navigate = useNavigate();
+  const { addJob } = useJobContext();
   const [skills, setSkills] = useState(['Figma', 'React']);
   const [skillInput, setSkillInput] = useState('');
+  
+  const [formData, setFormData] = useState({
+    title: '',
+    department: 'Engineering',
+    type: 'Full-time',
+    description: '',
+    experience: 'Entry (0-2 years)',
+    location: '',
+    deadline: ''
+  });
 
   const handleAddSkill = (e) => {
     if (e.key === 'Enter' && skillInput.trim()) {
@@ -24,6 +34,15 @@ const CreateJob = () => {
       }
       setSkillInput('');
     }
+  };
+
+  const handlePublish = (e) => {
+    e.preventDefault();
+    addJob({
+      ...formData,
+      skills
+    });
+    navigate('/admin/recruitment-control/hub');
   };
 
   const removeSkill = (skill) => {
@@ -70,6 +89,8 @@ const CreateJob = () => {
             type="text" 
             placeholder="e.g. Senior Product Designer"
             className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold placeholder:text-slate-300 outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500/20 transition-all shadow-inner"
+            value={formData.title}
+            onChange={(e) => setFormData({...formData, title: e.target.value})}
           />
         </div>
 
@@ -78,7 +99,11 @@ const CreateJob = () => {
           <div className="space-y-4 relative">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Department</label>
             <div className="relative">
-              <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none">
+              <select 
+                className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none"
+                value={formData.department}
+                onChange={(e) => setFormData({...formData, department: e.target.value})}
+              >
                 <option>Engineering</option>
                 <option>Design</option>
                 <option>Marketing</option>
@@ -90,7 +115,11 @@ const CreateJob = () => {
           <div className="space-y-4 relative">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Type</label>
             <div className="relative">
-              <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none">
+              <select 
+                className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none"
+                value={formData.type}
+                onChange={(e) => setFormData({...formData, type: e.target.value})}
+              >
                 <option>Full-time</option>
                 <option>Contract</option>
                 <option>Freelance</option>
@@ -108,6 +137,8 @@ const CreateJob = () => {
             placeholder="Describe the role, responsibilities, and team..."
             rows={6}
             className="w-full bg-slate-50 border border-slate-100 rounded-[32px] px-8 py-6 text-sm font-bold placeholder:text-slate-300 outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner resize-none leading-relaxed"
+            value={formData.description}
+            onChange={(e) => setFormData({...formData, description: e.target.value})}
           ></textarea>
         </div>
 
@@ -140,7 +171,11 @@ const CreateJob = () => {
         <div className="space-y-4">
           <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Experience Level</label>
           <div className="relative">
-            <select className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none">
+            <select 
+              className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none"
+              value={formData.experience}
+              onChange={(e) => setFormData({...formData, experience: e.target.value})}
+            >
               <option>Entry (0-2 years)</option>
               <option>Mid (3-5 years)</option>
               <option>Senior (6+ years)</option>
@@ -160,6 +195,8 @@ const CreateJob = () => {
                 type="text" 
                 placeholder="San Francisco, CA or Remote"
                 className="w-full bg-slate-50 border border-slate-100 rounded-2xl pl-14 pr-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner"
+                value={formData.location}
+                onChange={(e) => setFormData({...formData, location: e.target.value})}
               />
             </div>
           </div>
@@ -170,6 +207,8 @@ const CreateJob = () => {
               <input 
                 type="date" 
                 className="w-full bg-slate-50 border border-slate-100 rounded-2xl pl-14 pr-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-inner appearance-none"
+                value={formData.deadline}
+                onChange={(e) => setFormData({...formData, deadline: e.target.value})}
               />
             </div>
           </div>
@@ -177,11 +216,17 @@ const CreateJob = () => {
 
         {/* Form Action Intelligence */}
         <div className="pt-10 flex flex-col sm:flex-row items-center gap-6">
-          <button className="w-full sm:flex-1 py-6 border-2 border-indigo-600 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-[28px] hover:bg-indigo-50 transition-all flex items-center justify-center gap-4 active:scale-95">
+          <button 
+            onClick={handlePublish}
+            className="w-full sm:flex-1 py-6 border-2 border-indigo-600 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-[28px] hover:bg-indigo-50 transition-all flex items-center justify-center gap-4 active:scale-95"
+          >
             <Save size={20} />
             Save Draft
           </button>
-          <button className="w-full sm:flex-1 py-6 bg-linear-to-r from-[#4E63F0] to-[#6855E8] text-white text-[10px] font-black uppercase tracking-widest rounded-[28px] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 transition-all flex items-center justify-center gap-4 hover:-translate-y-1 active:scale-95">
+          <button 
+            onClick={handlePublish}
+            className="w-full sm:flex-1 py-6 bg-linear-to-r from-[#4E63F0] to-[#6855E8] text-white text-[10px] font-black uppercase tracking-widest rounded-[28px] shadow-2xl shadow-indigo-100 hover:shadow-indigo-300 transition-all flex items-center justify-center gap-4 hover:-translate-y-1 active:scale-95"
+          >
             <Rocket size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             Publish Role Protocols
           </button>

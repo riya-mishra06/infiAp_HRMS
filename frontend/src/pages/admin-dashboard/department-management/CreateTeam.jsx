@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDepartmentContext } from '../../../context/DepartmentContext';
 import { 
   Users, 
   ArrowLeft, 
@@ -20,9 +21,11 @@ const CreateTeam = () => {
     mission: ''
   });
 
+  const { addTeam } = useDepartmentContext();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, you'd save data here
+    addTeam(formData);
     navigate('/admin/department-management/teams');
   };
 

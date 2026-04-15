@@ -86,7 +86,10 @@ const AdminDashboard = () => {
                   <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse"></div>
                   <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Instance Stable</span>
                </div>
-               <button className="p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all border border-slate-100">
+               <button 
+                 onClick={() => alert('Institutional Intelligence: Accessing Restricted System Settings...')}
+                 className="p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all border border-slate-100"
+               >
                   <Settings size={18} />
                </button>
             </div>
@@ -205,7 +208,10 @@ const AdminDashboard = () => {
                   </div>
                </div>
 
-               <button className="w-full py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-xl hover:bg-indigo-600 transition-all flex items-center justify-center gap-3">
+               <button 
+                 onClick={() => alert('Infrastructure Health Protocol: Initializing Deep Diagnostic Sequence... Status Optimal.')}
+                 className="w-full py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-xl hover:bg-indigo-600 transition-all flex items-center justify-center gap-3"
+               >
                   <Terminal size={14} /> Run Full Diagnostic
                </button>
             </div>

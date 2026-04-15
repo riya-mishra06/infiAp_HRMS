@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Search, Bell } from 'lucide-react';
 
+
 const AdminNavbar = () => {
   const location = useLocation();
 
@@ -20,10 +21,12 @@ const AdminNavbar = () => {
 
   return (
     <div className="h-20 bg-white border-b border-slate-100 sticky top-0 z-10 flex items-center justify-between px-8 w-full">
-      <div className="flex items-center gap-10">
-        <h1 className="text-xl font-black text-slate-800 tracking-tight min-w-[180px]">{getPageTitle()}</h1>
+      <div className="flex items-center gap-6">
 
-        <div className="relative group w-[400px]">
+
+        <h1 className="text-xl font-black text-slate-800 tracking-tight min-w-[160px]">{getPageTitle()}</h1>
+
+        <div className="relative group w-[380px]">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-hover:text-indigo-500 transition-colors" size={18} />
           <input
             type="text"

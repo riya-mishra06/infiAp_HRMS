@@ -34,7 +34,7 @@ import {
   ShieldCheck,
   Globe
 } from 'lucide-react';
-import Logo from '../../assets/logo_infi_ap.png';
+
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -293,12 +293,12 @@ const Sidebar = () => {
       {/* Premium Logo Section */}
       <div className="p-8 mb-4">
         <div className="flex items-center gap-4 mb-2">
-          <div className="w-10 h-10 bg-white rounded-2xl shadow-soft flex items-center justify-center overflow-hidden border border-slate-50 transition-transform hover:scale-105">
-            <img src={Logo} alt="InfiAP Logo" className="w-full h-full object-contain p-1" />
+          <div className="w-14 h-14 bg-white rounded-2xl shadow-soft flex items-center justify-center overflow-hidden border border-slate-50 transition-transform hover:scale-105">
+            <img src="/logo1.jpeg" alt="InfiAP Logo" className="w-full h-full object-contain p-2" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-black text-slate-800 tracking-tighter leading-none mb-1">InfiAP</span>
-            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Solutions</span>
+            <span className="text-2xl font-black text-slate-800 tracking-tighter leading-none mb-1">InfiAP</span>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Solutions</span>
           </div>
         </div>
 

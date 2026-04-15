@@ -103,9 +103,12 @@ const Placeholder = ({ title }) => (
   </div>
 );
 
+import ScrollToTop from './components/common/ScrollToTop';
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <EmployeeProvider>
         <DepartmentProvider>
           <JobProvider>

@@ -89,7 +89,10 @@ const CompanyPolicies = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
            </div>
-           <button className="p-4 bg-slate-900 text-white rounded-2xl shadow-xl shadow-slate-200 hover:bg-indigo-600 hover:scale-105 active:scale-95 transition-all">
+           <button 
+             onClick={() => alert('Institutional Protocol Hub: Initializing Policy Creation Node...')}
+             className="p-4 bg-slate-900 text-white rounded-2xl shadow-xl shadow-slate-200 hover:bg-indigo-600 hover:scale-105 active:scale-95 transition-all"
+           >
               <Plus size={24} strokeWidth={2.5} />
            </button>
         </div>
@@ -166,7 +169,10 @@ const CompanyPolicies = () => {
 
       {/* Floating Action Hint */}
       <div className="fixed bottom-12 right-12 z-20">
-         <button className="w-20 h-20 bg-slate-900 text-white rounded-[32px] shadow-2xl flex items-center justify-center hover:bg-indigo-600 hover:scale-110 active:scale-95 transition-all group">
+         <button 
+           onClick={() => alert('Launching Master Policy Deployment Sequence...')}
+           className="w-20 h-20 bg-slate-900 text-white rounded-[32px] shadow-2xl flex items-center justify-center hover:bg-indigo-600 hover:scale-110 active:scale-95 transition-all group"
+         >
             <Plus size={32} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-500" />
          </button>
       </div>

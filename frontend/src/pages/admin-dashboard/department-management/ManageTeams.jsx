@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDepartmentContext } from '../../../context/DepartmentContext';
 import { 
   Users, 
   Search, 
@@ -16,31 +17,10 @@ import {
 
 const ManageTeams = () => {
   const navigate = useNavigate();
+  const { teams } = useDepartmentContext();
   const [activeTab, setActiveTab] = useState('All Teams');
 
   const tabs = ['All Teams', 'Development', 'QA & Testing', 'Design'];
-
-  const teams = [
-    {
-      name: 'Frontend Team',
-      lead: 'Sneha Desai',
-      members: 12,
-      type: 'Development',
-      keyMembers: [
-        { name: 'Arjun Mehta', role: 'Senior React Dev', status: 'ACTIVE', img: 'https://ui-avatars.com/api/?name=Arjun+Mehta&background=random' },
-        { name: 'Priya Singh', role: 'UI/UX Designer', status: 'ACTIVE', img: 'https://ui-avatars.com/api/?name=Priya+Singh&background=random' }
-      ]
-    },
-    {
-      name: 'Backend Team',
-      lead: 'Rohan Sharma',
-      members: 8,
-      type: 'Development',
-      keyMembers: [
-        { name: 'Vikas Roy', role: 'Node.js Expert', status: 'ACTIVE', img: 'https://ui-avatars.com/api/?name=Vikas+Roy&background=random' }
-      ]
-    }
-  ];
 
   const filteredTeams = activeTab === 'All Teams' ? teams : teams.filter(t => t.type === activeTab);
 
