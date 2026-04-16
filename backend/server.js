@@ -26,10 +26,23 @@ app.use('/api/v1/employees', employees);
 app.use('/api/v1/jobs', jobs);
 app.use('/api/v1/policies', policies);
 
-// Basic Route
-app.get('/', (req, res) => {
-    res.send('HR Dashboard API is running');
-});
+const path = require('path');
+
+// Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder
+    app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+    // Any route that is not API will be redirected to index.html
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html'));
+    });
+} else {
+    // Basic Route
+    app.get('/', (req, res) => {
+        res.send('HR Dashboard API is running');
+    });
+}
 
 // Start Server
 app.listen(PORT, () => {
