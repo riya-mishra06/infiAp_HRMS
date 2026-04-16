@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './components/layout/DashboardLayout';
 import AdminLayout from './components/layout/AdminLayout';
+import { useAuth } from './context/AuthContext';
 
 // HR Dashboard Pages
 import Dashboard from './pages/hr-dashboard/Dashboard';
@@ -106,6 +107,57 @@ const Placeholder = ({ title }) => (
 
 import ScrollToTop from './components/common/ScrollToTop';
 
+const normalizeRole = (role) => {
+  const normalized = (role || '').toLowerCase();
+
+  if (normalized === 'main admin') return 'Main Admin';
+  if (normalized === 'admin') return 'Admin';
+  if (normalized === 'hr') return 'HR';
+
+  return null;
+};
+
+const getDashboardPathByRole = (role) => {
+  const normalizedRole = normalizeRole(role);
+
+  if (normalizedRole === 'Main Admin') return '/main-admin/dashboard';
+  if (normalizedRole === 'Admin') return '/admin/dashboard';
+  if (normalizedRole === 'HR') return '/dashboard';
+
+  return '/login';
+};
+
+const RootRedirect = () => {
+  const { role } = useAuth();
+  return <Navigate to={getDashboardPathByRole(role)} replace />;
+};
+
+const PublicOnlyRoute = ({ children }) => {
+  const { role } = useAuth();
+  const normalizedRole = normalizeRole(role);
+
+  if (normalizedRole) {
+    return <Navigate to={getDashboardPathByRole(normalizedRole)} replace />;
+  }
+
+  return children;
+};
+
+const ProtectedRoleRoute = ({ children, allowedRoles }) => {
+  const { role } = useAuth();
+  const normalizedRole = normalizeRole(role);
+
+  if (!normalizedRole) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(normalizedRole)) {
+    return <Navigate to={getDashboardPathByRole(normalizedRole)} replace />;
+  }
+
+  return children;
+};
+
 function App() {
   return (
     <Router>
@@ -116,9 +168,9 @@ function App() {
           <PolicyProvider>
             <Routes>
               {/* 1. Cinematic Auth Flow */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<RootRedirect />} />
               <Route path="/splash" element={<SplashScreen />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/2fa" element={<TwoFactor />} />
               <Route path="/reset-password" element={<ResetPassword />} />
@@ -126,124 +178,130 @@ function App() {
 
               {/* 2. Management Portal (Company Level) */}
               <Route path="/admin/*" element={
-                <AdminLayout>
-                  <Routes>
-                    <Route path="/" element={<AdminDashboard />} />
-                    <Route path="/dashboard" element={<AdminDashboard />} />
-                    <Route path="/department-management" element={<AdminDepartments />} />
-                    <Route path="/departments" element={<AdminDepartments />} />
+                <ProtectedRoleRoute allowedRoles={['Admin']}>
+                  <AdminLayout>
+                    <Routes>
+                      <Route path="/" element={<AdminDashboard />} />
+                      <Route path="/dashboard" element={<AdminDashboard />} />
+                      <Route path="/department-management" element={<AdminDepartments />} />
+                      <Route path="/departments" element={<AdminDepartments />} />
 
-                    {/* Department  */}
-                    <Route path="/department-management/create" element={<CreateDepartment />} />
-                    <Route path="/department-management/teams" element={<ManageTeams />} />
-                    <Route path="/department-management/teams/create" element={<CreateTeam />} />
+                      {/* Department  */}
+                      <Route path="/department-management/create" element={<CreateDepartment />} />
+                      <Route path="/department-management/teams" element={<ManageTeams />} />
+                      <Route path="/department-management/teams/create" element={<CreateTeam />} />
 
-                    {/* Employees */}
-                    <Route path="/employees" element={<EmployeeDirectory />} />
-                    <Route path="/employees/view" element={<EmployeeProfilesHub />} />
-                    <Route path="/employees/edit" element={<EmployeeDirectory />} />
-                    <Route path="/employees/add" element={<AddEmployee />} />
+                      {/* Employees */}
+                      <Route path="/employees" element={<EmployeeDirectory />} />
+                      <Route path="/employees/view" element={<EmployeeProfilesHub />} />
+                      <Route path="/employees/edit" element={<EmployeeDirectory />} />
+                      <Route path="/employees/add" element={<AddEmployee />} />
 
-                    {/* Payroll */}
-                    <Route path="/payroll-management" element={<PayrollHub />} />
-                    <Route path="/payroll-management/structure" element={<SalaryStructure />} />
-                    <Route path="/payroll-management/generate" element={<PayslipGeneration />} />
-                    <Route path="/payroll-management/reports" element={<FinanceReports />} />
-                    <Route path="/payroll-management/secure-sharing" element={<SecureDocument />} />
-                    <Route path="/payroll-management/expired" element={<LinkExpired />} />
-                    <Route path="/payroll-management/verify" element={<SharingSecurity />} />
+                      {/* Payroll */}
+                      <Route path="/payroll-management" element={<PayrollHub />} />
+                      <Route path="/payroll-management/structure" element={<SalaryStructure />} />
+                      <Route path="/payroll-management/generate" element={<PayslipGeneration />} />
+                      <Route path="/payroll-management/reports" element={<FinanceReports />} />
+                      <Route path="/payroll-management/secure-sharing" element={<SecureDocument />} />
+                      <Route path="/payroll-management/expired" element={<LinkExpired />} />
+                      <Route path="/payroll-management/verify" element={<SharingSecurity />} />
 
-                    {/* Recruitment */}
-                    <Route path="/recruitment-control/hub" element={<RecruitmentHub />} />
-                    <Route path="/recruitment-control/analytics" element={<RecruitmentAnalytics />} />
-                    <Route path="/recruitment-control/create" element={<CreateJob />} />
-                    <Route path="/recruitment-control/tracking" element={<CandidateTracking />} />
-                    <Route path="/recruitment-control/interviews" element={<InterviewManagement />} />
+                      {/* Recruitment */}
+                      <Route path="/recruitment-control/hub" element={<RecruitmentHub />} />
+                      <Route path="/recruitment-control/analytics" element={<RecruitmentAnalytics />} />
+                      <Route path="/recruitment-control/create" element={<CreateJob />} />
+                      <Route path="/recruitment-control/tracking" element={<CandidateTracking />} />
+                      <Route path="/recruitment-control/interviews" element={<InterviewManagement />} />
 
-                    <Route path="/policies" element={<CompanyPolicies />} />
-                    <Route path="/security" element={<SecurityDocuments />} />
-                    <Route path="/settings" element={<SystemSettings />} />
-                  </Routes>
-                </AdminLayout>
+                      <Route path="/policies" element={<CompanyPolicies />} />
+                      <Route path="/security" element={<SecurityDocuments />} />
+                      <Route path="/settings" element={<SystemSettings />} />
+                    </Routes>
+                  </AdminLayout>
+                </ProtectedRoleRoute>
               } />
 
               {/* 4. Main Institutional Portal (Super Portal) */}
               <Route path="/main-admin/*" element={
-                <AdminLayout>
-                  <Routes>
-                    <Route path="/" element={<MainDashboard />} />
-                    <Route path="/dashboard" element={<MainDashboard />} />
-                    <Route path="/company-setup" element={<CompanySetup />} />
-                    <Route path="/company/:id" element={<CompanyDetails />} />
-                    <Route path="/success" element={<CompanySuccess />} />
-                    <Route path="/user-management" element={<UserManagement />} />
-                    <Route path="/platform-config" element={<PlatformConfig />} />
-                    <Route path="/integrations" element={<SystemIntegrations />} />
-                    <Route path="/reports" element={<GlobalReports />} />
-                    <Route path="/monitoring" element={<SystemMonitoring />} />
-                  </Routes>
-                </AdminLayout>
+                <ProtectedRoleRoute allowedRoles={['Main Admin']}>
+                  <AdminLayout>
+                    <Routes>
+                      <Route path="/" element={<MainDashboard />} />
+                      <Route path="/dashboard" element={<MainDashboard />} />
+                      <Route path="/company-setup" element={<CompanySetup />} />
+                      <Route path="/company/:id" element={<CompanyDetails />} />
+                      <Route path="/success" element={<CompanySuccess />} />
+                      <Route path="/user-management" element={<UserManagement />} />
+                      <Route path="/platform-config" element={<PlatformConfig />} />
+                      <Route path="/integrations" element={<SystemIntegrations />} />
+                      <Route path="/reports" element={<GlobalReports />} />
+                      <Route path="/monitoring" element={<SystemMonitoring />} />
+                    </Routes>
+                  </AdminLayout>
+                </ProtectedRoleRoute>
               } />
 
               {/* 3. HR Dashboard Environment (Existing) */}
               <Route path="/*" element={
-                <DashboardLayout>
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/employees" element={<EmployeeDirectory />} />
-                    <Route path="/employees/add" element={<AddEmployee />} />
-                    <Route path="/employees/profiles" element={<EmployeeProfilesHub />} />
-                    <Route path="/employees/edit/:id" element={<EditEmployee />} />
-                    <Route path="/employees/profile/:id" element={<EmployeeProfiles />} />
+                <ProtectedRoleRoute allowedRoles={['HR']}>
+                  <DashboardLayout>
+                    <Routes>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/employees" element={<EmployeeDirectory />} />
+                      <Route path="/employees/add" element={<AddEmployee />} />
+                      <Route path="/employees/profiles" element={<EmployeeProfilesHub />} />
+                      <Route path="/employees/edit/:id" element={<EditEmployee />} />
+                      <Route path="/employees/profile/:id" element={<EmployeeProfiles />} />
 
-                    <Route path="/attendance" element={<AttendanceDashboard />} />
-                    <Route path="/attendance/records" element={<CheckInRecords />} />
-                    <Route path="/attendance/monthly" element={<MonthlyAttendance />} />
-                    <Route path="/attendance-reports" element={<AttendanceReports />} />
-                    <Route path="/attendance-reports/daily" element={<DailyAttendanceAudit />} />
-                    <Route path="/attendance-reports/late" element={<LateArrivalDiagnostic />} />
-                    <Route path="/attendance-correction" element={<CorrectionWorkflow />} />
+                      <Route path="/attendance" element={<AttendanceDashboard />} />
+                      <Route path="/attendance/records" element={<CheckInRecords />} />
+                      <Route path="/attendance/monthly" element={<MonthlyAttendance />} />
+                      <Route path="/attendance-reports" element={<AttendanceReports />} />
+                      <Route path="/attendance-reports/daily" element={<DailyAttendanceAudit />} />
+                      <Route path="/attendance-reports/late" element={<LateArrivalDiagnostic />} />
+                      <Route path="/attendance-correction" element={<CorrectionWorkflow />} />
 
-                    <Route path="/leave" element={<LeaveManagement />} />
-                    <Route path="/leave/requests" element={<LeaveRequests />} />
-                    <Route path="/leave/approval" element={<LeaveApproval />} />
-                    <Route path="/leave/history" element={<LeaveHistory />} />
-                    <Route path="/leave/profile/:id" element={<EmployeeLeaveProfile />} />
+                      <Route path="/leave" element={<LeaveManagement />} />
+                      <Route path="/leave/requests" element={<LeaveRequests />} />
+                      <Route path="/leave/approval" element={<LeaveApproval />} />
+                      <Route path="/leave/history" element={<LeaveHistory />} />
+                      <Route path="/leave/profile/:id" element={<EmployeeLeaveProfile />} />
 
-                    <Route path="/recruitment" element={<RecruitmentManagement />} />
-                    <Route path="/recruitment/post-job" element={<PostJob />} />
-                    <Route path="/recruitment/active-jobs" element={<ActiveJobs />} />
-                    <Route path="/recruitment/candidates" element={<Candidates />} />
-                    <Route path="/recruitment/applications" element={<Applications />} />
-                    <Route path="/recruitment/interviews" element={<Interviews />} />
-                    <Route path="/recruitment/interviews/schedule" element={<ScheduleInterview />} />
-                    <Route path="/recruitment/interviews/id/feedback" element={<InterviewFeedback />} />
-                    <Route path="/recruitment/candidate/:id" element={<CandidateProfile />} />
+                      <Route path="/recruitment" element={<RecruitmentManagement />} />
+                      <Route path="/recruitment/post-job" element={<PostJob />} />
+                      <Route path="/recruitment/active-jobs" element={<ActiveJobs />} />
+                      <Route path="/recruitment/candidates" element={<Candidates />} />
+                      <Route path="/recruitment/applications" element={<Applications />} />
+                      <Route path="/recruitment/interviews" element={<Interviews />} />
+                      <Route path="/recruitment/interviews/schedule" element={<ScheduleInterview />} />
+                      <Route path="/recruitment/interviews/id/feedback" element={<InterviewFeedback />} />
+                      <Route path="/recruitment/candidate/:id" element={<CandidateProfile />} />
 
-                    <Route path="/payroll" element={<PayrollManagement />} />
-                    <Route path="/payroll/overview" element={<PayrollOverview />} />
-                    <Route path="/payroll/salary" element={<SalaryProcessing />} />
-                    <Route path="/payroll/payslips" element={<PayslipManagement />} />
+                      <Route path="/payroll" element={<PayrollManagement />} />
+                      <Route path="/payroll/overview" element={<PayrollOverview />} />
+                      <Route path="/payroll/salary" element={<SalaryProcessing />} />
+                      <Route path="/payroll/payslips" element={<PayslipManagement />} />
 
-                    <Route path="/performance" element={<PerformanceManagement />} />
-                    <Route path="/performance/monthly" element={<MonthlyPerformance />} />
-                    <Route path="/performance/feedback" element={<ManagerFeedback />} />
-                    <Route path="/performance/reports" element={<PerformanceReports />} />
+                      <Route path="/performance" element={<PerformanceManagement />} />
+                      <Route path="/performance/monthly" element={<MonthlyPerformance />} />
+                      <Route path="/performance/feedback" element={<ManagerFeedback />} />
+                      <Route path="/performance/reports" element={<PerformanceReports />} />
 
-                    <Route path="/analytics" element={<AnalyticsManagement />} />
-                    <Route path="/analytics/employees" element={<EmployeeReports />} />
-                    <Route path="/analytics/attendance" element={<AttendanceAnalytics />} />
-                    <Route path="/analytics/performance" element={<PerformanceInsights />} />
+                      <Route path="/analytics" element={<AnalyticsManagement />} />
+                      <Route path="/analytics/employees" element={<EmployeeReports />} />
+                      <Route path="/analytics/attendance" element={<AttendanceAnalytics />} />
+                      <Route path="/analytics/performance" element={<PerformanceInsights />} />
 
-                    <Route path="/resignation" element={<ResignationHub />} />
-                    <Route path="/resignation/submit" element={<SubmitResignation />} />
-                    <Route path="/resignation/requests" element={<ResignationRequests />} />
-                    <Route path="/resignation/exit" element={<ExitProcess />} />
+                      <Route path="/resignation" element={<ResignationHub />} />
+                      <Route path="/resignation/submit" element={<SubmitResignation />} />
+                      <Route path="/resignation/requests" element={<ResignationRequests />} />
+                      <Route path="/resignation/exit" element={<ExitProcess />} />
 
-                    <Route path="/settings" element={<Placeholder title="Settings" />} />
-                  </Routes>
-                </DashboardLayout>
+                      <Route path="/settings" element={<Placeholder title="Settings" />} />
+                    </Routes>
+                  </DashboardLayout>
+                </ProtectedRoleRoute>
               } />
             </Routes>
             </PolicyProvider>
