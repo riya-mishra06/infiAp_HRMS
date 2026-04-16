@@ -1,6 +1,11 @@
 const User = require('../models/User');
 const ErrorResponse = require('../middleware/error');
 
+const otpStore = new Map();
+const OTP_TTL_MS = 5 * 60 * 1000;
+
+const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
+
 // @desc    Register user
 // @route   POST /api/v1/auth/register
 // @access  Public
@@ -47,6 +52,72 @@ exports.login = async (req, res, next) => {
             return res.status(401).json({ success: false, error: 'Invalid credentials' });
         }
 
+        const userId = user._id.toString();
+        const otp = process.env.NODE_ENV === 'production'
+            ? generateOtp()
+            : (process.env.DEV_2FA_OTP || '123456');
+
+        otpStore.set(userId, {
+            otp,
+            expiresAt: Date.now() + OTP_TTL_MS
+        });
+
+        const response = {
+            success: true,
+            message: 'OTP sent successfully. Please verify 2FA to continue.',
+            data: {
+                userId,
+                role: user.role,
+                requires2FA: true,
+                expiresInSeconds: Math.floor(OTP_TTL_MS / 1000)
+            }
+        };
+
+        // Keep local/dev testing simple when no OTP provider is configured.
+        if (process.env.NODE_ENV !== 'production') {
+            response.devOtp = otp;
+        }
+
+        res.status(200).json(response);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Verify login 2FA and issue token
+// @route   POST /api/v1/auth/verify-2fa
+// @access  Public
+exports.verifyTwoFactor = async (req, res, next) => {
+    try {
+        const { userId, otp } = req.body;
+
+        if (!userId || !otp) {
+            return res.status(400).json({ success: false, error: 'Please provide userId and otp' });
+        }
+
+        const otpEntry = otpStore.get(userId);
+
+        if (!otpEntry) {
+            return res.status(400).json({ success: false, error: 'OTP not found. Please login again.' });
+        }
+
+        if (Date.now() > otpEntry.expiresAt) {
+            otpStore.delete(userId);
+            return res.status(400).json({ success: false, error: 'OTP expired. Please login again.' });
+        }
+
+        if (otpEntry.otp !== otp) {
+            return res.status(400).json({ success: false, error: 'Invalid OTP' });
+        }
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            otpStore.delete(userId);
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+
+        otpStore.delete(userId);
         sendTokenResponse(user, 200, res);
     } catch (err) {
         next(err);
@@ -120,6 +191,12 @@ const sendTokenResponse = (user, statusCode, res) => {
         .cookie('token', token, options)
         .json({
             success: true,
-            token
+            token,
+            data: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
         });
 };
