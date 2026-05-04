@@ -407,6 +407,13 @@ exports.createHrEmployee = async (req, res, next) => {
 exports.updateHrEmployee = async (req, res, next) => {
     try {
         const updates = mapEmployeeUpdatePayload(req.body);
+
+        if (req.file) {
+            const profilePicturePath = `/uploads/profile-pictures/${req.file.filename}`;
+            updates.profilePicture = profilePicturePath;
+            updates.avatar = profilePicturePath;
+        }
+
         const employee = await Employee.findByIdAndUpdate(req.params.id, updates, {
             new: true,
             runValidators: true
@@ -611,7 +618,7 @@ exports.getLeaveRequests = (req, res) => {
 
 // PUT /api/v1/hr/leaves/approve
 exports.approveLeave = (req, res) => {
-    const { leaveId, status } = req.body;
+    const { leaveId, status, reviewNote } = req.body;
 
     const leave = leaveApplications.find((item) => item.id === leaveId);
     if (!leave) {
@@ -619,6 +626,7 @@ exports.approveLeave = (req, res) => {
     }
 
     leave.status = status || leave.status;
+    leave.reviewNote = reviewNote || leave.reviewNote;
     leave.reviewedAt = new Date().toISOString();
 
     res.status(200).json({

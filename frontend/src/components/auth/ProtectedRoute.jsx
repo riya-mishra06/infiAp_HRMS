@@ -2,9 +2,20 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
+const normalizeRole = (role) => {
+    const value = (role || '').toString().trim().toLowerCase();
+
+    if (value === 'main admin') return 'Main Admin';
+    if (value === 'admin') return 'Admin';
+    if (value === 'hr') return 'HR';
+
+    return role || null;
+};
+
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { isAuthenticated, user, loading } = useAuth();
     const location = useLocation();
+    const normalizedRole = normalizeRole(user?.role);
 
     if (loading) {
         return (
@@ -20,11 +31,11 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    if (allowedRoles && !allowedRoles.includes(user?.role)) {
+    if (allowedRoles && !allowedRoles.includes(normalizedRole)) {
         // Role not authorized - redirect to a specific page or dashboard
         // For now, redirecting to the main dashboard of their respective role
-        if (user?.role === 'Main Admin') return <Navigate to="/main-admin" replace />;
-        if (user?.role === 'admin') return <Navigate to="/admin" replace />;
+        if (normalizedRole === 'Main Admin') return <Navigate to="/main-admin" replace />;
+        if (normalizedRole === 'Admin') return <Navigate to="/admin" replace />;
         return <Navigate to="/dashboard" replace />;
     }
 

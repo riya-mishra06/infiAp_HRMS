@@ -10,6 +10,13 @@ const api = axios.create({
 // Add a request interceptor to add the auth token to every request
 api.interceptors.request.use(
     (config) => {
+        const isFormData = typeof FormData !== 'undefined' && config.data instanceof FormData;
+
+        if (isFormData) {
+            delete config.headers['Content-Type'];
+            delete config.headers['content-type'];
+        }
+
         const token = localStorage.getItem('token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;

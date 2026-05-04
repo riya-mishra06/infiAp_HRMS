@@ -58,6 +58,23 @@ const Sidebar = () => {
     return null;
   });
 
+  const getActiveSubmenu = () => {
+    if (location.pathname.startsWith('/attendance')) return 'attendance';
+    if (location.pathname.startsWith('/leave')) return 'leave';
+    if (location.pathname.startsWith('/recruitment')) return 'recruitment';
+    if (location.pathname.startsWith('/payroll')) return 'payroll';
+    if (location.pathname.startsWith('/performance')) return 'performance';
+    if (location.pathname.startsWith('/analytics')) return 'analytics';
+    if (location.pathname.startsWith('/resignation')) return 'resignation';
+    if (location.pathname.startsWith('/employees')) return 'employees';
+    if (location.pathname.startsWith('/admin/employees')) return 'employees';
+    if (location.pathname.startsWith('/admin/department-management')) return 'departments';
+    if (location.pathname.startsWith('/admin/payroll-management')) return 'payroll';
+    return null;
+  };
+
+  const activeSubmenu = getActiveSubmenu();
+
   const toggleSubmenu = (key) => {
     setOpenSubmenu(prev => prev === key ? null : key);
   };
@@ -181,6 +198,7 @@ const Sidebar = () => {
       roles: ['HR'],
       subItems: [
         { name: 'Hub', icon: LayoutDashboard, path: '/leave' },
+        { name: 'Pending Approval', icon: AlertCircle, path: '/leave/pending-approval' },
         { name: 'Leave Requests', icon: ClipboardList, path: '/leave/requests' },
         { name: 'Leave Approval', icon: CheckCircle2, path: '/leave/approval' },
         { name: 'Leave History', icon: History, path: '/leave/history' },
@@ -329,7 +347,7 @@ const Sidebar = () => {
                     <ChevronDown size={14} className={`ml-auto transition-transform duration-300 ${openSubmenu === item.key ? 'rotate-180' : ''}`} />
                   </button>
 
-                  <div className={`grid transition-all duration-300 ease-in-out ${openSubmenu === item.key ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                  <div className={`grid transition-all duration-300 ease-in-out ${(openSubmenu === item.key || activeSubmenu === item.key) ? 'grid-rows-[1fr] opacity-100 pointer-events-auto' : 'grid-rows-[0fr] opacity-0 pointer-events-none'}`}>
                     <div className="overflow-hidden">
                       <ul className="mt-1 ml-4 border-l-2 border-slate-100 pl-2 space-y-1">
                         {item.subItems.map(sub => (

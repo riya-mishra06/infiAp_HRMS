@@ -14,6 +14,35 @@ const put = (path, data) => api.put(`${HR_BASE}${path}`, data);
 // ─── 1. Dashboard & Profile ──────────────────────────────────────────────────
 export const getDashboardSummary = () => get('/dashboard/summary');
 export const getHrProfile = () => get('/profile');
+export const updateProfile = async (employeeId, profileData, imageFile) => {
+    const formData = new FormData();
+
+    if (imageFile) {
+        if (imageFile instanceof File) {
+            formData.append('profilePicture', imageFile);
+        } else if (imageFile.uri) {
+            const filename = imageFile.name || imageFile.uri.split('/').pop();
+            const match = /\.(\w+)$/.exec(filename || '');
+            const type = match ? `image/${match[1]}` : 'image';
+
+            formData.append('profilePicture', {
+                uri: imageFile.uri,
+                name: filename,
+                type,
+            });
+        }
+    }
+
+    Object.keys(profileData || {}).forEach((key) => {
+        const value = profileData[key];
+        if (value !== undefined && value !== null) {
+            formData.append(key, value);
+        }
+    });
+
+    const response = await api.put(`/hr/employees/${employeeId}`, formData);
+    return response.data;
+};
 
 // ─── 2. Employee Management ──────────────────────────────────────────────────
 export const getEmployees = (params) => get('/employees', params);
@@ -84,6 +113,7 @@ export const getAnalyticsPerformance = (params) => get('/analytics/performance',
 export default {
     getDashboardSummary,
     getHrProfile,
+    updateProfile,
     getEmployees,
     createEmployee,
     updateEmployee,

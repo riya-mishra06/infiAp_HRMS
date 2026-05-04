@@ -4,6 +4,17 @@ import api from '../utils/axios';
 
 const AuthContext = createContext();
 
+const normalizeRole = (role) => {
+  const value = (role || '').toString().trim().toLowerCase();
+
+  if (value === 'main admin') return 'Main Admin';
+  if (value === 'admin') return 'Admin';
+  if (value === 'hr') return 'HR';
+  if (value === 'employee') return 'Employee';
+
+  return role || null;
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(() => localStorage.getItem('userRole') || null);
@@ -17,14 +28,15 @@ export const AuthProvider = ({ children }) => {
   // ── Persist auth state ──────────────────────────────────────────────────
   const storeAuth = (authToken, userData) => {
     const normalizedUser = userData || {};
+    const normalizedRole = normalizeRole(normalizedUser.role);
     localStorage.setItem('token', authToken);
-    localStorage.setItem('userRole', normalizedUser.role || '');
+    localStorage.setItem('userRole', normalizedRole || '');
     localStorage.setItem('userName', normalizedUser.name || '');
     localStorage.setItem('userEmail', normalizedUser.email || '');
     localStorage.setItem('userId', normalizedUser.id || normalizedUser._id || '');
     setToken(authToken);
-    setRole(normalizedUser.role || null);
-    setUser(normalizedUser);
+    setRole(normalizedRole);
+    setUser({ ...normalizedUser, role: normalizedRole });
   };
 
   const clearAuth = () => {
@@ -51,8 +63,9 @@ export const AuthProvider = ({ children }) => {
       const res = await api.get('/auth/me');
       const userData = res.data?.data;
       if (userData) {
-        setUser(userData);
-        setRole(userData.role);
+        const normalizedRole = normalizeRole(userData.role);
+        setUser({ ...userData, role: normalizedRole });
+        setRole(normalizedRole);
         setToken(storedToken);
       } else {
         clearAuth();
@@ -80,7 +93,7 @@ export const AuthProvider = ({ children }) => {
         // Backend returns userId + role but no token yet
         setPending2FA({
           userId: res.data.userId || res.data?.data?.userId,
-          role: res.data.role || res.data?.data?.role,
+          role: normalizeRole(res.data.role || res.data?.data?.role),
           devOtp: res.data?.devOtp, // only in dev mode
         });
         return { success: true, requires2FA: true, devOtp: res.data?.devOtp };
@@ -89,7 +102,7 @@ export const AuthProvider = ({ children }) => {
       // Direct login (no 2FA)
       if (res.data?.token) {
         storeAuth(res.data.token, res.data.user || res.data.data);
-        return { success: true, requires2FA: false, role: res.data.role || res.data?.user?.role || res.data?.data?.role };
+        return { success: true, requires2FA: false, role: normalizeRole(res.data.role || res.data?.user?.role || res.data?.data?.role) };
       }
 
       return { success: false, error: 'Unexpected response' };
@@ -119,7 +132,7 @@ export const AuthProvider = ({ children }) => {
       if (res.data?.token) {
         storeAuth(res.data.token, res.data.user || res.data.data);
         setPending2FA(null);
-        return { success: true, role: res.data.role || res.data?.user?.role || res.data?.data?.role };
+        return { success: true, role: normalizeRole(res.data.role || res.data?.user?.role || res.data?.data?.role) };
       }
 
       return { success: false, error: 'Verification failed' };
@@ -158,8 +171,9 @@ export const AuthProvider = ({ children }) => {
       const res = await api.get('/auth/me');
       const userData = res.data?.data;
       if (userData) {
-        setUser(userData);
-        setRole(userData.role);
+        const normalizedRole = normalizeRole(userData.role);
+        setUser({ ...userData, role: normalizedRole });
+        setRole(normalizedRole);
       }
       return userData;
     } catch {
@@ -196,9 +210,10 @@ export const AuthProvider = ({ children }) => {
 
   // Legacy compat — switchRole for role-based nav
   const switchRole = (newRole) => {
-    setRole(newRole);
-    if (newRole) {
-      localStorage.setItem('userRole', newRole);
+    const normalizedRole = normalizeRole(newRole);
+    setRole(normalizedRole);
+    if (normalizedRole) {
+      localStorage.setItem('userRole', normalizedRole);
     } else {
       localStorage.removeItem('userRole');
     }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -18,8 +18,8 @@ import {
 
 const AdminSidebar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [employeesOpen, setEmployeesOpen] = useState(location.pathname.startsWith('/admin/employees'));
+  const [manualEmployeesOpen, setManualEmployeesOpen] = useState(false);
+  const employeesOpen = manualEmployeesOpen || location.pathname.startsWith('/admin/employees');
 
   const menuItems = [
     { name: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
@@ -63,7 +63,7 @@ const AdminSidebar = () => {
               {item.hasDropdown ? (
                 <div className="space-y-1">
                   <button
-                    onClick={() => setEmployeesOpen(!employeesOpen)}
+                    onClick={() => setManualEmployeesOpen(prev => !prev)}
                     className={`w-full flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 group ${location.pathname.startsWith(item.path)
                       ? 'bg-slate-900 text-white shadow-xl shadow-slate-200'
                       : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
@@ -74,7 +74,7 @@ const AdminSidebar = () => {
                     <ChevronDown size={14} className={`ml-auto transition-transform duration-300 ${employeesOpen ? 'rotate-180' : ''}`} />
                   </button>
 
-                  <div className={`overflow-hidden transition-all duration-300 ${employeesOpen ? 'max-h-40 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+                  <div className={`overflow-hidden transition-all duration-300 ${employeesOpen ? 'max-h-40 opacity-100 mt-1 pointer-events-auto' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                     <ul className="ml-4 border-l-2 border-slate-100 pl-4 space-y-1">
                       {item.subItems.map((sub) => (
                         <li key={sub.name}>

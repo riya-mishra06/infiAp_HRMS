@@ -22,6 +22,7 @@ import LeaveRequests from './pages/hr-dashboard/leave-management/LeaveRequests';
 import LeaveApproval from './pages/hr-dashboard/leave-management/LeaveApproval';
 import LeaveHistory from './pages/hr-dashboard/leave-management/LeaveHistory';
 import EmployeeLeaveProfile from './pages/hr-dashboard/leave-management/EmployeeLeaveProfile';
+import PendingApproval from './pages/hr-dashboard/leave-management/PendingApproval';
 import { DepartmentProvider } from './context/DepartmentContext';
 import PayrollManagement from './pages/hr-dashboard/payroll-management/PayrollManagement';
 import PayrollOverview from './pages/hr-dashboard/payroll-management/PayrollOverview';
@@ -94,7 +95,6 @@ import Success from './pages/auth/Success';
 import { EmployeeProvider } from './context/EmployeeContext';
 import { PolicyProvider } from './context/PolicyContext';
 import { AdminDashboardProvider } from './context/AdminDashboardContext';
-import { NotificationProvider } from './context/NotificationContext';
 
 // Placeholder components for Settings
 const Placeholder = ({ title }) => (
@@ -165,7 +165,6 @@ function App() {
     <Router>
       <ScrollToTop />
       <EmployeeProvider>
-        <NotificationProvider>
         <DepartmentProvider>
           <JobProvider>
           <PolicyProvider>
@@ -269,6 +268,7 @@ function App() {
                       <Route path="/leave" element={<LeaveManagement />} />
                       <Route path="/leave/requests" element={<LeaveRequests />} />
                       <Route path="/leave/approval" element={<LeaveApproval />} />
+                      <Route path="/leave/pending-approval" element={<PendingApproval />} />
                       <Route path="/leave/history" element={<LeaveHistory />} />
                       <Route path="/leave/profile/:id" element={<EmployeeLeaveProfile />} />
 
@@ -312,7 +312,6 @@ function App() {
             </PolicyProvider>
           </JobProvider>
         </DepartmentProvider>
-        </NotificationProvider>
       </EmployeeProvider>
     </Router>
   );

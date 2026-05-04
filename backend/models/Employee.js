@@ -50,6 +50,10 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         default: 'no-photo.jpg'
     },
+    profilePicture: {
+        type: String,
+        default: null
+    },
     user: {
         type: mongoose.Schema.ObjectId,
         ref: 'User'

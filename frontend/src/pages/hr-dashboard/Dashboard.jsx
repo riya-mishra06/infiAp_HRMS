@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
+import { 
   Building2,
   Users,
   Briefcase,
@@ -21,9 +21,20 @@ import {
   BarChart3,
   Activity,
   UserCheck,
+  User,
   Loader2
 } from 'lucide-react';
-import { getDashboardSummary, getLeaveRequests } from '../../services/hrApi';
+import {
+   getDashboardSummary,
+   getLeaveRequests,
+   getEmployees,
+   getRecruitmentJobs,
+   getAttendanceDailyOverview,
+   getLeaveStats,
+   getAttendanceNotifications,
+   getTodayLeaves,
+   getResignationRegister,
+} from '../../services/hrApi';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -35,12 +46,74 @@ const Dashboard = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [summaryRes, leavesRes] = await Promise.all([
-          getDashboardSummary(),
-          getLeaveRequests({ status: 'Pending', limit: 1 }),
-        ]);
-        setSummaryData(summaryRes.data?.data || null);
-        setPendingLeaves(leavesRes.data?.data || []);
+            const [
+               summaryRes,
+               employeesRes,
+               jobsRes,
+               attendanceRes,
+               leaveStatsRes,
+               leavesRes,
+               attendanceNotificationsRes,
+               todayLeavesRes,
+               resignationRes,
+            ] = await Promise.all([
+               getDashboardSummary(),
+               getEmployees({ limit: 1 }),
+               getRecruitmentJobs({ status: 'Open', limit: 1 }),
+               getAttendanceDailyOverview(),
+               getLeaveStats(),
+               getLeaveRequests({ status: 'Pending', limit: 1 }),
+               getAttendanceNotifications(),
+               getTodayLeaves(),
+               getResignationRegister({ status: 'In Progress', limit: 1 }),
+            ]);
+
+            const summary = summaryRes.data?.data || {};
+            const employeeCount = employeesRes.data?.total ?? employeesRes.data?.count ?? employeesRes.data?.data?.length ?? 0;
+            const openJobs = jobsRes.data?.total ?? jobsRes.data?.count ?? jobsRes.data?.data?.length ?? 0;
+            const attendanceToday = (attendanceRes.data?.data?.present || 0) + (attendanceRes.data?.data?.late || 0);
+            const leavePending = leaveStatsRes.data?.data?.pending ?? leaveStatsRes.data?.pending ?? 0;
+            const leaveApproved = leaveStatsRes.data?.data?.approved ?? leaveStatsRes.data?.approved ?? 0;
+            const leaveRejected = leaveStatsRes.data?.data?.rejected ?? leaveStatsRes.data?.rejected ?? 0;
+            const pendingCorrections = attendanceNotificationsRes.data?.data?.pendingCorrections ?? 0;
+            const lateCount = attendanceNotificationsRes.data?.data?.lateCount ?? 0;
+            const onLeaveToday = todayLeavesRes.data?.count ?? todayLeavesRes.data?.data?.length ?? 0;
+            const openResignations = resignationRes.data?.count ?? resignationRes.data?.data?.length ?? 0;
+
+            setSummaryData({
+               ...summary,
+               employees: employeeCount,
+               openJobs,
+               attendanceToday,
+               leavePending,
+               leaveApproved,
+               leaveRejected,
+               pendingCorrections,
+               lateCount,
+               onLeaveToday,
+               openResignations,
+            });
+        
+        // Map backend leave response to frontend expected format
+        const leaveData = leavesRes.data?.data || [];
+        const mappedLeaves = leaveData.map(leave => {
+          const start = new Date(leave.StartDate);
+          const end = new Date(leave.EndDate);
+          const diffTime = Math.abs(end - start);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+          
+          return {
+            id: leave._id,
+            employeeName: leave.EmployeeID?.name || 'Unknown Employee',
+            type: leave.LeaveType,
+            days: leave.IsHalfDay ? 0.5 : diffDays,
+            status: leave.ApprovalStatus,
+            reason: leave.Reason,
+            startDate: leave.StartDate,
+            endDate: leave.EndDate,
+          };
+        });
+        setPendingLeaves(mappedLeaves);
       } catch (err) {
         console.error('Dashboard fetch failed:', err);
       } finally {
@@ -83,12 +156,29 @@ const Dashboard = () => {
       color: 'text-rose-500', 
       bg: 'bg-rose-50' 
     },
+      {
+         title: 'Pending Corrections',
+         value: summaryData?.pendingCorrections ?? '—',
+         icon: BellRing,
+         trend: 'Review',
+         color: 'text-fuchsia-500',
+         bg: 'bg-fuchsia-50',
+      },
+      {
+         title: 'On Leave Today',
+         value: summaryData?.onLeaveToday ?? '—',
+         icon: UserPlus,
+         trend: 'Today',
+         color: 'text-cyan-600',
+         bg: 'bg-cyan-50',
+      },
   ];
 
   const recentActivity = [
     { title: `${summaryData?.employees || 0} employees currently in the system`, time: 'Live', type: 'SYSTEM' },
     { title: `${summaryData?.openJobs || 0} open job positions awaiting candidates`, time: 'Live', type: 'HIRING' },
-    { title: `${summaryData?.resignationOpen || 0} resignation requests in progress`, time: 'Live', type: 'EXIT' },
+      { title: `${summaryData?.pendingCorrections || 0} attendance corrections waiting for review`, time: 'Live', type: 'ATTENDANCE' },
+      { title: `${summaryData?.openResignations || 0} resignation requests in progress`, time: 'Live', type: 'EXIT' },
   ];
 
   const StatCard = ({ title, value, trend, icon: Icon, color, bg }) => (
@@ -127,7 +217,7 @@ const Dashboard = () => {
        </div>
 
        {/* Stats Grid */}
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
           {stats.map((stat, i) => (
              <StatCard key={i} {...stat} />
           ))}
@@ -146,7 +236,7 @@ const Dashboard = () => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                    {[
-                      { label: 'Add Employee', icon: UserPlus, path: '/employees/add' },
+                      { label: 'My Profile', icon: User, path: '/profile' },
                       { label: 'View Attendance', icon: UserCheck, path: '/attendance' },
                       { label: 'Job Posting', icon: Send, path: '/recruitment/post-job' }
                    ].map((action, i) => (
@@ -249,7 +339,7 @@ const Dashboard = () => {
                       <TrendingUp size={16} className="text-white" />
                    </div>
                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                     {summaryData?.resignationOpen || 0} resignations in progress
+                     {summaryData?.openResignations || 0} resignations in progress
                    </span>
                 </div>
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-600/10 rounded-full blur-[80px]"></div>

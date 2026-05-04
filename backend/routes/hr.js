@@ -1,4 +1,5 @@
 const express = require('express');
+const uploadProfilePicture = require('../middleware/hrUpload');
 const {
     getDashboardSummary,
     getHrProfile,
@@ -65,7 +66,7 @@ router.get('/profile', getHrProfile);
 
 router.get('/employees', getHrEmployees);
 router.post('/employees', createHrEmployee);
-router.put('/employees/:id', updateHrEmployee);
+router.put('/employees/:id', uploadProfilePicture.single('profilePicture'), updateHrEmployee);
 router.get('/employees/:id/profile', getHrEmployeeProfile);
 
 router.get('/attendance/daily-overview', getAttendanceDailyOverview);

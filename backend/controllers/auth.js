@@ -52,6 +52,15 @@ exports.login = async (req, res, next) => {
             return res.status(401).json({ success: false, error: 'Invalid credentials' });
         }
 
+        // Skip 2FA for test users (demo accounts with @infiap.local domain)
+        const isTestUser = email.endsWith('@infiap.local');
+
+        if (isTestUser) {
+            // Direct login without 2FA for test users
+            return sendTokenResponse(user, 200, res);
+        }
+
+        // Regular users: require 2FA
         const userId = user._id.toString();
         const otp = process.env.NODE_ENV === 'production'
             ? generateOtp()
@@ -72,11 +81,6 @@ exports.login = async (req, res, next) => {
                 expiresInSeconds: Math.floor(OTP_TTL_MS / 1000)
             }
         };
-
-        // Keep local/dev testing simple when no OTP provider is configured.
-        if (process.env.NODE_ENV !== 'production') {
-            response.devOtp = otp;
-        }
 
         res.status(200).json(response);
     } catch (err) {

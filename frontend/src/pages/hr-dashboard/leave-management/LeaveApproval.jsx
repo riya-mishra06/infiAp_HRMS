@@ -1,35 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, 
   Calendar, 
   Clock, 
   CheckCircle2, 
   XCircle, 
-  User,
   ShieldCheck,
   AlertCircle,
   MoreHorizontal,
-  Mail,
   MapPin,
   TrendingUp,
   FileText,
   MessageSquare,
-  ChevronRight,
-  Plus
+  Loader2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getLeaveRequests, approveLeave } from '../../../services/hrApi';
 
 const LeaveApproval = () => {
     const navigate = useNavigate();
     const [managerNote, setManagerNote] = useState('');
     const [status, setStatus] = useState('Pending Review');
+    const [leaveRequest, setLeaveRequest] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+
+    useEffect(() => {
+      const fetchLeaveRequest = async () => {
+        try {
+          const res = await getLeaveRequests({ status: 'Pending', limit: 1 });
+          const leaves = res.data?.data || [];
+          if (leaves.length > 0) {
+            const leave = leaves[0];
+            const start = new Date(leave.StartDate);
+            const end = new Date(leave.EndDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            
+            setLeaveRequest({
+              id: leave._id,
+              employeeName: leave.EmployeeID?.name || 'Unknown Employee',
+              employeeId: leave.EmployeeID?.employeeId || 'N/A',
+              department: leave.EmployeeID?.department || 'N/A',
+              type: leave.LeaveType,
+              days: leave.IsHalfDay ? 0.5 : diffDays,
+              range: `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`,
+              reason: leave.Reason,
+              submittedAt: new Date(leave.createdAt).toLocaleString(),
+            });
+          }
+        } catch (err) {
+          console.error('Failed to fetch leave request:', err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchLeaveRequest();
+    }, []);
+
+    const handleApprove = async () => {
+      if (!leaveRequest) return;
+      setSubmitting(true);
+      try {
+        await approveLeave({ leaveId: leaveRequest.id, status: 'Approved' });
+        setStatus('Approved');
+        setTimeout(() => navigate('/leave/requests'), 1000);
+      } catch (err) {
+        console.error('Failed to approve:', err);
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    const handleReject = async () => {
+      if (!leaveRequest) return;
+      setSubmitting(true);
+      try {
+        await approveLeave({ leaveId: leaveRequest.id, status: 'Rejected' });
+        setStatus('Rejected');
+        setTimeout(() => navigate('/leave/requests'), 1000);
+      } catch (err) {
+        console.error('Failed to reject:', err);
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center h-screen">
+          <Loader2 size={32} className="animate-spin text-indigo-600" />
+        </div>
+      );
+    }
+
+    if (!leaveRequest) {
+      return (
+        <div className="flex flex-col h-[calc(100vh-120px)] items-center justify-center">
+          <p className="text-slate-600 mb-4">No pending leave requests</p>
+          <button 
+            onClick={() => navigate('/leave/requests')}
+            className="px-6 py-2 bg-indigo-600 text-white rounded-lg"
+          >
+            Back to Requests
+          </button>
+        </div>
+      );
+    }
 
     const employee = {
-        name: 'Alex Johnson',
-        id: 'INF-9021',
-        dept: 'Engineering Department',
-        role: 'Senior Frontend Developer',
-        avatar: 'https://i.pravatar.cc/150?u=alex',
+        name: leaveRequest.employeeName,
+        id: leaveRequest.employeeId,
+        dept: leaveRequest.department,
+        role: 'Employee',
+        avatar: `https://i.pravatar.cc/150?u=${leaveRequest.employeeName.split(' ')[0].toLowerCase()}`,
         stats: {
             taken: 12,
             remaining: 18,
@@ -38,11 +122,11 @@ const LeaveApproval = () => {
     };
 
     const request = {
-        type: 'Sick Leave',
-        range: 'Oct 20 - 22',
-        totalDays: 3,
-        reason: 'Medical - Requires surgery recovery time following minor procedure. Doctor\'s note will be provided upon return.',
-        submittedAt: 'Oct 12, 2023 10:45 AM'
+        type: leaveRequest.type,
+        range: leaveRequest.range,
+        totalDays: leaveRequest.days,
+        reason: leaveRequest.reason,
+        submittedAt: leaveRequest.submittedAt
     };
 
     return (
@@ -99,9 +183,9 @@ const LeaveApproval = () => {
                                 <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
                                     <div className="flex items-center gap-3">
                                         <MapPin size={18} className="text-primary-500" />
-                                        <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Location</span>
+                                        <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Department</span>
                                     </div>
-                                    <span className="text-[11px] font-bold text-slate-400">Remote • IN</span>
+                                    <span className="text-[11px] font-bold text-slate-400">{employee.dept}</span>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +198,7 @@ const LeaveApproval = () => {
                         <TrendingUp size={24} className="text-emerald-400 mb-4" />
                         <h4 className="text-sm font-black uppercase tracking-widest mb-2">Diagnostic Insight</h4>
                         <p className="text-[10px] opacity-60 font-medium leading-relaxed uppercase tracking-widest mb-6">
-                            Alex carries an 18% lower absence rate compared to the engineering average this cycle.
+                            {employee.name} carries an 18% lower absence rate compared to the {employee.dept} average this cycle.
                         </p>
                         <button className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all">View Statistics</button>
                     </div>
@@ -192,18 +276,20 @@ const LeaveApproval = () => {
 
                     <div className="p-12 border-t border-slate-50 bg-slate-900 flex items-center gap-6">
                         <button 
-                            onClick={() => { setStatus('Approved'); navigate('/leave/requests'); }}
-                            className="flex-1 py-5 bg-white text-slate-900 font-black rounded-3xl hover:bg-slate-50 transition-all shadow-2xl uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-3 active:scale-95"
+                            onClick={handleApprove}
+                            disabled={submitting}
+                            className="flex-1 py-5 bg-white text-slate-900 font-black rounded-3xl hover:bg-slate-50 transition-all shadow-2xl uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
                         >
-                            <CheckCircle2 size={18} className="text-emerald-500" />
-                            Approve Leave
+                            {submitting ? <Loader2 size={18} className="animate-spin" /> : <CheckCircle2 size={18} className="text-emerald-500" />}
+                            {submitting ? 'Processing...' : 'Approve Leave'}
                         </button>
                         <button 
-                            onClick={() => { setStatus('Rejected'); navigate('/leave/requests'); }}
-                            className="flex-1 py-5 bg-white/10 text-white font-black rounded-3xl hover:bg-white/20 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-3 active:scale-95"
+                            onClick={handleReject}
+                            disabled={submitting}
+                            className="flex-1 py-5 bg-white/10 text-white font-black rounded-3xl hover:bg-white/20 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
                         >
-                            <XCircle size={18} className="text-rose-400" />
-                            Reject Request
+                            {submitting ? <Loader2 size={18} className="animate-spin" /> : <XCircle size={18} className="text-rose-400" />}
+                            {submitting ? 'Processing...' : 'Reject Request'}
                         </button>
                         <button className="p-5 bg-white/10 text-white hover:bg-white/20 rounded-3xl transition-all shadow-2xl active:scale-95">
                             <MoreHorizontal size={24} />
