@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Search,
     Filter,
@@ -24,6 +24,7 @@ import {
     Zap
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getCandidateTracking } from '../../../services/hrApi';
 
 const Interviews = () => {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Interviews = () => {
     const [viewMode, setViewMode] = useState('List');
     const [notification, setNotification] = useState(null);
 
-    const [interviews, setInterviews] = useState([
+    const defaultInterviews = [
         {
             id: 'INT-4001',
             candidate: 'Mark Wilson',
@@ -77,7 +78,47 @@ const Interviews = () => {
             status: 'Completed',
             avatar: 'https://i.pravatar.cc/150?u=sarah'
         },
-    ]);
+    ];
+
+    const [interviews, setInterviews] = useState(defaultInterviews);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadInterviews = async () => {
+            try {
+                const res = await getCandidateTracking();
+                const payload = Array.isArray(res.data?.data) ? res.data.data : [];
+                const mapped = payload.map((item, index) => {
+                    const schedule = item.interview || item.interviewSchedule || item.nextInterview || {};
+                    return {
+                        id: schedule.id || schedule._id || item.interviewId || `INT-${index + 1}`,
+                        candidateId: item.id || item.candidateId || item._id || item.code || `CAN-${index + 1}`,
+                        candidate: item.name || item.fullName || item.candidateName || `Candidate ${index + 1}`,
+                        role: item.role || item.jobTitle || item.position || 'Role Pending',
+                        stage: schedule.stage || item.stage || item.status || 'Interview',
+                        dateTime: schedule.dateTime || schedule.scheduledAt || schedule.date || item.interviewDate || '—',
+                        interviewer: schedule.interviewer || schedule.interviewerName || item.interviewer || '—',
+                        type: schedule.type || schedule.mode || item.interviewType || 'Video Call',
+                        status: schedule.status || item.interviewStatus || item.status || 'Upcoming',
+                        avatar: item.avatar || item.profilePicture || `https://i.pravatar.cc/150?u=${encodeURIComponent(item.email || item.name || index)}`
+                    };
+                }).filter((item) => item.dateTime !== '—' || item.status !== '—');
+
+                if (isMounted && mapped.length) {
+                    setInterviews(mapped);
+                }
+            } catch (err) {
+                console.error('Failed to load interviews:', err);
+            }
+        };
+
+        loadInterviews();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const showNotification = (msg) => {
         setNotification(msg);
@@ -214,7 +255,7 @@ const Interviews = () => {
                             <div className="flex items-center gap-3 relative z-10 shrink-0">
                                 {int.status === 'Completed' ? (
                                     <button
-                                        onClick={() => navigate(`/recruitment/interview/${int.id}/feedback`)}
+                                        onClick={() => navigate(`/recruitment/interview/${int.candidateId || int.id}/feedback`)}
                                         className="px-6 py-3 bg-emerald-50 text-emerald-600 border border-emerald-100 font-black rounded-xl hover:bg-emerald-100 transition-all uppercase tracking-widest text-[9px] flex items-center gap-2 active:scale-95"
                                     >
                                         <MessageSquare size={14} />

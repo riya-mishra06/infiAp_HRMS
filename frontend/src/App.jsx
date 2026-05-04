@@ -10,6 +10,7 @@ import AddEmployee from './pages/hr-dashboard/employee-management/AddEmployee';
 import EditEmployee from './pages/hr-dashboard/employee-management/EditEmployee';
 import EmployeeProfiles from './pages/hr-dashboard/employee-management/EmployeeProfiles';
 import EmployeeProfilesHub from './pages/hr-dashboard/employee-management/EmployeeProfilesHub';
+import MyProfile from './pages/hr-dashboard/employee-management/MyProfile';
 import AttendanceDashboard from './pages/hr-dashboard/attendance-management/AttendanceDashboard';
 import CheckInRecords from './pages/hr-dashboard/attendance-management/CheckInRecords';
 import MonthlyAttendance from './pages/hr-dashboard/attendance-management/MonthlyAttendance';
@@ -57,6 +58,8 @@ import AdminDepartments from './pages/admin-dashboard/Departments';
 import CreateDepartment from './pages/admin-dashboard/department-management/CreateDepartment';
 import ManageTeams from './pages/admin-dashboard/department-management/ManageTeams';
 import CreateTeam from './pages/admin-dashboard/department-management/CreateTeam';
+import AdminProfileView from './pages/admin-dashboard/profile-management/AdminProfileView';
+import AdminProfileEdit from './pages/admin-dashboard/profile-management/AdminProfileEdit';
 import SalaryStructure from './pages/admin-dashboard/payroll-management/SalaryStructure';
 import PayslipGeneration from './pages/admin-dashboard/payroll-management/PayslipGeneration';
 import FinanceReports from './pages/admin-dashboard/payroll-management/FinanceReports';
@@ -196,8 +199,8 @@ function App() {
 
                       {/* Employees */}
                       <Route path="/employees" element={<EmployeeDirectory />} />
-                      <Route path="/employees/view" element={<EmployeeProfilesHub />} />
-                      <Route path="/employees/edit" element={<EmployeeDirectory />} />
+                      <Route path="/employees/view" element={<AdminProfileView />} />
+                      <Route path="/employees/edit" element={<AdminProfileEdit />} />
                       <Route path="/employees/add" element={<AddEmployee />} />
 
                       {/* Payroll */}
@@ -256,6 +259,7 @@ function App() {
                       <Route path="/employees/profiles" element={<EmployeeProfilesHub />} />
                       <Route path="/employees/edit/:id" element={<EditEmployee />} />
                       <Route path="/employees/profile/:id" element={<EmployeeProfiles />} />
+                      <Route path="/profile" element={<MyProfile />} />
 
                       <Route path="/attendance" element={<AttendanceDashboard />} />
                       <Route path="/attendance/records" element={<CheckInRecords />} />

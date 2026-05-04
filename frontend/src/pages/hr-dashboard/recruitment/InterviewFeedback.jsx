@@ -16,10 +16,12 @@ import {
   ChevronDown,
   LayoutDashboard
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { updateCandidateInterview } from '../../../services/hrApi';
 
 const InterviewFeedback = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [submitted, setSubmitted] = useState(false);
     const [ratings, setRatings] = useState({
         technical: 4,
@@ -29,6 +31,8 @@ const InterviewFeedback = () => {
     });
     const [recommendation, setRecommendation] = useState('Select as option');
     const [isOpen, setIsOpen] = useState(false);
+    const [strengths, setStrengths] = useState('');
+    const [improvements, setImprovements] = useState('');
 
     const competencies = [
         { id: 'technical', label: 'Technical Skills', icon: Zap, color: 'text-indigo-500', bg: 'bg-indigo-50' },
@@ -41,8 +45,18 @@ const InterviewFeedback = () => {
         setRatings(prev => ({ ...prev, [id]: rating }));
     };
 
-    const handleSubmit = () => {
-        setSubmitted(true);
+    const handleSubmit = async () => {
+        try {
+            await updateCandidateInterview(id, {
+                ratings,
+                recommendation,
+                strengths,
+                improvements
+            });
+            setSubmitted(true);
+        } catch (err) {
+            console.error('Failed to submit interview feedback:', err);
+        }
     };
 
     if (submitted) {
@@ -172,6 +186,8 @@ const InterviewFeedback = () => {
                                 <textarea 
                                     className="w-full bg-slate-50 border border-slate-100 p-6 rounded-3xl text-xs font-medium text-slate-600 focus:border-indigo-100 focus:ring-4 focus:ring-indigo-50 outline-none transition-all placeholder:text-slate-300 min-h-[120px]"
                                     placeholder="What stood out about this candidate?"
+                                    value={strengths}
+                                    onChange={(e) => setStrengths(e.target.value)}
                                 ></textarea>
                             </div>
                             <div className="space-y-3">
@@ -179,6 +195,8 @@ const InterviewFeedback = () => {
                                 <textarea 
                                     className="w-full bg-slate-50 border border-slate-100 p-6 rounded-3xl text-xs font-medium text-slate-600 focus:border-indigo-100 focus:ring-4 focus:ring-indigo-50 outline-none transition-all placeholder:text-slate-300 min-h-[120px]"
                                     placeholder="Any red flags or growth opportunities?"
+                                    value={improvements}
+                                    onChange={(e) => setImprovements(e.target.value)}
                                 ></textarea>
                             </div>
                         </div>

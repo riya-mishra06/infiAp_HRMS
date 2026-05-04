@@ -407,6 +407,8 @@ exports.getAnalyticsReport = async (req, res, next) => {
 exports.getProfile = async (req, res, next) => {
     try {
         const user = await User.findById(req.user?._id);
+        const createdAt = user?.createdAt || req.user?.createdAt || new Date().toISOString();
+        const updatedAt = user?.updatedAt || req.user?.updatedAt || createdAt;
 
         res.status(200).json({
             success: true,
@@ -414,7 +416,9 @@ exports.getProfile = async (req, res, next) => {
                 id: user?._id || req.user?._id,
                 name: user?.name || req.user?.name || 'Admin User',
                 email: user?.email || req.user?.email || 'admin@infiap.com',
-                role: user?.role || req.user?.role || 'admin'
+                role: user?.role || req.user?.role || 'admin',
+                createdAt,
+                updatedAt
             }
         });
     } catch (err) {
@@ -438,6 +442,8 @@ exports.updateProfile = async (req, res, next) => {
             new: true,
             runValidators: true
         });
+        const createdAt = user?.createdAt || req.user?.createdAt || new Date().toISOString();
+        const updatedAt = user?.updatedAt || new Date().toISOString();
 
         pushActivity('Profile updated', 'Admin profile details were updated.');
 
@@ -447,7 +453,9 @@ exports.updateProfile = async (req, res, next) => {
                 id: user?._id || req.user?._id,
                 name: user?.name || req.body.name || req.user?.name || 'Admin User',
                 email: user?.email || req.body.email || req.user?.email || 'admin@infiap.com',
-                role: user?.role || req.user?.role || 'admin'
+                role: user?.role || req.user?.role || 'admin',
+                createdAt,
+                updatedAt
             }
         });
     } catch (err) {

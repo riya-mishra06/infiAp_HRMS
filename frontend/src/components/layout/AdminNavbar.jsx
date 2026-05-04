@@ -1,10 +1,13 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Search, Bell } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 
 const AdminNavbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -16,8 +19,17 @@ const AdminNavbar = () => {
     if (path.includes('/security')) return 'Security Documents';
     if (path.includes('/settings')) return 'System Settings';
     if (path.includes('/departments')) return 'Departments';
+    if (path.includes('/employees')) return 'Employees';
     return 'Institutional Hub';
   };
+
+  const displayName = user?.name || 'Admin User';
+  const displayRole = user?.role
+    ? String(user.role)
+        .split(' ')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+        .join(' ')
+    : 'Admin';
 
   return (
     <div className="h-20 bg-white border-b border-slate-100 sticky top-0 z-10 flex items-center justify-between px-8 w-full">
@@ -42,19 +54,23 @@ const AdminNavbar = () => {
           <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white group-hover:animate-ping"></span>
         </button>
 
-        <div className="flex items-center gap-3 pl-4 border-l border-slate-100 group cursor-pointer">
+        <button
+          type="button"
+          onClick={() => navigate('/admin/employees/view')}
+          className="flex items-center gap-3 pl-4 border-l border-slate-100 group cursor-pointer"
+        >
           <div className="text-right hidden md:block">
-            <p className="text-sm font-black text-slate-800 leading-none mb-1 group-hover:text-indigo-600 transition-colors">Admin Prime</p>
-            <p className="text-[9px] text-slate-400 font-bold tracking-widest uppercase">Company Owner</p>
+            <p className="text-sm font-black text-slate-800 leading-none mb-1 group-hover:text-indigo-600 transition-colors">{displayName}</p>
+            <p className="text-[9px] text-slate-400 font-bold tracking-widest uppercase">{displayRole}</p>
           </div>
           <div className="w-10 h-10 rounded-xl overflow-hidden border border-slate-100 p-0.5 bg-white group-hover:border-indigo-200 transition-all shadow-sm">
             <img
-              src="https://ui-avatars.com/api/?name=Admin+Prime&background=4E63F0&color=fff"
-              alt="Admin"
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=4E63F0&color=fff`}
+              alt={displayName}
               className="w-full h-full object-cover rounded-[8px]"
             />
           </div>
-        </div>
+        </button>
       </div>
     </div>
   );

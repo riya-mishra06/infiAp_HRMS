@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Search,
     Filter,
@@ -27,6 +27,7 @@ import {
     Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getCandidateReview, shortlistCandidate, rejectCandidate } from '../../../services/hrApi';
 
 const Applications = () => {
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Applications = () => {
     const [viewMode, setViewMode] = useState('Grid');
     const [notification, setNotification] = useState(null);
 
-    const [applicants, setApplicants] = useState([
+    const defaultApplicants = [
         {
             id: 'CAN-9021',
             name: 'Alex Rivers',
@@ -76,16 +77,60 @@ const Applications = () => {
             status: 'New',
             avatar: 'https://i.pravatar.cc/150?u=elena'
         },
-    ]);
+    ];
+
+    const [applicants, setApplicants] = useState(defaultApplicants);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadApplicants = async () => {
+            try {
+                const res = await getCandidateReview();
+                const payload = Array.isArray(res.data?.data) ? res.data.data : [];
+                const mapped = payload.map((item, index) => ({
+                    id: item.id || item.candidateId || item._id || item.code || `CAN-${index + 1}`,
+                    name: item.name || item.fullName || item.candidateName || `Candidate ${index + 1}`,
+                    role: item.role || item.jobTitle || item.position || 'Role Pending',
+                    dept: item.department || item.dept || item.team || '—',
+                    location: item.location || item.city || item.workLocation || '—',
+                    appliedAt: item.appliedAt || item.createdAt || item.submittedAt || '—',
+                    status: item.status || item.stage || 'New',
+                    avatar: item.avatar || item.profilePicture || `https://i.pravatar.cc/150?u=${encodeURIComponent(item.email || item.name || index)}`
+                }));
+
+                if (isMounted && mapped.length) {
+                    setApplicants(mapped);
+                }
+            } catch (err) {
+                console.error('Failed to load applications:', err);
+            }
+        };
+
+        loadApplicants();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const showNotification = (msg) => {
         setNotification(msg);
         setTimeout(() => setNotification(null), 3000);
     };
 
-    const handleAction = (id, newStatus) => {
-        setApplicants(prev => prev.map(app => app.id === id ? { ...app, status: newStatus } : app));
-        showNotification(`Candidate ${id} moved to ${newStatus}.`);
+    const handleAction = async (id, newStatus) => {
+        const action = newStatus === 'Shortlisted' ? shortlistCandidate : newStatus === 'Rejected' ? rejectCandidate : null;
+        try {
+            if (action) {
+                await action(id, { status: newStatus });
+            }
+            setApplicants((prev) => prev.map((app) => app.id === id ? { ...app, status: newStatus } : app));
+            showNotification(`Candidate ${id} moved to ${newStatus}.`);
+        } catch (err) {
+            console.error('Candidate action failed:', err);
+            showNotification(`Failed to update ${id}.`);
+        }
     };
 
     const filteredApplicants = applicants.filter(app => {

@@ -27,10 +27,34 @@ const userSchema = new mongoose.Schema({
         enum: ['admin', 'hr', 'employee', 'Main Admin'],
         default: 'employee'
     },
+    profileImage: {
+        type: String,
+        default: null
+    },
+    designation: {
+        type: String,
+        default: 'HR Administrator'
+    },
+    employeeId: {
+        type: String
+    },
+    joiningDate: {
+        type: Date,
+        default: Date.now
+    },
+    phone: {
+        type: String
+    },
+    complianceStatus: {
+        type: String,
+        default: 'Compliant'
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
+}, {
+    timestamps: true
 });
 
 // Encrypt password using bcrypt

@@ -3,6 +3,7 @@ const uploadProfilePicture = require('../middleware/hrUpload');
 const {
     getDashboardSummary,
     getHrProfile,
+    updateHrProfile,
     getHrEmployees,
     createHrEmployee,
     updateHrEmployee,
@@ -63,6 +64,7 @@ router.use(protect, authorize('hr', 'admin', 'Main Admin'));
 
 router.get('/dashboard/summary', getDashboardSummary);
 router.get('/profile', getHrProfile);
+router.put('/profile', uploadProfilePicture.single('profilePicture'), updateHrProfile);
 
 router.get('/employees', getHrEmployees);
 router.post('/employees', createHrEmployee);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   FileText, 
   Download, 
@@ -38,6 +38,7 @@ import {
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import { useJobContext } from '../../../context/JobContext';
+import { getCandidateTracking, getRecruitmentJobs } from '../../../services/hrApi';
 
 const RecruitmentManagement = () => {
   const navigate = useNavigate();
@@ -45,7 +46,15 @@ const RecruitmentManagement = () => {
   const [notification, setNotification] = useState(null);
   const [activeTab, setActiveTab] = useState('Active');
   const [showConfigDrawer, setShowConfigDrawer] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+   const [searchQuery, setSearchQuery] = useState('');
+   const [pipelineData, setPipelineData] = useState([
+      { name: 'Applied', value: 120 },
+      { name: 'Screening', value: 85 },
+      { name: 'Technical', value: 42 },
+      { name: 'Leadership', value: 18 },
+      { name: 'Offer', value: 4 }
+   ]);
+   const [applicantTotal, setApplicantTotal] = useState(jobTotals.totalApplicants || 0);
 
   const showNotification = (msg) => {
     setNotification(msg);
@@ -80,13 +89,42 @@ const RecruitmentManagement = () => {
 
   const currentActions = getTabData();
 
-  const pipelineData = [
-    { name: 'Applied', value: 120 },
-    { name: 'Screening', value: 85 },
-    { name: 'Technical', value: 42 },
-    { name: 'Leadership', value: 18 },
-    { name: 'Offer', value: 4 }
-  ];
+   useEffect(() => {
+      let isMounted = true;
+
+      const loadPipeline = async () => {
+         try {
+            const [candidateRes, jobRes] = await Promise.all([
+               getCandidateTracking(),
+               getRecruitmentJobs()
+            ]);
+
+            const candidates = Array.isArray(candidateRes.data?.data) ? candidateRes.data.data : [];
+            const jobs = Array.isArray(jobRes.data?.data) ? jobRes.data.data : [];
+
+            const stageCounts = candidates.reduce((acc, item) => {
+               const stage = item.stage || item.status || 'Applied';
+               acc[stage] = (acc[stage] || 0) + 1;
+               return acc;
+            }, {});
+
+            const mapped = Object.entries(stageCounts).map(([name, value]) => ({ name, value }));
+
+            if (isMounted) {
+               if (mapped.length) setPipelineData(mapped);
+               if (candidates.length) setApplicantTotal(candidates.length);
+            }
+         } catch (err) {
+            console.error('Failed to load recruitment pipeline:', err);
+         }
+      };
+
+      loadPipeline();
+
+      return () => {
+         isMounted = false;
+      };
+   }, []);
 
   const COLORS = ['#8b5cf6', '#6366f1', '#3b82f6', '#10b981', '#f59e0b'];
 
@@ -188,7 +226,7 @@ const RecruitmentManagement = () => {
                 <div className="mt-6 flex items-end justify-between">
                    <div>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Active Applicants</p>
-                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{jobTotals.totalApplicants} Global</p>
+                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{applicantTotal} Global</p>
                    </div>
                    <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg">94% EFF</span>
                 </div>

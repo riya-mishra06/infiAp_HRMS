@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   BrainCircuit, 
   Target, 
@@ -34,12 +34,13 @@ import {
   PolarRadiusAxis
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { getAnalyticsPerformance, getPerformanceReportTrends } from '../../../services/hrApi';
 
 const PerformanceInsights = () => {
     const navigate = useNavigate();
     const [selectedIndex, setSelectedIndex] = useState('Growth Forecast');
 
-    const forecastData = [
+    const defaultForecastData = [
         { month: 'Oct', current: 78, projected: 78 },
         { month: 'Nov', current: 82, projected: 84 },
         { month: 'Dec', current: null, projected: 88 },
@@ -47,14 +48,14 @@ const PerformanceInsights = () => {
         { month: 'Feb', current: null, projected: 95 },
     ];
 
-    const turnoverRisk = [
+    const defaultTurnoverRisk = [
         { dept: 'Tech', risk: 12, trend: 'stable' },
         { dept: 'Sales', risk: 42, trend: 'rising' },
         { dept: 'Ops', risk: 8, trend: 'low' },
         { dept: 'Design', risk: 18, trend: 'stable' },
     ];
 
-    const radarData = [
+    const defaultRadarData = [
         { subject: 'Strategy', A: 120, B: 110, fullMark: 150 },
         { subject: 'Velocity', A: 98, B: 130, fullMark: 150 },
         { subject: 'Quality', A: 86, B: 130, fullMark: 150 },
@@ -62,6 +63,63 @@ const PerformanceInsights = () => {
         { subject: 'Reliability', A: 85, B: 90, fullMark: 150 },
         { subject: 'Innovation', A: 65, B: 85, fullMark: 150 },
     ];
+
+    const [forecastData, setForecastData] = useState(defaultForecastData);
+    const [turnoverRisk, setTurnoverRisk] = useState(defaultTurnoverRisk);
+    const [radarData, setRadarData] = useState(defaultRadarData);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const pickArray = (value) => (Array.isArray(value) ? value : []);
+
+        const loadPerformanceInsights = async () => {
+            try {
+                const [analyticsRes, trendsRes] = await Promise.all([
+                    getAnalyticsPerformance(),
+                    getPerformanceReportTrends()
+                ]);
+
+                const analytics = analyticsRes.data?.data || {};
+                const trends = trendsRes.data?.data || {};
+
+                const radarSource = pickArray(analytics.radar || analytics.skills || analytics.competencies || analytics.metrics);
+                const radarMapped = radarSource.map((item, index) => ({
+                    subject: item.subject || item.label || item.name || `Metric ${index + 1}`,
+                    A: Number(item.score ?? item.value ?? item.current ?? 0),
+                    B: Number(item.target ?? item.projected ?? item.baseline ?? 0),
+                    fullMark: Number(item.fullMark ?? 150)
+                })).filter((item) => item.subject);
+
+                const riskSource = pickArray(analytics.turnoverRisk || analytics.risks || analytics.departments);
+                const riskMapped = riskSource.map((item, index) => ({
+                    dept: item.department || item.dept || item.name || `Dept ${index + 1}`,
+                    risk: Number(item.risk ?? item.value ?? item.turnover ?? 0),
+                    trend: item.trend || (Number(item.risk ?? item.value ?? 0) > 30 ? 'rising' : 'stable')
+                })).filter((item) => item.dept);
+
+                const forecastSource = pickArray(trends.forecast || trends.trend || trends.data || trends);
+                const forecastMapped = forecastSource.map((item, index) => ({
+                    month: item.month || item.label || item.period || `M${index + 1}`,
+                    current: item.current ?? item.actual ?? null,
+                    projected: item.projected ?? item.forecast ?? item.value ?? null
+                })).filter((item) => item.month);
+
+                if (!isMounted) return;
+                if (radarMapped.length) setRadarData(radarMapped);
+                if (riskMapped.length) setTurnoverRisk(riskMapped);
+                if (forecastMapped.length) setForecastData(forecastMapped);
+            } catch (err) {
+                console.error('Failed to load performance insights:', err);
+            }
+        };
+
+        loadPerformanceInsights();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-120px)] w-full gap-10 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 text-left pb-20">

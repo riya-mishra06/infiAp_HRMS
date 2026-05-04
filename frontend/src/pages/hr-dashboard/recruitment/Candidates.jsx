@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Search, 
   Filter, 
@@ -19,13 +19,14 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getCandidateTracking } from '../../../services/hrApi';
 
 const Candidates = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeFilter, setActiveFilter] = useState('All');
 
-    const candidates = [
+    const defaultCandidates = [
         { id: 'CAN-9021', name: 'Alex Rivers', role: 'Sr. Engineer', experience: '8 YRS', stage: 'Applied', rating: 4.2, source: 'LinkedIn', avatar: 'https://i.pravatar.cc/150?u=alex' },
         { id: 'CAN-9022', name: 'Sarah Chen', role: 'Prod. Designer', experience: '5 YRS', stage: 'Interview', rating: 4.8, source: 'Referral', avatar: 'https://i.pravatar.cc/150?u=sarah' },
         { id: 'CAN-9023', name: 'Marcus Thompson', role: 'Sales Lead', experience: '12 YRS', stage: 'Screening', rating: 3.9, source: 'Indeed', avatar: 'https://i.pravatar.cc/150?u=marcus' },
@@ -33,6 +34,41 @@ const Candidates = () => {
         { id: 'CAN-9025', name: 'David Kim', role: 'Data Scientist', experience: '4 YRS', stage: 'Interview', rating: 4.1, source: 'LinkedIn', avatar: 'https://i.pravatar.cc/150?u=david' },
         { id: 'CAN-9026', name: 'Lisa Varma', role: 'QA Lead', experience: '9 YRS', stage: 'Applied', rating: 4.6, source: 'Hired.com', avatar: 'https://i.pravatar.cc/150?u=lisa' },
     ];
+
+    const [candidates, setCandidates] = useState(defaultCandidates);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadCandidates = async () => {
+            try {
+                const res = await getCandidateTracking();
+                const payload = Array.isArray(res.data?.data) ? res.data.data : [];
+                const mapped = payload.map((item, index) => ({
+                    id: item.id || item.candidateId || item._id || item.code || `CAN-${index + 1}`,
+                    name: item.name || item.fullName || item.candidateName || `Candidate ${index + 1}`,
+                    role: item.role || item.jobTitle || item.position || 'Role Pending',
+                    experience: item.experience || item.yearsExperience ? `${item.experience || item.yearsExperience} YRS` : '—',
+                    stage: item.stage || item.status || item.pipelineStage || 'Applied',
+                    rating: Number(item.rating ?? item.score ?? 0) || 0,
+                    source: item.source || item.sourceChannel || item.channel || 'Direct',
+                    avatar: item.avatar || item.profilePicture || `https://i.pravatar.cc/150?u=${encodeURIComponent(item.email || item.name || index)}`
+                }));
+
+                if (isMounted && mapped.length) {
+                    setCandidates(mapped);
+                }
+            } catch (err) {
+                console.error('Failed to load candidates:', err);
+            }
+        };
+
+        loadCandidates();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const filteredCandidates = candidates.filter(c => {
         const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 

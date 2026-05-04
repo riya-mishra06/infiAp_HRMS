@@ -324,10 +324,18 @@ exports.getDashboardSummary = async (req, res, next) => {
 
         const leavePending = leaveApplications.filter((leave) => leave.status === 'Pending').length;
         const resignationOpen = resignations.filter((item) => item.status !== 'Completed').length;
+        
+        const presentCount = attendanceRecords.filter((record) => record.status === 'Present' && record.date === new Date().toISOString().slice(0, 10)).length;
 
         res.status(200).json({
             success: true,
             data: {
+                totalEmployees: employeeCount,
+                presentCount: presentCount || attendanceRecords.length,
+                isHoliday: false,
+                holidayDetails: null,
+                greeting: "Welcome to HR Dashboard",
+                // legacy fields just in case
                 employees: employeeCount,
                 openJobs,
                 attendanceToday: attendanceRecords.length,
@@ -342,15 +350,63 @@ exports.getDashboardSummary = async (req, res, next) => {
 
 // GET /api/v1/hr/profile
 exports.getHrProfile = async (req, res) => {
-    res.status(200).json({
-        success: true,
-        data: {
-            id: req.user?._id,
-            name: req.user?.name,
-            email: req.user?.email,
-            role: req.user?.role
+    try {
+        const User = require('../models/User');
+        const user = await User.findById(req.user._id);
+        
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
-    });
+
+        res.status(200).json({
+            success: true,
+            data: {
+                header: {
+                    profileImage: user.profileImage || null,
+                    name: user.name,
+                    post: user.designation || 'HR Administrator',
+                    hrId: user.employeeId || 'HR001'
+                },
+                personalInfo: {
+                    fullName: user.name,
+                    joiningDate: user.joiningDate,
+                    phoneNumber: user.phone || 'N/A',
+                    emailId: user.email
+                },
+                administrativeAccess: {
+                    accessLevel: user.role,
+                    complianceStatus: user.complianceStatus || 'Compliant'
+                }
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+};
+
+// PUT /api/v1/hr/profile
+exports.updateHrProfile = async (req, res) => {
+    try {
+        const User = require('../models/User');
+        
+        const updates = {};
+        if (req.body.name) updates.name = req.body.name;
+        if (req.body.phone) updates.phone = req.body.phone;
+        if (req.body.designation) updates.designation = req.body.designation;
+        if (req.file) {
+            updates.profileImage = `/uploads/profile-pictures/${req.file.filename}`;
+        }
+        
+        const user = await User.findByIdAndUpdate(req.user._id, updates, { new: true });
+        
+        res.status(200).json({
+            success: true,
+            data: user,
+            message: "Profile updated successfully"
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
 };
 
 // GET /api/v1/hr/employees

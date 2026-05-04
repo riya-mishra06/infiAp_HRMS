@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   ArrowLeft, 
   Mail, 
@@ -21,6 +21,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getCandidateProfile } from '../../../services/hrApi';
 
 const CandidateProfile = () => {
     const navigate = useNavigate();
@@ -32,8 +33,7 @@ const CandidateProfile = () => {
         setTimeout(() => setNotification(null), 3000);
     };
 
-    // Mock data for Mark Wilson/Candidate
-    const candidate = {
+    const defaultCandidate = {
         name: 'Mark Wilson',
         role: 'Senior UI/UX Designer',
         status: 'SHORTLISTED',
@@ -62,6 +62,65 @@ const CandidateProfile = () => {
             appliedDate: 'Oct 12, 2023'
         }
     };
+
+    const [candidate, setCandidate] = useState(defaultCandidate);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadCandidate = async () => {
+            try {
+                const res = await getCandidateProfile(id);
+                const data = res.data?.data || {};
+
+                const mapped = {
+                    name: data.name || data.fullName || data.candidateName || defaultCandidate.name,
+                    role: data.role || data.jobTitle || data.position || defaultCandidate.role,
+                    status: (data.status || data.stage || defaultCandidate.status || '').toUpperCase(),
+                    progress: Number(data.progress ?? data.pipelineProgress ?? defaultCandidate.progress),
+                    currentStage: (data.currentStage || data.stage || defaultCandidate.currentStage || '').toUpperCase(),
+                    avatar: data.avatar || data.profilePicture || defaultCandidate.avatar,
+                    contact: {
+                        email: data.email || data.contact?.email || defaultCandidate.contact.email,
+                        phone: data.phone || data.contact?.phone || defaultCandidate.contact.phone,
+                        portfolio: data.portfolio || data.contact?.portfolio || defaultCandidate.contact.portfolio
+                    },
+                    summary: data.summary || data.about || defaultCandidate.summary,
+                    experience: Array.isArray(data.experience) ? data.experience : defaultCandidate.experience,
+                    skills: Array.isArray(data.skills) ? data.skills : defaultCandidate.skills,
+                    education: data.education || defaultCandidate.education,
+                    appliedPosition: {
+                        title: data.appliedPosition?.title || data.position || defaultCandidate.appliedPosition.title,
+                        dept: data.appliedPosition?.dept || data.department || defaultCandidate.appliedPosition.dept,
+                        appliedDate: data.appliedPosition?.appliedDate || data.appliedAt || defaultCandidate.appliedPosition.appliedDate
+                    }
+                };
+
+                if (isMounted) {
+                    setCandidate(mapped);
+                }
+            } catch (err) {
+                console.error('Failed to load candidate profile:', err);
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        loadCandidate();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[calc(100vh-120px)] w-full text-slate-400 text-xs font-black uppercase tracking-widest">
+                Loading candidate profile...
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col h-[calc(100vh-120px)] w-full gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 overflow-hidden text-left">

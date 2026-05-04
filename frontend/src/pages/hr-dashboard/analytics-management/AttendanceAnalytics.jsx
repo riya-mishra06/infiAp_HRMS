@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Activity, 
   Clock, 
@@ -30,12 +30,13 @@ import {
   Area
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { getAnalyticsAttendance, getAttendanceReports } from '../../../services/hrApi';
 
 const AttendanceAnalytics = () => {
     const navigate = useNavigate();
     const [selectedSlot, setSelectedSlot] = useState('All Nodes');
 
-    const peakData = [
+    const defaultPeakData = [
         { time: '08:00', count: 42 },
         { time: '09:00', count: 186 },
         { time: '10:00', count: 84 },
@@ -43,7 +44,7 @@ const AttendanceAnalytics = () => {
         { time: '12:00', count: 12 },
     ];
 
-    const punctualityData = [
+    const defaultPunctualityData = [
         { dept: 'Engineering', score: 92 },
         { dept: 'Design', score: 88 },
         { dept: 'Operations', score: 95 },
@@ -51,13 +52,67 @@ const AttendanceAnalytics = () => {
         { dept: 'Product', score: 91 },
     ];
 
-    const weeklyTrend = [
+    const defaultWeeklyTrend = [
         { day: 'Mon', onTime: 92, late: 8 },
         { day: 'Tue', onTime: 94, late: 6 },
         { day: 'Wed', onTime: 88, late: 12 },
         { day: 'Thu', onTime: 91, late: 9 },
         { day: 'Fri', onTime: 85, late: 15 },
     ];
+
+    const [peakData, setPeakData] = useState(defaultPeakData);
+    const [punctualityData, setPunctualityData] = useState(defaultPunctualityData);
+    const [weeklyTrend, setWeeklyTrend] = useState(defaultWeeklyTrend);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const pickArray = (value) => (Array.isArray(value) ? value : []);
+
+        const loadAttendanceAnalytics = async () => {
+            try {
+                const [attendanceRes, reportRes] = await Promise.all([
+                    getAnalyticsAttendance(),
+                    getAttendanceReports({ range: 'weekly' })
+                ]);
+
+                const attendancePayload = attendanceRes.data?.data;
+                const departments = pickArray(attendancePayload?.departments || attendancePayload?.byDepartment || attendancePayload);
+                const punctuality = departments.map((item, index) => ({
+                    dept: item.department || item.dept || item.name || `Dept ${index + 1}`,
+                    score: Number(item.onTimePercent ?? item.score ?? item.value ?? item.attendance ?? 0)
+                })).filter((item) => item.dept);
+
+                const peaks = pickArray(attendancePayload?.peakCheckins || attendancePayload?.peaks || attendancePayload?.hourly);
+                const peakMapped = peaks.map((item, index) => ({
+                    time: item.time || item.hour || item.label || `T${index + 1}`,
+                    count: Number(item.count ?? item.value ?? item.total ?? 0)
+                })).filter((item) => item.time);
+
+                const weekly = pickArray(attendancePayload?.weeklyTrend || attendancePayload?.weekly || attendancePayload?.daily);
+                const weeklyFallback = pickArray(reportRes.data?.data);
+                const trendSource = weekly.length ? weekly : weeklyFallback;
+                const trendMapped = trendSource.map((item, index) => ({
+                    day: item.day || item.label || item.date || `D${index + 1}`,
+                    onTime: Number(item.onTime ?? item.present ?? item.value ?? 0),
+                    late: Number(item.late ?? item.absent ?? 0)
+                })).filter((item) => item.day);
+
+                if (!isMounted) return;
+                if (punctuality.length) setPunctualityData(punctuality);
+                if (peakMapped.length) setPeakData(peakMapped);
+                if (trendMapped.length) setWeeklyTrend(trendMapped);
+            } catch (err) {
+                console.error('Failed to load attendance analytics:', err);
+            }
+        };
+
+        loadAttendanceAnalytics();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-120px)] w-full gap-10 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 text-left pb-20">

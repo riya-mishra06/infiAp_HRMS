@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Undo2, 
   Calendar as CalendarIcon, 
@@ -18,12 +18,14 @@ import {
   Search
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getCandidateTracking, scheduleCandidateInterview } from '../../../services/hrApi';
 
 const ScheduleInterview = () => {
     const navigate = useNavigate();
     const [submitted, setSubmitted] = useState(false);
     const [formData, setFormData] = useState({
         candidate: '',
+        candidateId: '',
         role: 'Senior UI/UX Designer',
         type: 'Video Call',
         stage: 'Technical Round',
@@ -39,23 +41,80 @@ const ScheduleInterview = () => {
         interviewer: false
     });
 
-    const candidates = ['Mark Wilson', 'Alex Rivers', 'Elena Rodriguez', 'Sarah Chen'];
+    const defaultCandidates = [
+        { id: 'CAN-9021', name: 'Mark Wilson', role: 'Senior UI/UX Designer' },
+        { id: 'CAN-9022', name: 'Alex Rivers', role: 'Senior Software Engineer' },
+        { id: 'CAN-9023', name: 'Elena Rodriguez', role: 'HR Manager' },
+        { id: 'CAN-9024', name: 'Sarah Chen', role: 'Product Designer' }
+    ];
+    const [candidates, setCandidates] = useState(defaultCandidates);
     const interviewers = ['Sarah Green', 'David Chen', 'Michael Scott', 'Pam Beesly'];
     const stages = ['Screening', 'Technical Round', 'System Design', 'Culture Fit', 'HR Round'];
     const types = ['Video Call', 'On-site', 'Phone Call'];
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadCandidates = async () => {
+            try {
+                const res = await getCandidateTracking();
+                const payload = Array.isArray(res.data?.data) ? res.data.data : [];
+                const mapped = payload.map((item, index) => ({
+                    id: item.id || item.candidateId || item._id || item.code || `CAN-${index + 1}`,
+                    name: item.name || item.fullName || item.candidateName || `Candidate ${index + 1}`,
+                    role: item.role || item.jobTitle || item.position || 'Role Pending'
+                }));
+                if (isMounted && mapped.length) {
+                    setCandidates(mapped);
+                }
+            } catch (err) {
+                console.error('Failed to load candidates:', err);
+            }
+        };
+
+        loadCandidates();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const toggleDropdown = (field) => {
         setDropdowns(prev => ({ ...prev, [field]: !prev[field] }));
     };
 
     const selectOption = (field, value) => {
-        setFormData(prev => ({ ...prev, [field]: value }));
+        if (field === 'candidate') {
+            const selected = candidates.find((item) => item.name === value);
+            setFormData((prev) => ({
+                ...prev,
+                candidate: value,
+                candidateId: selected?.id || '',
+                role: selected?.role || prev.role
+            }));
+        } else {
+            setFormData(prev => ({ ...prev, [field]: value }));
+        }
         setDropdowns(prev => ({ ...prev, [field]: false }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        try {
+            if (formData.candidateId) {
+                await scheduleCandidateInterview(formData.candidateId, {
+                    role: formData.role,
+                    type: formData.type,
+                    stage: formData.stage,
+                    interviewer: formData.interviewer,
+                    date: formData.date,
+                    time: formData.time
+                });
+            }
+            setSubmitted(true);
+        } catch (err) {
+            console.error('Failed to schedule interview:', err);
+        }
     };
 
     if (submitted) {
@@ -132,11 +191,11 @@ const ScheduleInterview = () => {
                                     <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-100 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
                                         {candidates.map(c => (
                                             <button 
-                                                key={c} type="button" 
-                                                onClick={() => selectOption('candidate', c)}
+                                                key={c.id} type="button" 
+                                                onClick={() => selectOption('candidate', c.name)}
                                                 className="w-full p-4 text-left text-xs font-black text-slate-600 hover:bg-slate-50 border-b border-slate-50 last:border-none transition-colors uppercase"
                                             >
-                                                {c}
+                                                {c.name}
                                             </button>
                                         ))}
                                     </div>
