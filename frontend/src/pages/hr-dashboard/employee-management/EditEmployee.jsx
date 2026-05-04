@@ -41,7 +41,7 @@ const EditEmployee = () => {
 
     // --- IDENTITY FETCH ---
     useEffect(() => {
-        const employee = employees.find(emp => emp.id === id);
+        const employee = employees.find(emp => emp.id === id || emp._id === id);
         if (employee) {
             setFormData({
                 name: employee.name,
@@ -52,7 +52,7 @@ const EditEmployee = () => {
                 location: employee.location || 'Mumbai Office',
                 status: employee.status
             });
-        } else {
+        } else if (employees.length > 0) {
             setError("Employee Identity Not Found");
         }
     }, [id, employees]);
@@ -62,16 +62,22 @@ const EditEmployee = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const [submitError, setSubmitError] = useState('');
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitError('');
 
-        // Simulate secure database sync
-        setTimeout(() => {
-            updateEmployee(id, formData);
-            setIsSubmitting(false);
+        const result = await updateEmployee(id, formData);
+
+        setIsSubmitting(false);
+
+        if (result?.success === false) {
+            setSubmitError(result.error || 'Failed to update employee');
+        } else {
             setShowModal(true);
-        }, 1200);
+        }
     };
 
     if (error) {

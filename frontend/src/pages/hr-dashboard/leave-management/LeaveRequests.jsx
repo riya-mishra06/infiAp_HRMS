@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Filter, 
@@ -20,6 +20,7 @@ import {
   List
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getLeaveRequests, approveLeave } from '../../../services/hrApi';
 
 const LeaveRequests = () => {
     const navigate = useNavigate();
@@ -28,30 +29,68 @@ const LeaveRequests = () => {
     const [viewMode, setViewMode] = useState('List');
     const [selectedRequests, setSelectedRequests] = useState([]);
     const [notification, setNotification] = useState(null);
-    const [requests, setRequests] = useState([
-        { id: 'LR-9021', name: 'Sarah Chen', dept: 'Engineering', type: 'Sick Leave', range: 'Oct 12 - Oct 14', days: 3, status: 'Pending', reason: 'Medical - Requires surgery recovery time following minor procedure.', avatar: 'https://i.pravatar.cc/150?u=sarah' },
-        { id: 'LR-9022', name: 'Marcus Thompson', dept: 'Design', type: 'Annual Leave', range: 'Oct 20 - Oct 25', days: 6, status: 'Pending', reason: 'Family vacation planned long ago. Handover document shared with the lead.', avatar: 'https://i.pravatar.cc/150?u=marcus' },
-        { id: 'LR-9023', name: 'Jason Bourne', dept: 'Sales', type: 'Personal Leave', range: 'Oct 10 - Oct 10', days: 1, status: 'Approved', reason: 'Personal administrative work.', avatar: 'https://i.pravatar.cc/150?u=jason' },
-        { id: 'LR-9024', name: 'Ananya Iyer', dept: 'Marketing', type: 'Maternity Leave', range: 'Nov 01 - Jan 01', days: 60, status: 'Pending', reason: 'Maternity leave commencement.', avatar: 'https://i.pravatar.cc/150?u=ananya' },
-        { id: 'LR-9025', name: 'Rohan Gupta', dept: 'Human Resources', type: 'Sick Leave', range: 'Oct 05 - Oct 05', days: 1, status: 'Rejected', reason: 'Last minute request without proper medical note.', avatar: 'https://i.pravatar.cc/150?u=rohan' },
-    ]);
+    const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchRequests = async () => {
+        setLoading(true);
+        try {
+            const res = await getLeaveRequests();
+            const data = res.data?.data || [];
+            const formatted = data.map(req => ({
+                id: req._id || req.id,
+                name: req.employee?.name || req.name || 'Unknown',
+                dept: req.employee?.department || req.dept || 'General',
+                type: req.type || 'Leave',
+                range: `${req.startDate?.slice(0,10) || 'N/A'} - ${req.endDate?.slice(0,10) || 'N/A'}`,
+                days: req.days || 1,
+                status: req.status || 'Pending',
+                reason: req.reason || 'No reason provided',
+                avatar: req.employee?.avatar || req.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(req.employee?.name || req.name || 'U')}`
+            }));
+            setRequests(formatted);
+        } catch (error) {
+            console.error('Failed to fetch leave requests', error);
+            // Fallback mock data
+            setRequests([
+                { id: 'LR-9021', name: 'Sarah Chen', dept: 'Engineering', type: 'Sick Leave', range: 'Oct 12 - Oct 14', days: 3, status: 'Pending', reason: 'Medical - Requires surgery recovery time following minor procedure.', avatar: 'https://i.pravatar.cc/150?u=sarah' },
+                { id: 'LR-9022', name: 'Marcus Thompson', dept: 'Design', type: 'Annual Leave', range: 'Oct 20 - Oct 25', days: 6, status: 'Pending', reason: 'Family vacation planned long ago. Handover document shared with the lead.', avatar: 'https://i.pravatar.cc/150?u=marcus' },
+            ]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchRequests();
+    }, []);
 
     const showNotification = (msg) => {
         setNotification(msg);
         setTimeout(() => setNotification(null), 3000);
     };
 
-    const handleAction = (id, status) => {
-        setRequests(prev => prev.map(req => req.id === id ? { ...req, status } : req));
-        showNotification(`Request ${id} ${status} successfully.`);
+    const handleAction = async (id, status) => {
+        try {
+            await approveLeave({ id, status });
+            setRequests(prev => prev.map(req => req.id === id ? { ...req, status } : req));
+            showNotification(`Request ${id} ${status} successfully.`);
+        } catch (error) {
+            showNotification(`Failed to ${status} request ${id}.`);
+        }
     };
 
-    const handleBulkAction = (status) => {
-        setRequests(prev => prev.map(req => 
-            selectedRequests.includes(req.id) ? { ...req, status } : req
-        ));
-        showNotification(`${selectedRequests.length} requests ${status} successfully.`);
-        setSelectedRequests([]);
+    const handleBulkAction = async (status) => {
+        try {
+            await Promise.all(selectedRequests.map(id => approveLeave({ id, status })));
+            setRequests(prev => prev.map(req => 
+                selectedRequests.includes(req.id) ? { ...req, status } : req
+            ));
+            showNotification(`${selectedRequests.length} requests ${status} successfully.`);
+            setSelectedRequests([]);
+        } catch (error) {
+            showNotification(`Failed to process bulk action.`);
+        }
     };
 
     const filteredRequests = requests.filter(req => {
@@ -121,7 +160,10 @@ const LeaveRequests = () => {
                         </button>
                     </div>
                     <button 
-                        onClick={() => showNotification("Synchronizing real-time leave dataset...")}
+                        onClick={() => {
+                            showNotification("Synchronizing real-time leave dataset...");
+                            fetchRequests();
+                        }}
                         className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px] active:scale-95"
                     >
                         Sync Requests

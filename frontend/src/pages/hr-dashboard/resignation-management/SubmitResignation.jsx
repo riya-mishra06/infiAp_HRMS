@@ -11,6 +11,7 @@ import {
   FileSignature
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { createResignation } from '../../../services/hrApi';
 
 const SubmitResignation = () => {
     const navigate = useNavigate();
@@ -33,9 +34,28 @@ const SubmitResignation = () => {
         'Other'
     ];
 
-    const handleSubmit = (e) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState('');
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        setIsSubmitting(true);
+        setSubmitError('');
+        try {
+            await createResignation({
+                employeeName: formData.employeeName,
+                department: formData.department,
+                noticeDate: formData.noticeDate,
+                lastWorkingDay: formData.lastDay,
+                reason: formData.reason,
+                comments: formData.comments,
+            });
+            setSubmitted(true);
+        } catch (err) {
+            setSubmitError(err.response?.data?.error || 'Failed to submit resignation');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     if (submitted) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Building2,
@@ -11,11 +11,16 @@ import {
   Zap,
   LayoutDashboard
 } from 'lucide-react';
-import { useDepartmentContext } from '../../context/DepartmentContext';
+import { useAdminDashboard } from '../../context/AdminDashboardContext';
 
 const Departments = () => {
   const navigate = useNavigate();
-  const { departments, totals } = useDepartmentContext();
+  const { departments, totals, fetchDepartments } = useAdminDashboard();
+
+  useEffect(() => {
+    fetchDepartments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const overviewStats = [
     { label: 'Depts', value: totals.deptCount.toString(), icon: Building2, color: 'text-[#4E63F0]', bg: 'bg-[#4E63F0]/5' },

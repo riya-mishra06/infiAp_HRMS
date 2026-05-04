@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FileText, 
   Download, 
@@ -33,6 +33,7 @@ import {
   XAxis
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { getLeaveStats, getPendingDetailedLeaves, getTodayLeaves } from '../../../services/hrApi';
 
 const LeaveManagement = () => {
   const navigate = useNavigate();
@@ -84,12 +85,33 @@ const LeaveManagement = () => {
     { name: 'Thu', value: 8 }, { name: 'Fri', value: 12 }, { name: 'Sat', value: 2 }, { name: 'Sun', value: 1 }
   ];
 
-  const statCards = [
-    { label: 'Pending', value: '18', color: 'text-orange-500', icon: Clock, filter: 'Pending' },
-    { label: 'Approved', value: '142', color: 'text-emerald-500', icon: CheckCircle2, filter: 'Approved' },
-    { label: 'Rejected', value: '24', color: 'text-rose-500', icon: XCircle, filter: 'Rejected' },
-    { label: 'On Leave Today', value: '12', color: 'text-primary-500', icon: UserCheck, filter: 'All Requests' },
-  ];
+  const [statCards, setStatCards] = useState([
+    { label: 'Pending', value: '—', color: 'text-orange-500', icon: Clock, filter: 'Pending' },
+    { label: 'Approved', value: '—', color: 'text-emerald-500', icon: CheckCircle2, filter: 'Approved' },
+    { label: 'Rejected', value: '—', color: 'text-rose-500', icon: XCircle, filter: 'Rejected' },
+    { label: 'On Leave Today', value: '—', color: 'text-primary-500', icon: UserCheck, filter: 'All Requests' },
+  ]);
+
+  // Fetch leave stats from API
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await getLeaveStats();
+        const data = res.data?.data;
+        if (data) {
+          setStatCards([
+            { label: 'Pending', value: String(data.pending || 0), color: 'text-orange-500', icon: Clock, filter: 'Pending' },
+            { label: 'Approved', value: String(data.approved || 0), color: 'text-emerald-500', icon: CheckCircle2, filter: 'Approved' },
+            { label: 'Rejected', value: String(data.rejected || 0), color: 'text-rose-500', icon: XCircle, filter: 'Rejected' },
+            { label: 'On Leave Today', value: String(data.onLeaveToday || 0), color: 'text-primary-500', icon: UserCheck, filter: 'All Requests' },
+          ]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch leave stats:', err);
+      }
+    };
+    fetchStats();
+  }, []);
 
   const currentActions = getTabData();
 

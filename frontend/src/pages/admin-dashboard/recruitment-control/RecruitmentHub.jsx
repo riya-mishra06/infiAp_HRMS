@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Briefcase, 
@@ -11,11 +11,16 @@ import {
   Search,
   ChevronDown
 } from 'lucide-react';
-import { useJobContext } from '../../../context/JobContext';
+import { useAdminDashboard } from '../../../context/AdminDashboardContext';
 
 const RecruitmentHub = () => {
   const navigate = useNavigate();
-  const { jobs, totals } = useJobContext();
+  const { jobs, totals, fetchJobs } = useAdminDashboard();
+
+  useEffect(() => {
+    fetchJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const overviewStats = [
     { label: 'Open Jobs', value: totals.activeCount.toString(), trend: '+2%', icon: Briefcase, color: 'text-indigo-600', bg: 'bg-indigo-50' },

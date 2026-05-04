@@ -93,6 +93,8 @@ import Success from './pages/auth/Success';
 
 import { EmployeeProvider } from './context/EmployeeContext';
 import { PolicyProvider } from './context/PolicyContext';
+import { AdminDashboardProvider } from './context/AdminDashboardContext';
+import { NotificationProvider } from './context/NotificationContext';
 
 // Placeholder components for Settings
 const Placeholder = ({ title }) => (
@@ -163,9 +165,11 @@ function App() {
     <Router>
       <ScrollToTop />
       <EmployeeProvider>
+        <NotificationProvider>
         <DepartmentProvider>
           <JobProvider>
           <PolicyProvider>
+            <AdminDashboardProvider>
             <Routes>
               {/* 1. Cinematic Auth Flow */}
               <Route path="/" element={<RootRedirect />} />
@@ -304,9 +308,11 @@ function App() {
                 </ProtectedRoleRoute>
               } />
             </Routes>
+            </AdminDashboardProvider>
             </PolicyProvider>
           </JobProvider>
         </DepartmentProvider>
+        </NotificationProvider>
       </EmployeeProvider>
     </Router>
   );

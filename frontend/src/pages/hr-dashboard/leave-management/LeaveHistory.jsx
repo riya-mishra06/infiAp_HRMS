@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Filter, 
@@ -20,21 +20,44 @@ import {
   FileSpreadsheet
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getLeaveHistory } from '../../../services/hrApi';
 
 const LeaveHistory = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [filterStatus, setFilterStatus] = useState('All');
 
-    const historicalRecords = [
-        { id: 'HIST-001', name: 'Arjun Mehta', type: 'Annual Leave', range: 'Nov 12 - Nov 18, 2023', status: 'Approved', dept: 'Engineering', verifiedBy: 'System Auto' },
-        { id: 'HIST-002', name: 'Priya Sharma', type: 'Sick Leave', range: 'Oct 28, 2023', status: 'Approved', dept: 'Product & Design', verifiedBy: 'Sneha Desai' },
-        { id: 'HIST-003', name: 'Ananya Iyer', type: 'Personal Trip', range: 'Sep 05 - Sep 10, 2023', status: 'Rejected', dept: 'Marketing', verifiedBy: 'HR Audit' },
-        { id: 'HIST-004', name: 'Rohan Gupta', type: 'Casual Leave', range: 'Aug 20 - Aug 22, 2023', status: 'Approved', dept: 'Human Resources', verifiedBy: 'System Auto' },
-        { id: 'HIST-005', name: 'Sarah Chen', type: 'Sick Leave', range: 'Jul 15, 2023', status: 'Approved', dept: 'Engineering', verifiedBy: 'Manager' },
-        { id: 'HIST-006', name: 'Amit Verma', type: 'Annual Leave', range: 'Dec 01 - Dec 05, 2023', status: 'Pending', dept: 'Sales', verifiedBy: 'Under Review' },
-        { id: 'HIST-007', name: 'Kavita Rao', type: 'Casual Leave', range: 'Nov 30, 2023', status: 'Pending', dept: 'Design', verifiedBy: 'Under Review' },
-    ];
+    const [historicalRecords, setHistoricalRecords] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchHistory = async () => {
+            setLoading(true);
+            try {
+                const res = await getLeaveHistory();
+                const data = res.data?.data || [];
+                const formatted = data.map(rec => ({
+                    id: rec._id || rec.id,
+                    name: rec.employee?.name || rec.name || 'Unknown',
+                    type: rec.type || 'Leave',
+                    range: `${rec.startDate?.slice(0,10) || 'N/A'} - ${rec.endDate?.slice(0,10) || 'N/A'}`,
+                    status: rec.status || 'Approved',
+                    dept: rec.employee?.department || rec.dept || 'General',
+                    verifiedBy: rec.approvedBy?.name || 'System / Manager'
+                }));
+                setHistoricalRecords(formatted);
+            } catch (err) {
+                console.error("Failed to fetch leave history:", err);
+                setHistoricalRecords([
+                    { id: 'HIST-001', name: 'Arjun Mehta', type: 'Annual Leave', range: 'Nov 12 - Nov 18, 2023', status: 'Approved', dept: 'Engineering', verifiedBy: 'System Auto' },
+                    { id: 'HIST-002', name: 'Priya Sharma', type: 'Sick Leave', range: 'Oct 28, 2023', status: 'Approved', dept: 'Product & Design', verifiedBy: 'Sneha Desai' },
+                ]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchHistory();
+    }, []);
 
     const filteredRecords = historicalRecords.filter(rec => {
         const matchesSearch = rec.name.toLowerCase().includes(searchQuery.toLowerCase()) || 

@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEmployeeContext } from '../../context/EmployeeContext';
-import { useJobContext } from '../../context/JobContext';
-import { useDepartmentContext } from '../../context/DepartmentContext';
+import { useAdminDashboard } from '../../context/AdminDashboardContext';
 import {
    Building2,
    Users,
@@ -33,15 +31,25 @@ import {
 
 const AdminDashboard = () => {
    const navigate = useNavigate();
-   const { employees } = useEmployeeContext();
-   const { jobs } = useJobContext();
-   const { departments } = useDepartmentContext();
+   const { summary, totals, staffDirectory } = useAdminDashboard();
 
    const stats = useMemo(() => [
-      { label: 'Departments', value: departments.length.toString(), trend: '+0', color: 'text-indigo-400' },
-      { label: 'Hiring Roles', value: jobs.length.toString().padStart(2, '0'), trend: 'Active', color: 'text-emerald-400' },
-      { label: 'Active Staff', value: employees.length.toString(), trend: '+4.1%', color: 'text-amber-400' },
-   ], [departments.length, jobs.length, employees.length]);
+      {
+         label: 'Departments',
+         value: String(summary.departments ?? totals.deptCount),
+         color: '#818CF8'
+      },
+      {
+         label: 'Hiring Roles',
+         value: String(summary.openJobs ?? totals.activeCount).padStart(2, '0'),
+         color: '#34D399'
+      },
+      {
+         label: 'Active Staff',
+         value: String(summary.activeStaff ?? staffDirectory.length),
+         color: '#FBBF24'
+      },
+   ], [summary.departments, summary.openJobs, summary.activeStaff, totals.deptCount, totals.activeCount, staffDirectory.length]);
 
    const coreModules = [
       {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Filter, 
@@ -18,20 +18,44 @@ import {
   Undo2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getSalaryList } from '../../../services/hrApi';
 
 const PayslipManagement = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [notification, setNotification] = useState(null);
 
-    const payslips = [
-        { id: 'PS-1024-001', name: 'Mark Wilson', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 114500, status: 'Generated', type: 'Monthly' },
-        { id: 'PS-1024-002', name: 'Sarah Chen', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 99100, status: 'Generated', type: 'Monthly' },
-        { id: 'PS-1024-003', name: 'Alex Rivers', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 107000, status: 'Dispatched', type: 'Monthly' },
-        { id: 'PS-1024-004', name: 'Elena Rodriguez', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 77000, status: 'Generated', type: 'Monthly' },
-        { id: 'PS-1024-005', name: 'Marcus Thompson', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 88300, status: 'Generated', type: 'Monthly' },
- Broadway 
-    ];
+    const [payslips, setPayslips] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchPayslips = async () => {
+        setLoading(true);
+        try {
+            const res = await getSalaryList();
+            const data = res.data?.data || [];
+            const formatted = data.map(ps => ({
+                id: ps._id || ps.id || `PS-${Date.now()}`,
+                name: ps.employee?.name || ps.name || 'Unknown',
+                date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`,
+                amount: ps.netSalary || ps.netPayable || 0,
+                status: ps.status === 'Verified' ? 'Dispatched' : 'Generated',
+                type: 'Monthly'
+            }));
+            setPayslips(formatted);
+        } catch (err) {
+            console.error('Failed to fetch payslips:', err);
+            setPayslips([
+                { id: 'PS-1024-001', name: 'Mark Wilson', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 114500, status: 'Generated', type: 'Monthly' },
+                { id: 'PS-1024-002', name: 'Sarah Chen', date: `${new Date().toLocaleString('default', { month: 'short' })} ${new Date().getFullYear()}`, amount: 99100, status: 'Generated', type: 'Monthly' },
+            ]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchPayslips();
+    }, []);
 
     const showNotification = (msg) => {
         setNotification(msg);
@@ -71,7 +95,10 @@ const PayslipManagement = () => {
                 
                 <div className="flex items-center gap-3 text-left">
                     <button 
-                        onClick={() => showNotification("Initiating bulk cloud synchronization for all payslip nodes...")}
+                        onClick={() => {
+                            showNotification("Initiating bulk cloud synchronization for all payslip nodes...");
+                            fetchPayslips();
+                        }}
                         className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-[0.2em] text-[10px] active:scale-95 text-left"
                     >
                         Sync Repository

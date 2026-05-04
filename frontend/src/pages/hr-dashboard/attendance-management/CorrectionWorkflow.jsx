@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   History, 
   CheckCircle2, 
@@ -16,34 +16,84 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getAttendanceCorrectionRequests, reviewAttendanceCorrection } from '../../../services/hrApi';
 
 const CorrectionWorkflow = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [notification, setNotification] = useState(null);
+  const [loading, setLoading] = useState(false);
   
   const showNotification = (msg) => {
     setNotification(msg);
     setTimeout(() => setNotification(null), 3000);
   };
 
-  // --- MOCK CORRECTION DATA ---
-  const [request, setRequest] = useState({
-    id: id || '9642',
-    name: 'Arjun Mehta',
-    role: 'Principal Engineer',
-    avatar: 'https://i.pravatar.cc/150?u=arjun',
-    date: '24 Oct 2023',
-    reason: 'System glitch during office WiFi outage. Punched in via personal mobile but location was flagged.',
-    original: { checkIn: '09:45 AM', checkOut: '05:30 PM', status: 'Late' },
-    requested: { checkIn: '08:52 AM', checkOut: '05:45 PM', status: 'On Time' },
-    status: 'Pending Review'
-  });
+  const [request, setRequest] = useState(null);
 
-  const handleAction = (status) => {
-    showNotification(`Correction request has been ${status.toLowerCase()} successfully.`);
-    setTimeout(() => navigate('/attendance'), 2000);
+  useEffect(() => {
+    const fetchCorrection = async () => {
+      setLoading(true);
+      try {
+        const res = await getAttendanceCorrectionRequests();
+        const data = res.data?.data || [];
+        // If an ID is provided, find it; otherwise, default to the first one
+        let target = data.find(req => String(req._id) === String(id)) || data[0];
+        
+        if (target) {
+           setRequest({
+              id: target._id || target.id,
+              name: target.employee?.name || 'Unknown',
+              role: target.employee?.role || 'Employee',
+              avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(target.employee?.name || 'User')}`,
+              date: target.date ? new Date(target.date).toLocaleDateString() : 'N/A',
+              reason: target.reason || 'No justification provided.',
+              original: { 
+                 checkIn: target.originalCheckIn || 'N/A', 
+                 checkOut: target.originalCheckOut || 'N/A', 
+                 status: target.originalStatus || 'Late' 
+              },
+              requested: { 
+                 checkIn: target.requestedCheckIn || 'N/A', 
+                 checkOut: target.requestedCheckOut || 'N/A', 
+                 status: 'On Time' 
+              },
+              status: target.status || 'Pending Review'
+           });
+        } else {
+           setRequest({
+              id: id || '9642',
+              name: 'Arjun Mehta',
+              role: 'Principal Engineer',
+              avatar: 'https://i.pravatar.cc/150?u=arjun',
+              date: '24 Oct 2023',
+              reason: 'System glitch during office WiFi outage. Punched in via personal mobile but location was flagged.',
+              original: { checkIn: '09:45 AM', checkOut: '05:30 PM', status: 'Late' },
+              requested: { checkIn: '08:52 AM', checkOut: '05:45 PM', status: 'On Time' },
+              status: 'Pending Review'
+            });
+        }
+      } catch (err) {
+        console.error('Failed to load correction data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCorrection();
+  }, [id]);
+
+  const handleAction = async (status) => {
+    if (!request?._id && !request?.id) return;
+    try {
+       await reviewAttendanceCorrection({ id: request.id, status });
+       showNotification(`Correction request has been ${status.toLowerCase()} successfully.`);
+       setTimeout(() => navigate('/attendance'), 2000);
+    } catch (err) {
+       showNotification('Failed to update request.');
+    }
   };
+
+  if (!request) return <div className="p-8 text-center text-slate-400 font-black uppercase tracking-widest">Loading Diagnostics...</div>;
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 w-full relative pt-4 px-1">

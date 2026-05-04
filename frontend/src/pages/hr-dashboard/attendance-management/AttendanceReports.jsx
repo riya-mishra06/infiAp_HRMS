@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FileText, 
   Download, 
@@ -31,6 +31,7 @@ import {
   Bar
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { getAttendanceReports, generateAttendanceReport } from '../../../services/hrApi';
 
 const AttendanceReports = () => {
   const navigate = useNavigate();
@@ -44,17 +45,61 @@ const AttendanceReports = () => {
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const reports = [
-    { title: 'Global Attendance Audit', date: 'Oct 2023', type: 'System Final', status: 'Ready', size: '2.4 MB', path: '/attendance-reports/daily' },
-    { title: 'Late Inflow Analysis', date: 'Wk 42', type: 'Diagnostic', status: 'Ready', size: '1.1 MB', path: '/attendance-reports/late' },
-    { title: 'Overtime Compensation', date: 'Wk 41', type: 'Financial', status: 'Archived', size: '840 KB', path: '/attendance-reports/daily' },
-    { title: 'Shift Variance Report', date: 'Oct 15', type: 'Performance', status: 'Ready', size: '1.8 MB', path: '/attendance-reports/daily' },
-  ];
+  const [reports, setReports] = useState([]);
+  const [trendData, setTrendData] = useState([]);
 
-  const trendData = [
-    { name: 'Mon', value: 92 }, { name: 'Tue', value: 88 }, { name: 'Wed', value: 95 },
-    { name: 'Thu', value: 91 }, { name: 'Fri', value: 98 }, { name: 'Sat', value: 30 }, { name: 'Sun', value: 10 }
-  ];
+  const fetchReports = async () => {
+    try {
+      const res = await getAttendanceReports();
+      const data = res.data?.data;
+      if (data) {
+        setReports(data.reports?.map(r => ({
+          title: r.title || 'Attendance Audit',
+          date: r.date ? new Date(r.date).toLocaleDateString() : 'N/A',
+          type: r.type || 'System Final',
+          status: r.status || 'Ready',
+          size: r.size || '1.1 MB',
+          path: r.path || '#'
+        })) || []);
+        
+        if (data.trendData?.length) {
+          setTrendData(data.trendData);
+        } else {
+          setTrendData([
+            { name: 'Mon', value: 92 }, { name: 'Tue', value: 88 }, { name: 'Wed', value: 95 },
+            { name: 'Thu', value: 91 }, { name: 'Fri', value: 98 }, { name: 'Sat', value: 30 }, { name: 'Sun', value: 10 }
+          ]);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load reports:', err);
+      // Fallback data
+      setReports([
+        { title: 'Global Attendance Audit', date: 'Oct 2023', type: 'System Final', status: 'Ready', size: '2.4 MB', path: '/attendance-reports/daily' },
+        { title: 'Late Inflow Analysis', date: 'Wk 42', type: 'Diagnostic', status: 'Ready', size: '1.1 MB', path: '/attendance-reports/late' },
+      ]);
+      setTrendData([
+        { name: 'Mon', value: 92 }, { name: 'Tue', value: 88 }, { name: 'Wed', value: 95 },
+        { name: 'Thu', value: 91 }, { name: 'Fri', value: 98 }, { name: 'Sat', value: 30 }, { name: 'Sun', value: 10 }
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  const handleGenerate = async () => {
+     setShowConfigDrawer(false); 
+     showNotification("Compiling Strategic Master Report...");
+     try {
+        await generateAttendanceReport({ type: 'Master' });
+        fetchReports(); // refresh the list after generating
+        showNotification("Master Report Generated Successfully.");
+     } catch (err) {
+        showNotification("Failed to generate report.");
+     }
+  };
 
   const filteredReports = reports.filter(rep => 
     rep.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -109,7 +154,7 @@ const AttendanceReports = () => {
               </div>
               <div className="p-10 border-t border-slate-50 bg-slate-50/20">
                  <button 
-                  onClick={() => { setShowConfigDrawer(false); showNotification("Compiling Strategic Master Report..."); }}
+                  onClick={handleGenerate}
                   className="w-full py-4 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-2xl shadow-slate-200 uppercase tracking-[0.2em] text-[11px]"
                  >
                     Compile & Export Report

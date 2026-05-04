@@ -27,7 +27,7 @@ const SplashScreen = () => {
 
             <div className="relative z-10 flex flex-col items-center animate-in fade-in duration-1000">
                 <div className="w-32 h-32 bg-white rounded-[2rem] shadow-[0_20px_40px_-12px_rgba(68,83,162,0.2)] flex items-center justify-center p-6 mb-8 border border-[#EDF1FC]">
-                    <img src="/logo1.jpeg" alt="InfiAP Logo" className="w-full h-full object-contain" />
+                    <img src="/logo.png" alt="InfiAP Logo" className="w-full h-full object-contain" />
                 </div>
 
                 <h1 className="text-4xl font-black text-[#1F2754] tracking-tight mb-8">InfiAP</h1>

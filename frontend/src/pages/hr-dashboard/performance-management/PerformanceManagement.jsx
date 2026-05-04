@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FileText, 
   Download, 
@@ -38,6 +38,7 @@ import {
   PolarRadiusAxis
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { getPerformanceDashboard, getPerformanceList, getFeedbackStats } from '../../../services/hrApi';
 
 const PerformanceManagement = () => {
   const navigate = useNavigate();
@@ -45,6 +46,28 @@ const PerformanceManagement = () => {
   const [activeTab, setActiveTab] = useState('Quarterly');
   const [showConfigDrawer, setShowConfigDrawer] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dashStats, setDashStats] = useState({ pendingReviews: '—', evolutionIndex: '—', meritScore: '—' });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [dashRes, feedbackRes] = await Promise.all([
+          getPerformanceDashboard(),
+          getFeedbackStats()
+        ]);
+        const dash = dashRes.data?.data || {};
+        const feedback = feedbackRes.data?.data || {};
+        setDashStats({
+          pendingReviews: dash.pendingReviews ?? feedback.pending ?? '18',
+          evolutionIndex: dash.evolutionIndex ? `${dash.evolutionIndex}%` : '94%',
+          meritScore: dash.averageMeritScore ? `${dash.averageMeritScore} / 5.0` : '4.8 / 5.0'
+        });
+      } catch (err) {
+        console.error('Failed to fetch performance stats:', err);
+      }
+    };
+    fetchStats();
+  }, []);
 
   const showNotification = (msg) => {
     setNotification(msg);
@@ -164,7 +187,7 @@ const PerformanceManagement = () => {
                <div className="mt-6 flex items-end justify-between">
                    <div>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-2">Global Merit Score</p>
-                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">4.8 / 5.0</p>
+                      <p className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{dashStats.meritScore}</p>
                    </div>
                   <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-lg">+0.2%</span>
                </div>
@@ -172,8 +195,8 @@ const PerformanceManagement = () => {
 
             <div className="space-y-4">
                {[
-                 { label: 'Pending Reviews', value: '18', icon: ClipboardList, color: 'text-orange-500' },
-                 { label: 'Evolution Index', value: '94%', icon: Activity, color: 'text-primary-500' },
+                 { label: 'Pending Reviews', value: dashStats.pendingReviews, icon: ClipboardList, color: 'text-orange-500' },
+                 { label: 'Evolution Index', value: dashStats.evolutionIndex, icon: Activity, color: 'text-primary-500' },
                ].map((stat, i) => (
                  <div key={i} className="card-soft bg-white p-6 flex items-center gap-4 hover:border-primary-100 transition-all cursor-crosshair">
                     <div className={`p-3 bg-slate-50 rounded-2xl ${stat.color} shadow-inner`}><stat.icon size={20} /></div>

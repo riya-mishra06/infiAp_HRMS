@@ -9,11 +9,11 @@ import {
   Users,
   Check
 } from 'lucide-react';
-import { useDepartmentContext } from '../../../context/DepartmentContext';
+import { useAdminDashboard } from '../../../context/AdminDashboardContext';
 
 const CreateDepartment = () => {
   const navigate = useNavigate();
-  const { addDepartment } = useDepartmentContext();
+  const { addDepartment } = useAdminDashboard();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -22,9 +22,9 @@ const CreateDepartment = () => {
     teams: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addDepartment(formData);
+    await addDepartment(formData);
     navigate('/admin/departments');
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FileText, 
   Download, 
@@ -32,6 +32,7 @@ import {
   Cell
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { getSalaryList, getPayroll } from '../../../services/hrApi';
 
 // Workaround for missing icons in module scope
 const Banknote = (props) => <CreditCard {...props} />;

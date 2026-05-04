@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Building2,
@@ -20,24 +20,75 @@ import {
   Layout,
   BarChart3,
   Activity,
-  UserCheck
+  UserCheck,
+  Loader2
 } from 'lucide-react';
+import { getDashboardSummary, getLeaveRequests } from '../../services/hrApi';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [leaveStatus, setLeaveStatus] = useState('pending');
+  const [loading, setLoading] = useState(true);
+  const [summaryData, setSummaryData] = useState(null);
+  const [pendingLeaves, setPendingLeaves] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [summaryRes, leavesRes] = await Promise.all([
+          getDashboardSummary(),
+          getLeaveRequests({ status: 'Pending', limit: 1 }),
+        ]);
+        setSummaryData(summaryRes.data?.data || null);
+        setPendingLeaves(leavesRes.data?.data || []);
+      } catch (err) {
+        console.error('Dashboard fetch failed:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const stats = [
-    { title: 'Departments', value: '08', icon: Building2, trend: '+1', color: 'text-indigo-600', bg: 'bg-indigo-50' },
-    { title: 'Employees', value: '320', icon: Users, trend: '+4.2%', color: 'text-emerald-500', bg: 'bg-emerald-50' },
-    { title: 'Active Jobs', value: '12', icon: Briefcase, trend: '+2', color: 'text-amber-500', bg: 'bg-amber-50' },
-    { title: 'Monthly Payroll', value: '$85.4k', icon: Wallet, trend: '+4%', color: 'text-rose-500', bg: 'bg-rose-50' },
+    { 
+      title: 'Employees', 
+      value: summaryData?.employees ?? '—', 
+      icon: Users, 
+      trend: '+' + (summaryData?.employees || 0), 
+      color: 'text-emerald-500', 
+      bg: 'bg-emerald-50' 
+    },
+    { 
+      title: 'Active Jobs', 
+      value: summaryData?.openJobs ?? '—', 
+      icon: Briefcase, 
+      trend: '+' + (summaryData?.openJobs || 0), 
+      color: 'text-amber-500', 
+      bg: 'bg-amber-50' 
+    },
+    { 
+      title: 'Attendance Today', 
+      value: summaryData?.attendanceToday ?? '—', 
+      icon: UserCheck, 
+      trend: 'Today', 
+      color: 'text-indigo-600', 
+      bg: 'bg-indigo-50' 
+    },
+    { 
+      title: 'Leave Pending', 
+      value: summaryData?.leavePending ?? '—', 
+      icon: Clock3, 
+      trend: 'Pending', 
+      color: 'text-rose-500', 
+      bg: 'bg-rose-50' 
+    },
   ];
 
   const recentActivity = [
-    { title: 'Payroll processed for Sales Department', time: 'Today at 10:15 AM', type: 'PAYROLL' },
-    { title: 'New hire Michael Scott onboarded', time: 'Yesterday at 04:30 PM', type: 'HIRING' },
-    { title: 'Announcement: Friday team sync at 3 PM', time: 'Oct 10, 2023', type: 'SYSTEM' },
+    { title: `${summaryData?.employees || 0} employees currently in the system`, time: 'Live', type: 'SYSTEM' },
+    { title: `${summaryData?.openJobs || 0} open job positions awaiting candidates`, time: 'Live', type: 'HIRING' },
+    { title: `${summaryData?.resignationOpen || 0} resignation requests in progress`, time: 'Live', type: 'EXIT' },
   ];
 
   const StatCard = ({ title, value, trend, icon: Icon, color, bg }) => (
@@ -49,9 +100,13 @@ const Dashboard = () => {
           <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg uppercase tracking-widest">{trend}</span>
        </div>
        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-2">{title}</p>
-       <h3 className="text-3xl font-black text-slate-800 tracking-tighter leading-none">{value}</h3>
+       <h3 className="text-3xl font-black text-slate-800 tracking-tighter leading-none">
+         {loading ? <Loader2 size={24} className="animate-spin text-slate-300" /> : value}
+       </h3>
     </div>
   );
+
+  const pendingLeave = pendingLeaves[0];
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700 pb-40">
@@ -62,8 +117,11 @@ const Dashboard = () => {
              <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none">Operational Insights & Workforce Orchestration</p>
           </div>
           <div className="flex items-center gap-3">
-             <button className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-indigo-600 transition-all active:scale-95">
-                <PlusCircle size={14} /> New Action
+             <button 
+               onClick={() => navigate('/employees/add')}
+               className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-indigo-600 transition-all active:scale-95"
+             >
+                <PlusCircle size={14} /> New Employee
              </button>
           </div>
        </div>
@@ -84,12 +142,12 @@ const Dashboard = () => {
              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
                 <div className="flex items-center justify-between pb-6 border-b border-slate-50">
                    <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Precision Actions</h3>
-                   <button className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.1em] hover:underline">Full Directory</button>
+                   <button onClick={() => navigate('/employees')} className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.1em] hover:underline">Full Directory</button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                    {[
                       { label: 'Add Employee', icon: UserPlus, path: '/employees/add' },
-                      { label: 'Create Department', icon: Building2, path: '/admin/department-management/create' },
+                      { label: 'View Attendance', icon: UserCheck, path: '/attendance' },
                       { label: 'Job Posting', icon: Send, path: '/recruitment/post-job' }
                    ].map((action, i) => (
                       <button 
@@ -139,21 +197,41 @@ const Dashboard = () => {
              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8">
                 <div className="flex items-center justify-between pb-6 border-b border-slate-50">
                    <h3 className="text-[11px] font-black text-slate-800 uppercase tracking-[0.2em]">Pending Approvals</h3>
-                   <span className="px-3 py-1 bg-amber-50 text-amber-600 text-[10px] font-black rounded-lg uppercase tracking-widest">1 Urgent</span>
+                   <span className="px-3 py-1 bg-amber-50 text-amber-600 text-[10px] font-black rounded-lg uppercase tracking-widest">
+                     {summaryData?.leavePending || 0} Pending
+                   </span>
                 </div>
-                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-6">
-                   <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-black">JM</div>
-                      <div>
-                         <p className="text-xs font-black text-slate-800 uppercase tracking-tight mb-0.5">Jessica Miller</p>
-                         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sick Leave • 2 Days</p>
-                      </div>
-                   </div>
-                   <div className="grid grid-cols-2 gap-3">
-                      <button className="py-3 bg-white border border-slate-200 text-slate-400 text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 transition-all">Reject</button>
-                      <button className="py-3 bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-slate-900 transition-all">Approve</button>
-                   </div>
-                </div>
+                {pendingLeave ? (
+                  <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-6">
+                     <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-black">
+                          {(pendingLeave.employeeName || 'U')[0]}
+                        </div>
+                        <div>
+                           <p className="text-xs font-black text-slate-800 uppercase tracking-tight mb-0.5">{pendingLeave.employeeName || 'Unknown'}</p>
+                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{pendingLeave.type || 'Leave'} • {pendingLeave.days || 1} Days</p>
+                        </div>
+                     </div>
+                     <div className="grid grid-cols-2 gap-3">
+                        <button 
+                          onClick={() => navigate('/leave/approval')}
+                          className="py-3 bg-white border border-slate-200 text-slate-400 text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 transition-all"
+                        >
+                          Review
+                        </button>
+                        <button 
+                          onClick={() => navigate('/leave/approval')}
+                          className="py-3 bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-slate-900 transition-all"
+                        >
+                          Manage
+                        </button>
+                     </div>
+                  </div>
+                ) : (
+                  <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 text-center">
+                    <p className="text-xs font-bold text-slate-400">No pending leave requests</p>
+                  </div>
+                )}
              </div>
 
              {/* Workforce Insight Card */}
@@ -162,12 +240,17 @@ const Dashboard = () => {
                    <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400">System Insights</h3>
                    <Sparkles size={16} className="text-indigo-400" />
                 </div>
-                <p className="text-lg font-black tracking-tight leading-tight uppercase">Workforce health is stable and trending <span className="text-emerald-400">upward</span> this week.</p>
+                <p className="text-lg font-black tracking-tight leading-tight uppercase">
+                  {summaryData?.employees || 0} employees across the organization with{' '}
+                  <span className="text-emerald-400">{summaryData?.openJobs || 0} open</span> positions.
+                </p>
                 <div className="mt-8 flex items-center gap-3">
                    <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
                       <TrendingUp size={16} className="text-white" />
                    </div>
-                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Efficiency +8.4%</span>
+                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                     {summaryData?.resignationOpen || 0} resignations in progress
+                   </span>
                 </div>
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-600/10 rounded-full blur-[80px]"></div>
              </div>

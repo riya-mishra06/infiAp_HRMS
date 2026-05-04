@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Undo2, 
   Search, 
@@ -15,25 +15,58 @@ import {
   Calendar
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getResignationRegister, updateExitProcess } from '../../../services/hrApi';
 
 const ResignationRequests = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [notification, setNotification] = useState(null);
 
-    const requests = [
-        { id: 'RES-081', name: 'Rahul Sharma', dept: 'Engineering', role: 'Senior Developer', noticeDate: 'Oct 24, 2023', lastDay: 'Nov 24, 2023', status: 'Pending', risk: 'High' },
-        { id: 'RES-082', name: 'Priya Patel', dept: 'Marketing', role: 'Brand Manager', noticeDate: 'Oct 22, 2023', lastDay: 'Dec 11, 2023', status: 'Pending', risk: 'Medium' },
-        { id: 'RES-083', name: 'Michael Chen', dept: 'Sales', role: 'Account Executive', noticeDate: 'Oct 20, 2023', lastDay: 'Jan 15, 2024', status: 'Under Review', risk: 'Low' },
-    ];
+    const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchRequests = async () => {
+        setLoading(true);
+        try {
+            const res = await getResignationRegister();
+            const data = res.data?.data || [];
+            const formatted = data.map(req => ({
+                id: req._id || req.id,
+                name: req.employee?.name || req.name || 'Unknown',
+                dept: req.employee?.department || req.dept || 'General',
+                role: req.employee?.role || req.role || 'Employee',
+                noticeDate: req.noticeDate?.slice(0, 10) || 'N/A',
+                lastDay: req.lastWorkingDay?.slice(0, 10) || 'N/A',
+                status: req.status || 'Pending',
+                risk: req.riskLevel || 'Low'
+            }));
+            setRequests(formatted);
+        } catch (err) {
+            console.error('Failed to fetch resignation requests:', err);
+            setRequests([
+                { id: 'RES-081', name: 'Rahul Sharma', dept: 'Engineering', role: 'Senior Developer', noticeDate: 'Oct 24, 2023', lastDay: 'Nov 24, 2023', status: 'Pending', risk: 'High' },
+                { id: 'RES-082', name: 'Priya Patel', dept: 'Marketing', role: 'Brand Manager', noticeDate: 'Oct 22, 2023', lastDay: 'Dec 11, 2023', status: 'Pending', risk: 'Medium' },
+            ]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => { fetchRequests(); }, []);
 
     const showNotification = (msg) => {
         setNotification(msg);
         setTimeout(() => setNotification(null), 3000);
     };
 
-    const handleAction = (id, action) => {
-        showNotification(`${action} resignation protocol for ${id}...`);
+    const handleAction = async (id, action) => {
+        try {
+            await updateExitProcess({ id, status: action });
+            setRequests(prev => prev.map(r => r.id === id ? { ...r, status: action } : r));
+            showNotification(`${action} resignation protocol for ${id}...`);
+        } catch (err) {
+            showNotification(`Failed to update: ${id}`);
+        }
     };
 
     return (
@@ -73,10 +106,10 @@ const ResignationRequests = () => {
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
                 {[
-                    { label: 'Pending', value: '03', color: 'text-rose-500', bg: 'bg-rose-50' },
-                    { label: 'Approved', value: '05', color: 'text-emerald-500', bg: 'bg-emerald-50' },
-                    { label: 'Alerts', value: '02', color: 'text-orange-500', bg: 'bg-orange-50' },
-                    { label: 'Completed', value: '10', color: 'text-primary-500', bg: 'bg-primary-50' },
+                    { label: 'Pending', value: String(requests.filter(r => r.status === 'Pending').length).padStart(2,'0'), color: 'text-rose-500', bg: 'bg-rose-50' },
+                    { label: 'Approved', value: String(requests.filter(r => r.status === 'Approved').length).padStart(2,'0'), color: 'text-emerald-500', bg: 'bg-emerald-50' },
+                    { label: 'Under Review', value: String(requests.filter(r => r.status === 'Under Review').length).padStart(2,'0'), color: 'text-orange-500', bg: 'bg-orange-50' },
+                    { label: 'Total', value: String(requests.length).padStart(2,'0'), color: 'text-primary-500', bg: 'bg-primary-50' },
                 ].map((stat, i) => (
                     <div key={i} className={`card-soft p-10 flex flex-col items-center justify-center text-center ${stat.bg} border-none shadow-none text-left`}>
                         <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-left opacity-60 text-slate-800">{stat.label}</p>

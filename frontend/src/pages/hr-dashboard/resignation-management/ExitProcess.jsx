@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Undo2, 
   CheckCircle2, 
@@ -16,34 +16,65 @@ import {
   CreditCard
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getResignationRegister, updateExitProcess } from '../../../services/hrApi';
 
 const ExitProcess = () => {
     const navigate = useNavigate();
     const [notification, setNotification] = useState(null);
 
+    const [exitData, setExitData] = useState(null);
+    const [loading, setLoading] = useState(false);
+
     const checklist = [
-        { id: 1, task: 'HR Clearance', detail: 'Exit interview and document verification', status: 'Done', color: 'text-primary-500' },
-        { id: 2, task: 'IT Asset Return', detail: 'Laptop, mobile, and security tokens', status: 'Done', color: 'text-emerald-500' },
-        { id: 3, task: 'Knowledge Transfer (KT)', detail: 'Technical handover and documentation', status: 'Done', color: 'text-indigo-500' },
-        { id: 4, task: 'Final Settlement', detail: 'Financial approval and disbursement', status: 'Pending', color: 'text-slate-300' },
+        { id: 1, task: 'HR Clearance', detail: 'Exit interview and document verification', status: exitData?.hrClearance ? 'Done' : 'Pending', color: 'text-primary-500' },
+        { id: 2, task: 'IT Asset Return', detail: 'Laptop, mobile, and security tokens', status: exitData?.itAssetReturn ? 'Done' : 'Pending', color: 'text-emerald-500' },
+        { id: 3, task: 'Knowledge Transfer (KT)', detail: 'Technical handover and documentation', status: exitData?.knowledgeTransfer ? 'Done' : 'Pending', color: 'text-indigo-500' },
+        { id: 4, task: 'Final Settlement', detail: 'Financial approval and disbursement', status: exitData?.finalSettlement ? 'Done' : 'Pending', color: 'text-slate-300' },
     ];
 
-    const settlementItems = [
+    const settlementItems = exitData?.settlement || [
         { label: 'Pending Salary', amount: 65480.00, type: 'Credit' },
         { label: 'Leave Encashment', amount: 12250.00, type: 'Credit' },
         { label: 'Performance Bonus', amount: 35285.00, type: 'Credit' },
         { label: 'Tax Deductions', amount: -18350.00, type: 'Debit' },
     ];
 
-    const history = [
+    const history = exitData?.auditLog || [
         { date: 'Oct 28', event: 'Asset Return Sync Successful', user: 'System Agent' },
         { date: 'Oct 26', event: 'Exit Interview Completed', user: 'Sarah Chen' },
         { date: 'Oct 24', event: 'Resignation Node Active', user: 'Mark Wilson' },
     ];
 
+    useEffect(() => {
+        const fetchExitData = async () => {
+            setLoading(true);
+            try {
+                const res = await getResignationRegister();
+                const data = res.data?.data?.[0]; // most recent exit
+                if (data) setExitData(data);
+            } catch (err) {
+                console.error('Failed to load exit process data:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchExitData();
+    }, []);
+
     const showNotification = (msg) => {
         setNotification(msg);
         setTimeout(() => setNotification(null), 3000);
+    };
+
+    const handleUpdateStatus = async () => {
+        try {
+            if (exitData?._id) {
+                await updateExitProcess({ id: exitData._id, status: 'Completed' });
+            }
+            showNotification('Exit status updated successfully.');
+        } catch (err) {
+            showNotification('Failed to update exit status.');
+        }
     };
 
     return (
@@ -73,7 +104,7 @@ const ExitProcess = () => {
                 </div>
                 <div className="flex items-center gap-4 text-left">
                     <button 
-                        onClick={() => showNotification("Initiating cloud sync for settlement node...")}
+                        onClick={handleUpdateStatus}
                         className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px] active:scale-95 text-left"
                     >
                         Update Exit Status
@@ -85,11 +116,11 @@ const ExitProcess = () => {
             <div className="card-soft bg-white p-8 border-slate-100 shadow-soft flex flex-col md:flex-row items-center justify-between gap-8 text-left">
                 <div className="flex items-center gap-6 text-left">
                     <div className="w-20 h-20 rounded-[28px] bg-slate-50 border-4 border-white shadow-xl flex items-center justify-center text-primary-500 font-black text-xl text-left">
-                        SD
+                        {(exitData?.employee?.name || 'SD').split(' ').map(n => n[0]).join('').slice(0,2)}
                     </div>
                     <div className="text-left">
-                        <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">Sneha Desai</h2>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest text-left">Senior Software Engineer • EMP-081920</p>
+                        <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none mb-2 text-left">{exitData?.employee?.name || 'Sneha Desai'}</h2>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest text-left">{exitData?.employee?.role || 'Senior Software Engineer'} • {exitData?.employee?.id || 'EMP-081920'}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-10 text-right">

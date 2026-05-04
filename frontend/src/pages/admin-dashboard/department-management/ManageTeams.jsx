@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDepartmentContext } from '../../../context/DepartmentContext';
+import { useAdminDashboard } from '../../../context/AdminDashboardContext';
 import { 
   Users, 
   Search, 
@@ -17,8 +17,13 @@ import {
 
 const ManageTeams = () => {
   const navigate = useNavigate();
-  const { teams } = useDepartmentContext();
+  const { teams, fetchTeams } = useAdminDashboard();
   const [activeTab, setActiveTab] = useState('All Teams');
+
+  useEffect(() => {
+    fetchTeams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const tabs = ['All Teams', 'Development', 'QA & Testing', 'Design'];
 

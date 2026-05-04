@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDepartmentContext } from '../../../context/DepartmentContext';
+import { useAdminDashboard } from '../../../context/AdminDashboardContext';
 import { 
   Users, 
   ArrowLeft, 
@@ -21,11 +21,11 @@ const CreateTeam = () => {
     mission: ''
   });
 
-  const { addTeam } = useDepartmentContext();
+  const { addTeam } = useAdminDashboard();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addTeam(formData);
+    await addTeam(formData);
     navigate('/admin/department-management/teams');
   };
 

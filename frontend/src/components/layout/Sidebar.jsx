@@ -294,7 +294,7 @@ const Sidebar = () => {
       <div className="p-8 mb-4">
         <div className="flex items-center gap-4 mb-2">
           <div className="w-14 h-14 bg-white rounded-2xl shadow-soft flex items-center justify-center overflow-hidden border border-slate-50 transition-transform hover:scale-105">
-            <img src="/logo1.jpeg" alt="InfiAP Logo" className="w-full h-full object-contain p-2" />
+            <img src="/logo.png" alt="InfiAP Logo" className="w-full h-full object-contain p-2" />
           </div>
           <div className="flex flex-col">
             <span className="text-2xl font-black text-slate-800 tracking-tighter leading-none mb-1">InfiAP</span>

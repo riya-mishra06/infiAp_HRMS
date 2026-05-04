@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Users, 
@@ -20,7 +20,8 @@ import {
   CheckCircle,
   X,
   AlertTriangle,
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -30,39 +31,103 @@ import {
   Tooltip,
   XAxis
 } from 'recharts';
+import { getAttendanceDailyOverview, getAttendanceRecords, getAttendanceCorrectionRequests, reviewAttendanceCorrection } from '../../../services/hrApi';
 
 const AttendanceDashboard = () => {
   const navigate = useNavigate();
 
   // --- STATE ---
   const [notification, setNotification] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('24 Oct 2023');
+  const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }));
   const [searchQuery, setSearchQuery] = useState('');
   const [isExporting, setIsExporting] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [loading, setLoading] = useState(true);
   
-  const [correctionRequests, setCorrectionRequests] = useState([
-    { id: 'corr-1', name: 'Liam Wilson', time: '10m ago', reason: 'Missed Punch', comment: '"Device battery died at 5:00 PM. Requesting checkout time of 17:30 PM."', avatar: 'https://i.pravatar.cc/150?u=liam' },
-    { id: 'corr-2', name: 'Chloe Miller', time: '1h ago', reason: 'Late Adjust', comment: '"Public transport delay on Line A. Arrived at 09:15 AM."', avatar: 'https://i.pravatar.cc/150?u=chloe' },
-    { id: 'corr-3', name: 'Aarav Sharma', time: '2h ago', reason: 'On Duty', comment: '"Was at client site in Mumbai for integration training. Please mark as present."', avatar: 'https://i.pravatar.cc/150?u=aarav' },
+  const [correctionRequests, setCorrectionRequests] = useState([]);
+  const [attendanceLogs, setAttendanceLogs] = useState([]);
+  const [stats, setStats] = useState([
+    { id: 'stat-1', title: 'Present Today', value: '—', change: '--', icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
+    { id: 'stat-2', title: 'Absent', value: '—', change: '--', icon: UserMinus, color: 'text-rose-600', bg: 'bg-rose-50' },
+    { id: 'stat-3', title: 'Late Arrivals', value: '—', change: '--', icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
+    { id: 'stat-4', title: 'WFH Mode', value: '—', change: '--', icon: Home, color: 'text-indigo-600', bg: 'bg-indigo-50' },
   ]);
 
-  const [initialLogs] = useState([
-    { id: 'log-1', name: 'Arjun Mehta', role: 'Principal Engineer', checkIn: '08:52 AM', checkOut: '--:--', status: 'On Time', location: 'Remote', latLong: '40.7128°N, 74.0060°W', type: 'Remote', avatar: 'https://i.pravatar.cc/150?u=arjun' },
-    { id: 'log-2', name: 'Priya Sharma', role: 'UX Designer', checkIn: '09:18 AM', checkOut: '--:--', status: 'Late (18m)', location: 'Office', latLong: 'BKC, Mumbai', type: 'Office', avatar: 'https://i.pravatar.cc/150?u=priya' },
-    { id: 'log-3', name: 'Rohan Gupta', role: 'Staff Eng', checkIn: '08:45 AM', checkOut: '05:30 PM', status: 'Active', location: 'Office', latLong: 'BKC, Mumbai', type: 'Office', avatar: 'https://i.pravatar.cc/150?u=rohan' },
-    { id: 'log-4', name: 'Ananya Iyer', role: 'Product Lead', checkIn: '09:05 AM', checkOut: '--:--', status: 'On Time', location: 'Remote', latLong: 'Bengaluru, KA', type: 'Remote', avatar: 'https://i.pravatar.cc/150?u=ananya' },
-    { id: 'log-5', name: 'Ishaan Malhotra', role: 'Frontend Dev', checkIn: '09:12 AM', checkOut: '--:--', status: 'Late (12m)', location: 'Office', latLong: 'BKC, Mumbai', type: 'Office', avatar: 'https://i.pravatar.cc/150?u=ishaan' },
-  ]);
+  // Fetch data from API
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [overviewRes, recordsRes, correctionsRes] = await Promise.all([
+          getAttendanceDailyOverview().catch(() => ({ data: {} })),
+          getAttendanceRecords({ limit: 20 }).catch(() => ({ data: {} })),
+          getAttendanceCorrectionRequests({ status: 'Pending' }).catch(() => ({ data: {} })),
+        ]);
+
+        const overview = overviewRes.data?.data;
+        if (overview) {
+          setStats([
+            { id: 'stat-1', title: 'Present Today', value: String(overview.present || 0), change: overview.presentChange || '+0%', icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
+            { id: 'stat-2', title: 'Absent', value: String(overview.absent || 0), change: overview.absentChange || '0%', icon: UserMinus, color: 'text-rose-600', bg: 'bg-rose-50' },
+            { id: 'stat-3', title: 'Late Arrivals', value: String(overview.late || 0), change: overview.lateChange || '0%', icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
+            { id: 'stat-4', title: 'WFH Mode', value: String(overview.wfh || 0), change: overview.wfhChange || 'Normal', icon: Home, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+          ]);
+        }
+
+        const records = recordsRes.data?.data || [];
+        if (records.length > 0) {
+          setAttendanceLogs(records.map((r, i) => ({
+            id: r._id || `log-${i}`,
+            name: r.employeeName || r.name || 'Unknown',
+            role: r.role || r.designation || 'Employee',
+            checkIn: r.checkIn || '--:--',
+            checkOut: r.checkOut || '--:--',
+            status: r.status || 'On Time',
+            location: r.location || 'Office',
+            latLong: r.latLong || '',
+            type: r.type || 'Office',
+            avatar: r.avatar || `https://i.pravatar.cc/150?u=${(r.employeeName || r.name || 'user').split(' ')[0].toLowerCase()}`,
+          })));
+        } else {
+          // Fallback data
+          setAttendanceLogs([
+            { id: 'log-1', name: 'Arjun Mehta', role: 'Principal Engineer', checkIn: '08:52 AM', checkOut: '--:--', status: 'On Time', location: 'Remote', latLong: '40.7128°N, 74.0060°W', type: 'Remote', avatar: 'https://i.pravatar.cc/150?u=arjun' },
+            { id: 'log-2', name: 'Priya Sharma', role: 'UX Designer', checkIn: '09:18 AM', checkOut: '--:--', status: 'Late (18m)', location: 'Office', latLong: 'BKC, Mumbai', type: 'Office', avatar: 'https://i.pravatar.cc/150?u=priya' },
+          ]);
+        }
+
+        const corrections = correctionsRes.data?.data || [];
+        if (corrections.length > 0) {
+          setCorrectionRequests(corrections.map(c => ({
+            id: c._id || c.id,
+            name: c.employeeName || c.name || 'Unknown',
+            time: c.submittedAt ? new Date(c.submittedAt).toLocaleString() : 'Recently',
+            reason: c.reason || 'Correction',
+            comment: c.comment || c.description || '',
+            avatar: c.avatar || `https://i.pravatar.cc/150?u=${(c.employeeName || c.name || 'user').split(' ')[0].toLowerCase()}`,
+          })));
+        } else {
+          setCorrectionRequests([
+            { id: 'corr-1', name: 'Liam Wilson', time: '10m ago', reason: 'Missed Punch', comment: '"Device battery died at 5:00 PM."', avatar: 'https://i.pravatar.cc/150?u=liam' },
+          ]);
+        }
+      } catch (err) {
+        console.error('Attendance fetch failed:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   // --- DYNAMIC SEARCH LOGIC ---
   const filteredLogs = useMemo(() => {
-    return initialLogs.filter(log => 
+    return attendanceLogs.filter(log => 
       log.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       log.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
       log.status.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [searchQuery, initialLogs]);
+  }, [searchQuery, attendanceLogs]);
 
   // --- HANDLERS ---
   const showNotification = (msg) => {
@@ -78,17 +143,15 @@ const AttendanceDashboard = () => {
     }, 1500);
   };
 
-  const handleCorrection = (id, action, name) => {
+  const handleCorrection = async (id, action, name) => {
+    try {
+      await reviewAttendanceCorrection({ correctionId: id, action: action.toLowerCase() });
+    } catch (err) {
+      console.error('Correction review failed:', err);
+    }
     setCorrectionRequests(prev => prev.filter(req => req.id !== id));
     showNotification(`Attendance request for ${name} ${action} successfully.`);
   };
-
-  const stats = [
-    { id: 'stat-1', title: 'Present Today', value: '280', change: '+12%', icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
-    { id: 'stat-2', title: 'Absent', value: '15', change: '-2%', icon: UserMinus, color: 'text-rose-600', bg: 'bg-rose-50' },
-    { id: 'stat-3', title: 'Late Arrivals', value: '8', change: '4.2%', icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
-    { id: 'stat-4', title: 'WFH Mode', value: '12', change: 'Normal', icon: Home, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-  ];
 
   const chartData = [
     { day: 'Mon', value: 92 }, { day: 'Tue', value: 95 }, { day: 'Wed', value: 98 }, 

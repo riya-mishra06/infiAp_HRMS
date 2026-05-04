@@ -1,20 +1,43 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ShieldCheck, RefreshCw, Undo2 } from 'lucide-react';
+import { ShieldCheck, RefreshCw, Undo2, AlertCircle, Loader2 } from 'lucide-react';
 import AuthLayout from '../../components/layout/AuthLayout';
+import { useAuth } from '../../context/AuthContext';
 
 const TwoFactor = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const role = location.state?.role || 'HR';
+    const { pending2FA, verify2FA, error: authError, setError } = useAuth();
+    
+    const devOtp = location.state?.devOtp || pending2FA?.devOtp;
+    const userRole = pending2FA?.role || 'User';
+    
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [localError, setLocalError] = useState('');
     const inputRefs = useRef([]);
+
+    // If no pending 2FA challenge, redirect back to login
+    useEffect(() => {
+        if (!pending2FA) {
+            navigate('/login', { replace: true });
+        }
+    }, [pending2FA, navigate]);
+
+    // Auto-fill dev OTP for testing
+    useEffect(() => {
+        if (devOtp) {
+            setOtp(devOtp.split(''));
+        }
+    }, [devOtp]);
 
     const handleChange = (element, index) => {
         if (isNaN(element.value)) return false;
 
         const newOtp = [...otp.map((d, idx) => (idx === index ? element.value : d))];
         setOtp(newOtp);
+        setLocalError('');
+        if (setError) setError(null);
 
         if (element.nextSibling && element.value !== '') {
             element.nextSibling.focus();
@@ -27,23 +50,50 @@ const TwoFactor = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handlePaste = (e) => {
         e.preventDefault();
-
-        const normalizedRole = (role || '').toLowerCase();
-
-        if (normalizedRole === 'main admin') {
-            navigate('/main-admin/dashboard');
-            return;
+        const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+        if (pasted.length === 6) {
+            setOtp(pasted.split(''));
+            inputRefs.current[5]?.focus();
         }
-
-        if (normalizedRole === 'admin') {
-            navigate('/admin/dashboard');
-            return;
-        }
-
-        navigate('/dashboard');
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const otpString = otp.join('');
+        
+        if (otpString.length !== 6) {
+            setLocalError('Please enter all 6 digits');
+            return;
+        }
+
+        setIsSubmitting(true);
+        setLocalError('');
+
+        const result = await verify2FA(otpString);
+
+        setIsSubmitting(false);
+
+        if (!result.success) {
+            setLocalError(result.error || 'Verification failed. Please try again.');
+            setOtp(['', '', '', '', '', '']);
+            inputRefs.current[0]?.focus();
+            return;
+        }
+
+        // Redirect based on role
+        const normalized = (result.role || '').toLowerCase();
+        if (normalized === 'main admin') {
+            navigate('/main-admin/dashboard', { replace: true });
+        } else if (normalized === 'admin') {
+            navigate('/admin/dashboard', { replace: true });
+        } else {
+            navigate('/dashboard', { replace: true });
+        }
+    };
+
+    const displayError = localError || authError;
 
     return (
         <AuthLayout>
@@ -56,9 +106,24 @@ const TwoFactor = () => {
                     </div>
                     <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tight mb-3">Check your device</h1>
                     <p className="text-sm font-medium text-gray-400 leading-relaxed max-w-[320px] mx-auto">
-                        {role} access requires OTP verification. Enter the 6-digit code to continue.
+                        {userRole} access requires OTP verification. Enter the 6-digit code to continue.
                     </p>
+                    {devOtp && (
+                        <div className="mt-3 px-4 py-2 bg-amber-50 border border-amber-100 rounded-xl inline-block">
+                            <p className="text-[10px] font-bold text-amber-600 uppercase tracking-widest">
+                                Dev OTP: {devOtp}
+                            </p>
+                        </div>
+                    )}
                 </div>
+
+                {/* Error Alert */}
+                {displayError && (
+                    <div className="w-full mb-6 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <AlertCircle size={16} className="text-red-500 shrink-0" />
+                        <p className="text-xs font-semibold text-red-600">{displayError}</p>
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="w-full space-y-8">
                     
@@ -73,6 +138,7 @@ const TwoFactor = () => {
                                 value={data}
                                 onChange={e => handleChange(e.target, index)}
                                 onKeyDown={e => handleKeyDown(e, index)}
+                                onPaste={index === 0 ? handlePaste : undefined}
                                 className="w-full aspect-2/3 max-w-16 bg-[#F8FAFC] border border-gray-100 rounded-2xl text-center text-2xl font-black text-[#1A1A1A] focus:ring-4 focus:ring-[#6C5CE7]/5 focus:bg-white focus:border-[#6C5CE7] outline-none transition-all shadow-sm"
                             />
                         ))}
@@ -82,10 +148,21 @@ const TwoFactor = () => {
                     <div className="space-y-6">
                         <button 
                             type="submit"
-                            disabled={otp.some(v => v === '')}
-                            className={`w-full py-4.5 font-bold rounded-2xl transition-all flex items-center justify-center gap-3 ${otp.some(v => v === '') ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-linear-to-r from-[#6C5CE7] to-[#5A4BDA] text-white shadow-lg shadow-[#6C5CE7]/20 hover:shadow-xl active:scale-[0.98]'}`}
+                            disabled={otp.some(v => v === '') || isSubmitting}
+                            className={`w-full py-4.5 font-bold rounded-2xl transition-all flex items-center justify-center gap-3 ${
+                                otp.some(v => v === '') || isSubmitting
+                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                                    : 'bg-linear-to-r from-[#6C5CE7] to-[#5A4BDA] text-white shadow-lg shadow-[#6C5CE7]/20 hover:shadow-xl active:scale-[0.98]'
+                            }`}
                         >
-                            Verify Account
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 size={16} className="animate-spin" />
+                                    Verifying...
+                                </>
+                            ) : (
+                                'Verify Account'
+                            )}
                         </button>
 
                         <div className="flex flex-col items-center gap-4">

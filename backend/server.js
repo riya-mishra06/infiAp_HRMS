@@ -20,6 +20,7 @@ const employees = require('./routes/employees');
 const jobs = require('./routes/jobs');
 const policies = require('./routes/policies');
 const hr = require('./routes/hr');
+const adminDashboard = require('./routes/adminDashboard');
 
 // Mount Routers
 app.use('/api/v1/auth', auth);
@@ -27,6 +28,7 @@ app.use('/api/v1/employees', employees);
 app.use('/api/v1/jobs', jobs);
 app.use('/api/v1/policies', policies);
 app.use('/api/v1/hr', hr);
+app.use('/api/v1/admin-dashboard', adminDashboard);
 
 const path = require('path');
 

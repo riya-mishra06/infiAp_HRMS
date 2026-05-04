@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Filter, 
@@ -20,6 +20,7 @@ import {
   Building
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getSalaryList, processSalary } from '../../../services/hrApi';
 
 const SalaryProcessing = () => {
     const navigate = useNavigate();
@@ -27,22 +28,56 @@ const SalaryProcessing = () => {
     const [notification, setNotification] = useState(null);
     const [activeTab, setActiveTab] = useState('Pending');
 
-    const [employees, setEmployees] = useState([
-        { id: 'EMP-001', name: 'Mark Wilson', dept: 'Engineering', gross: 145000, tax: 18500, pf: 12000, net: 114500, status: 'Pending' },
-        { id: 'EMP-002', name: 'Sarah Chen', dept: 'Design', gross: 125000, tax: 15400, pf: 10500, net: 99100, status: 'Pending' },
-        { id: 'EMP-003', name: 'Alex Rivers', dept: 'Engineering', gross: 135000, tax: 16800, pf: 11200, net: 107000, status: 'Verified' },
-        { id: 'EMP-004', name: 'Elena Rodriguez', dept: 'Operations', gross: 95000, tax: 10200, pf: 7800, net: 77000, status: 'Pending' },
-        { id: 'EMP-005', name: 'Marcus Thompson', dept: 'Sales', gross: 110000, tax: 12500, pf: 9200, net: 88300, status: 'Verified' },
-    ]);
+    const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchSalaries = async () => {
+        setLoading(true);
+        try {
+            const res = await getSalaryList();
+            const data = res.data?.data || [];
+            const formatted = data.map(emp => ({
+                id: emp._id || emp.id,
+                name: emp.employee?.name || emp.name || 'Unknown',
+                dept: emp.employee?.department || emp.department || 'General',
+                gross: emp.grossSalary || emp.baseSalary || 0,
+                tax: emp.taxDeductions || 0,
+                pf: emp.pfDeductions || 0,
+                net: emp.netSalary || emp.netPayable || 0,
+                status: emp.status || 'Pending'
+            }));
+            setEmployees(formatted);
+        } catch (err) {
+            console.error('Failed to fetch salaries', err);
+            // Fallback
+            setEmployees([
+                { id: 'EMP-001', name: 'Mark Wilson', dept: 'Engineering', gross: 145000, tax: 18500, pf: 12000, net: 114500, status: 'Pending' },
+                { id: 'EMP-002', name: 'Sarah Chen', dept: 'Design', gross: 125000, tax: 15400, pf: 10500, net: 99100, status: 'Pending' },
+            ]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchSalaries();
+    }, []);
 
     const showNotification = (msg) => {
         setNotification(msg);
         setTimeout(() => setNotification(null), 3000);
     };
 
-    const handleAction = (id, newStatus) => {
-        setEmployees(prev => prev.map(emp => emp.id === id ? { ...emp, status: newStatus } : emp));
-        showNotification(`Employee ${id} marked as ${newStatus}.`);
+    const handleAction = async (id, newStatus) => {
+        try {
+            if (newStatus === 'Verified') {
+                await processSalary({ employeeId: id });
+            }
+            setEmployees(prev => prev.map(emp => emp.id === id ? { ...emp, status: newStatus } : emp));
+            showNotification(`Employee ${id} marked as ${newStatus}.`);
+        } catch (err) {
+            showNotification(`Failed to process salary for ${id}`);
+        }
     };
 
     const filteredEmployees = employees.filter(emp => {
@@ -89,7 +124,10 @@ const SalaryProcessing = () => {
                 
                 <div className="flex items-center gap-3 text-left">
                     <button 
-                        onClick={() => showNotification("Initiating bulk salary disbursement node...")}
+                        onClick={() => {
+                            showNotification("Initiating bulk salary disbursement node...");
+                            fetchSalaries();
+                        }}
                         className="px-10 py-3 bg-slate-900 text-white font-black rounded-2xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 uppercase tracking-widest text-[10px] active:scale-95 text-left"
                     >
                         Process Batch

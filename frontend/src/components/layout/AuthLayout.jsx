@@ -19,8 +19,8 @@ const AuthLayout = ({ children }) => {
                             onClick={() => navigate('/splash')}
                             className="flex w-fit items-center gap-3"
                         >
-                            <div className="h-16 w-16 rounded-3xl bg-white p-3 shadow-lg">
-                                <img src="/logo1.jpeg" alt="InfiAP" className="h-full w-full object-contain" />
+                            <div className="h-20 w-20 rounded-3xl bg-white p-0 shadow-lg">
+                                <img src="/logo.png" alt="InfiAP" className="h-full w-full object-contain" />
                             </div>
                             <div>
                                 <p className="text-2xl font-black tracking-tight">InfiAP</p>

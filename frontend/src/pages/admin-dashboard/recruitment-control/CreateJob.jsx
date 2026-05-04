@@ -9,11 +9,11 @@ import {
   Save, 
   ChevronDown,
 } from 'lucide-react';
-import { useJobContext } from '../../../context/JobContext';
+import { useAdminDashboard } from '../../../context/AdminDashboardContext';
 
 const CreateJob = () => {
   const navigate = useNavigate();
-  const { addJob } = useJobContext();
+  const { addJob } = useAdminDashboard();
   const [skills, setSkills] = useState(['Figma', 'React']);
   const [skillInput, setSkillInput] = useState('');
   
@@ -36,9 +36,9 @@ const CreateJob = () => {
     }
   };
 
-  const handlePublish = (e) => {
+  const handlePublish = async (e) => {
     e.preventDefault();
-    addJob({
+    await addJob({
       ...formData,
       skills
     });

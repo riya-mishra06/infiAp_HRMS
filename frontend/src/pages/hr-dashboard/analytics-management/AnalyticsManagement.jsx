@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FileText, 
   Download, 
@@ -37,6 +37,7 @@ import {
   CartesianGrid
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import { getAnalyticsReport, getAnalyticsAttendance, getAnalyticsPerformance } from '../../../services/hrApi';
 
 const AnalyticsManagement = () => {
   const navigate = useNavigate();
@@ -44,6 +45,40 @@ const AnalyticsManagement = () => {
   const [activeTab, setActiveTab] = useState('Overview');
   const [showConfigDrawer, setShowConfigDrawer] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [multiData, setMultiData] = useState([
+    { name: 'Mon', p: 4000, a: 2400 },
+    { name: 'Tue', p: 3000, a: 1398 },
+    { name: 'Wed', p: 2000, a: 9800 },
+    { name: 'Thu', p: 2780, a: 3908 },
+    { name: 'Fri', p: 1890, a: 4800 },
+    { name: 'Sat', p: 2390, a: 3800 },
+    { name: 'Sun', p: 3490, a: 4300 },
+  ]);
+
+  const fetchAnalytics = async () => {
+    try {
+      const [attendanceRes, performanceRes] = await Promise.all([
+        getAnalyticsAttendance(),
+        getAnalyticsPerformance()
+      ]);
+      const attendance = attendanceRes.data?.data;
+      const performance = performanceRes.data?.data;
+      if (Array.isArray(attendance) && attendance.length > 0) {
+        const merged = attendance.map((item, i) => ({
+          name: item.day || item.label || `D${i+1}`,
+          a: item.value || item.attendance || 0,
+          p: performance?.[i]?.value || performance?.[i]?.score || 0
+        }));
+        setMultiData(merged);
+      }
+    } catch (err) {
+      console.error('Analytics data fetch failed (using defaults):', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, []);
 
   const showNotification = (msg) => {
     setNotification(msg);
@@ -56,17 +91,6 @@ const AnalyticsManagement = () => {
     { title: 'Performance Forecast', date: 'Q4 2024', category: 'Predictive', status: 'AI Active', size: 'Diagnostic', path: '/analytics/performance', icon: BrainCircuit, color: 'text-indigo-600', bg: 'bg-indigo-50' },
     { title: 'Master Data Integrity', date: 'Daily', category: 'Database', status: 'Healthy', size: '1.2 TB', path: '/analytics/data', icon: Database, color: 'text-slate-600', bg: 'bg-slate-50' },
   ];
-
-  const multiData = [
-    { name: 'Mon', p: 4000, a: 2400 },
-    { name: 'Tue', p: 3000, a: 1398 },
-    { name: 'Wed', p: 2000, a: 9800 },
-    { name: 'Thu', p: 2780, a: 3908 },
-    { name: 'Fri', p: 1890, a: 4800 },
-    { name: 'Sat', p: 2390, a: 3800 },
-    { name: 'Sun', p: 3490, a: 4300 },
-  ];
-
   return (
     <div className="flex flex-col h-[calc(100vh-120px)] w-full gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 relative pt-4 overflow-hidden">
       
@@ -126,7 +150,10 @@ const AnalyticsManagement = () => {
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center">
            <button 
-             onClick={() => showNotification("Initiating cross-departmental data sync...")}
+             onClick={() => {
+               showNotification("Initiating cross-departmental data sync...");
+               fetchAnalytics();
+             }}
              className="px-8 py-3 bg-white border border-slate-100 text-slate-400 font-black text-[10px] uppercase rounded-2xl hover:bg-slate-50 transition-all shadow-sm active:scale-95"
            >
               Refresh Data

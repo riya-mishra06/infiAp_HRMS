@@ -6,25 +6,75 @@ import {
     Lock,
     ChevronDown,
     ShieldCheck,
-    CheckCircle2
+    CheckCircle2,
+    AlertCircle,
+    Loader2
 } from 'lucide-react';
 import AuthLayout from '../../components/layout/AuthLayout';
+import { useAuth } from '../../context/AuthContext';
 
 const Signup = () => {
     const navigate = useNavigate();
+    const { register, error: authError, setError } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selectedRole, setSelectedRole] = useState('Admin');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [localError, setLocalError] = useState('');
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        role: 'admin',
+    });
 
     const roles = [
-        { name: 'Admin', desc: 'Standard administrative node' },
-        { name: 'Main Admin', desc: 'Full system synchronization' },
-        { name: 'HR', desc: 'Personnel lifecycle management' }
+        { name: 'admin', label: 'Admin', desc: 'Standard administrative node' },
+        { name: 'Main Admin', label: 'Main Admin', desc: 'Full system synchronization' },
+        { name: 'hr', label: 'HR', desc: 'Personnel lifecycle management' }
     ];
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        navigate('/2fa');
+    const selectedRoleObj = roles.find(r => r.name === formData.role);
+
+    const handleChange = (e) => {
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        setLocalError('');
+        if (setError) setError(null);
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLocalError('');
+
+        if (formData.password !== formData.confirmPassword) {
+            setLocalError('Passwords do not match');
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            setLocalError('Password must be at least 6 characters');
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        const result = await register({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            role: formData.role,
+        });
+
+        setIsSubmitting(false);
+
+        if (result.success) {
+            navigate('/auth-success', { replace: true });
+        } else {
+            setLocalError(result.error || 'Registration failed');
+        }
+    };
+
+    const displayError = localError || authError;
 
     return (
         <AuthLayout>
@@ -38,6 +88,14 @@ const Signup = () => {
                     </p>
                 </div>
 
+                {/* Error Alert */}
+                {displayError && (
+                    <div className="mb-6 p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <AlertCircle size={16} className="text-red-500 shrink-0" />
+                        <p className="text-xs font-semibold text-red-600">{displayError}</p>
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                     
                     {/* Input Grid */}
@@ -48,8 +106,11 @@ const Signup = () => {
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#6C5CE7] transition-colors" size={18} />
                                 <input
                                     type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
                                     required
-                                    placeholder="Marcus Aurelius"
+                                    placeholder="John Doe"
                                     className="w-full bg-[#F8FAFC] border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-medium text-gray-800 focus:ring-4 focus:ring-[#6C5CE7]/5 focus:bg-white focus:border-[#6C5CE7] transition-all outline-none"
                                 />
                             </div>
@@ -60,6 +121,9 @@ const Signup = () => {
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#6C5CE7] transition-colors" size={18} />
                                 <input
                                     type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
                                     required
                                     placeholder="name@company.com"
                                     className="w-full bg-[#F8FAFC] border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-medium text-gray-800 focus:ring-4 focus:ring-[#6C5CE7]/5 focus:bg-white focus:border-[#6C5CE7] transition-all outline-none"
@@ -80,8 +144,8 @@ const Signup = () => {
                                     <ShieldCheck size={20} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs font-bold text-[#1A1A1A] leading-none mb-1">{selectedRole}</span>
-                                    <span className="text-[10px] text-gray-400 font-medium">{roles.find(r => r.name === selectedRole)?.desc}</span>
+                                    <span className="text-xs font-bold text-[#1A1A1A] leading-none mb-1">{selectedRoleObj?.label}</span>
+                                    <span className="text-[10px] text-gray-400 font-medium">{selectedRoleObj?.desc}</span>
                                 </div>
                             </div>
                             <ChevronDown size={18} className={`text-gray-300 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
@@ -94,16 +158,16 @@ const Signup = () => {
                                         <div
                                             key={role.name}
                                             onClick={() => {
-                                                setSelectedRole(role.name);
+                                                setFormData(prev => ({ ...prev, role: role.name }));
                                                 setIsDropdownOpen(false);
                                             }}
-                                            className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all cursor-pointer group ${selectedRole === role.name ? 'bg-[#6C5CE7]/5' : 'hover:bg-gray-50'}`}
+                                            className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all cursor-pointer group ${formData.role === role.name ? 'bg-[#6C5CE7]/5' : 'hover:bg-gray-50'}`}
                                         >
-                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${selectedRole === role.name ? 'bg-[#6C5CE7] text-white shadow-lg shadow-[#6C5CE7]/20' : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-[#6C5CE7]'}`}>
+                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${formData.role === role.name ? 'bg-[#6C5CE7] text-white shadow-lg shadow-[#6C5CE7]/20' : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-[#6C5CE7]'}`}>
                                                 <ShieldCheck size={16} />
                                             </div>
                                             <div className="flex flex-col">
-                                                <p className="text-xs font-bold text-[#1A1A1A]">{role.name}</p>
+                                                <p className="text-xs font-bold text-[#1A1A1A]">{role.label}</p>
                                                 <p className="text-[10px] text-gray-400 font-medium">{role.desc}</p>
                                             </div>
                                         </div>
@@ -121,6 +185,9 @@ const Signup = () => {
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#6C5CE7] transition-colors" size={18} />
                                 <input
                                     type="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
                                     required
                                     placeholder="••••••••••••"
                                     className="w-full bg-[#F8FAFC] border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-medium text-gray-800 focus:ring-4 focus:ring-[#6C5CE7]/5 focus:bg-white focus:border-[#6C5CE7] transition-all outline-none"
@@ -133,6 +200,9 @@ const Signup = () => {
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#6C5CE7] transition-colors" size={18} />
                                 <input
                                     type="password"
+                                    name="confirmPassword"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
                                     required
                                     placeholder="••••••••••••"
                                     className="w-full bg-[#F8FAFC] border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-medium text-gray-800 focus:ring-4 focus:ring-[#6C5CE7]/5 focus:bg-white focus:border-[#6C5CE7] transition-all outline-none"
@@ -157,9 +227,21 @@ const Signup = () => {
                     <div className="space-y-6 pt-4">
                         <button
                             type="submit"
-                            className="w-full py-4.5 bg-linear-to-r from-[#6C5CE7] to-[#5A4BDA] text-white font-bold rounded-2xl shadow-lg shadow-[#6C5CE7]/20 hover:shadow-xl hover:shadow-[#6C5CE7]/30 transition-all active:scale-[0.98]"
+                            disabled={isSubmitting}
+                            className={`w-full py-4.5 font-bold rounded-2xl shadow-lg shadow-[#6C5CE7]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${
+                                isSubmitting
+                                    ? 'bg-[#6C5CE7]/70 text-white cursor-wait'
+                                    : 'bg-linear-to-r from-[#6C5CE7] to-[#5A4BDA] text-white hover:shadow-xl hover:shadow-[#6C5CE7]/30'
+                            }`}
                         >
-                            Create Account
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 size={16} className="animate-spin" />
+                                    Creating Account...
+                                </>
+                            ) : (
+                                'Create Account'
+                            )}
                         </button>
                         <p className="text-center text-sm font-medium text-gray-500">
                             Already have an identity?

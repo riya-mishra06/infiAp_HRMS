@@ -56,20 +56,26 @@ const AddEmployee = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const [submitError, setSubmitError] = useState('');
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitError('');
 
-        // Simulate real onboarding processing
-        setTimeout(() => {
-            addEmployee({
-                ...formData,
-                status: 'Active',
-                avatar: previewImage
-            });
-            setIsSubmitting(false);
+        const result = await addEmployee({
+            ...formData,
+            status: 'Active',
+            avatar: previewImage
+        });
+
+        setIsSubmitting(false);
+
+        if (result?.success === false) {
+            setSubmitError(result.error || 'Failed to add employee');
+        } else {
             setShowModal(true);
-        }, 1500);
+        }
     };
 
     return (

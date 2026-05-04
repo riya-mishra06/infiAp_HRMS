@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -32,27 +32,70 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { useEmployeeContext } from '../../../context/EmployeeContext';
+import { getEmployeeProfile } from '../../../services/hrApi';
 
 const EmployeeProfiles = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { employees } = useEmployeeContext();
 
-  // Find the specific employee in the global store
-  const employee = employees.find(emp => emp.id === id) || {
-    id: id || 'EMP-1024',
-    name: 'Arjun Mehta',
-    role: 'Principal Engineer',
-    email: 'arjun.mehta@hrms.in',
-    phone: '+91 98765 01024',
-    location: 'Mumbai, Maharashtra',
-    department: 'Engineering',
-    manager: 'Sneha Desai',
-    joiningDate: 'Dec 12, 2022',
-    status: 'Active',
-    avatar: 'https://i.pravatar.cc/150?u=arjun',
-    banner: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop'
-  };
+  const [employee, setEmployee] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      setLoading(true);
+      try {
+        const res = await getEmployeeProfile(id);
+        const data = res.data?.data;
+        if (data) {
+          setEmployee({
+            id: data._id || data.id,
+            name: data.name,
+            role: data.role || 'Employee',
+            email: data.email,
+            phone: data.phone || '+91 00000 00000',
+            location: data.location || 'Remote',
+            department: data.department || 'General',
+            manager: data.manager?.name || 'Not Assigned',
+            joiningDate: data.joiningDate ? new Date(data.joiningDate).toLocaleDateString() : 'N/A',
+            status: data.status || 'Active',
+            avatar: data.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}`,
+            banner: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop'
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load profile, using context fallback:', err);
+        // Fallback to context
+        const ctxEmp = employees.find(emp => String(emp.id) === String(id));
+        if (ctxEmp) {
+          setEmployee({ ...ctxEmp, avatar: ctxEmp.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(ctxEmp.name || 'User')}` });
+        } else {
+          setEmployee({
+            id: id || 'EMP-1024',
+            name: 'Arjun Mehta',
+            role: 'Principal Engineer',
+            email: 'arjun.mehta@hrms.in',
+            phone: '+91 98765 01024',
+            location: 'Mumbai, Maharashtra',
+            department: 'Engineering',
+            manager: 'Sneha Desai',
+            joiningDate: 'Dec 12, 2022',
+            status: 'Active',
+            avatar: 'https://i.pravatar.cc/150?u=arjun',
+            banner: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop'
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (id) fetchProfile();
+  }, [id, employees]);
+
+  if (loading || !employee) {
+    return <div className="p-8 text-center text-slate-400 font-black uppercase tracking-widest">Loading Profile Node...</div>;
+  }
 
   const activity = [
     { title: 'Project "Delta" submitted', time: '2 hours ago', type: 'Work' },
