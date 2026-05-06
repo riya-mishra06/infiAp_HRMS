@@ -110,6 +110,62 @@ export const hrService = {
   getPayslip: (id) =>
     apiClient.get(`/hr/finance/payslip/${id}`).then(r => r.data),
 
+  // --- Resignation ---
+  getResignationRegister: (params) =>
+    apiClient.get("/hr/resignation/register", { params }).then(r => r.data),
+
+  createResignation: (data) =>
+    apiClient.post("/hr/resignation", data).then(r => r.data),
+
+  updateExitProcess: (data) =>
+    apiClient.put("/hr/resignation/exit-process", data).then(r => r.data),
+
+  // --- Attendance Extras ---
+  getAttendanceNotifications: () =>
+    apiClient.get("/hr/attendance/notifications").then(r => r.data),
+
+  // --- Leaves Extras ---
+  getTodayLeaves: (params) =>
+    apiClient.get("/hr/leaves/today", { params }).then(r => r.data),
+
+  getLeaveRequests: (params) =>
+    apiClient.get("/hr/leaves/requests", { params }).then(r => r.data),
+
+  // --- Recruitment Extras ---
+  getRecruitmentJobs: (params) =>
+    apiClient.get("/hr/recruitment/jobs", { params }).then(r => r.data),
+
+  createRecruitmentJob: (data) =>
+    apiClient.post("/hr/recruitment/jobs", data).then(r => r.data),
+
+  // --- Profile Update (Multipart) ---
+  updateProfile: async (employeeId, profileData, imageFile) => {
+    const formData = new FormData();
+    if (imageFile) {
+      if (imageFile instanceof File) {
+        formData.append('profilePicture', imageFile);
+      } else if (imageFile.uri) {
+        const filename = imageFile.name || imageFile.uri.split('/').pop();
+        const match = /\.(\w+)$/.exec(filename || '');
+        const type = match ? `image/${match[1]}` : 'image';
+        formData.append('profilePicture', {
+          uri: imageFile.uri,
+          name: filename,
+          type,
+        });
+      }
+    }
+    Object.keys(profileData || {}).forEach((key) => {
+      const value = profileData[key];
+      if (value !== undefined && value !== null) {
+        formData.append(key, value);
+      }
+    });
+    return apiClient.put(`/hr/employees/${employeeId}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }).then(r => r.data);
+  },
+
   // --- Analytics ---
   getAnalyticsReport: () =>
     apiClient.get("/hr/analytics/report").then(r => r.data),

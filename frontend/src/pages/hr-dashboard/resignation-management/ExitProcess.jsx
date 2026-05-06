@@ -16,7 +16,7 @@ import {
   CreditCard
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { getResignationRegister, updateExitProcess } from '../../../services/hrApi';
+import { hrService } from '../../../services/hr.service';
 
 const ExitProcess = () => {
     const navigate = useNavigate();
@@ -49,8 +49,8 @@ const ExitProcess = () => {
         const fetchExitData = async () => {
             setLoading(true);
             try {
-                const res = await getResignationRegister();
-                const data = res.data?.data?.[0]; // most recent exit
+                const res = await hrService.getResignationRegister();
+                const data = res.data?.[0]; // most recent exit
                 if (data) setExitData(data);
             } catch (err) {
                 console.error('Failed to load exit process data:', err);
@@ -69,7 +69,7 @@ const ExitProcess = () => {
     const handleUpdateStatus = async () => {
         try {
             if (exitData?._id) {
-                await updateExitProcess({ id: exitData._id, status: 'Completed' });
+                await hrService.updateExitProcess({ id: exitData._id, status: 'Completed' });
             }
             showNotification('Exit status updated successfully.');
         } catch (err) {

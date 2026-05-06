@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import api from '../utils/axios';
+import { authService } from '../services/auth.service';
+import apiClient from '../services/apiClient';
 
 const AuthContext = createContext();
 
@@ -18,7 +19,7 @@ const normalizeRole = (role) => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(() => localStorage.getItem('userRole') || null);
-  const [token, setToken] = useState(() => localStorage.getItem('token') || null);
+  const [token, setToken] = useState(() => localStorage.getItem('accessToken') || localStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -29,7 +30,8 @@ export const AuthProvider = ({ children }) => {
   const storeAuth = (authToken, userData) => {
     const normalizedUser = userData || {};
     const normalizedRole = normalizeRole(normalizedUser.role);
-    localStorage.setItem('token', authToken);
+    localStorage.setItem('accessToken', authToken);
+    localStorage.setItem('token', authToken); // Legacy support
     localStorage.setItem('userRole', normalizedRole || '');
     localStorage.setItem('userName', normalizedUser.name || '');
     localStorage.setItem('userEmail', normalizedUser.email || '');
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const clearAuth = () => {
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userName');
@@ -53,14 +56,14 @@ export const AuthProvider = ({ children }) => {
 
   // ── Hydrate on mount — check stored token ───────────────────────────────
   const hydrate = useCallback(async () => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem('accessToken') || localStorage.getItem('token');
     if (!storedToken) {
       setLoading(false);
       return;
     }
 
     try {
-      const res = await api.get('/auth/me');
+      const res = await apiClient.get('/auth/me');
       const userData = res.data?.data;
       if (userData) {
         const normalizedRole = normalizeRole(userData.role);
@@ -87,22 +90,20 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       setLoading(true);
-      const res = await api.post('/auth/login', { email, password });
+      const data = await authService.login(email, password);
 
-      if (res.data?.require2FA || res.data?.requires2FA || res.data?.data?.requires2FA) {
-        // Backend returns userId + role but no token yet
+      if (data.require2FA || data.requires2FA) {
         setPending2FA({
-          userId: res.data.userId || res.data?.data?.userId,
-          role: normalizeRole(res.data.role || res.data?.data?.role),
-          devOtp: res.data?.devOtp, // only in dev mode
+          userId: data.userId,
+          role: normalizeRole(data.role),
+          devOtp: data.devOtp,
         });
-        return { success: true, requires2FA: true, devOtp: res.data?.devOtp };
+        return { success: true, requires2FA: true, devOtp: data.devOtp };
       }
 
-      // Direct login (no 2FA)
-      if (res.data?.token) {
-        storeAuth(res.data.token, res.data.user || res.data.data);
-        return { success: true, requires2FA: false, role: normalizeRole(res.data.role || res.data?.user?.role || res.data?.data?.role) };
+      if (data.token) {
+        storeAuth(data.token, data.user || data);
+        return { success: true, requires2FA: false, role: normalizeRole(data.role || data.user?.role) };
       }
 
       return { success: false, error: 'Unexpected response' };
@@ -124,15 +125,12 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       setLoading(true);
-      const res = await api.post('/auth/verify-2fa', {
-        userId: pending2FA.userId,
-        otp: otp,
-      });
+      const data = await authService.verify2FA(pending2FA.userId, otp);
 
-      if (res.data?.token) {
-        storeAuth(res.data.token, res.data.user || res.data.data);
+      if (data.token) {
+        storeAuth(data.token, data.user || data);
         setPending2FA(null);
-        return { success: true, role: normalizeRole(res.data.role || res.data?.user?.role || res.data?.data?.role) };
+        return { success: true, role: normalizeRole(data.role || data.user?.role) };
       }
 
       return { success: false, error: 'Verification failed' };
@@ -145,12 +143,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
   // ── Register ────────────────────────────────────────────────────────────
   const register = async (userData) => {
     try {
       setError(null);
       setLoading(true);
-      const res = await api.post('/auth/register', userData);
+      const res = await apiClient.post('/auth/register', userData);
       if (res.data?.token) {
         storeAuth(res.data.token, res.data.user || res.data.data);
         return { success: true, data: res.data.user || res.data.data };
@@ -168,7 +167,7 @@ export const AuthProvider = ({ children }) => {
   // ── Get profile ─────────────────────────────────────────────────────────
   const fetchProfile = async () => {
     try {
-      const res = await api.get('/auth/me');
+      const res = await apiClient.get('/auth/me');
       const userData = res.data?.data;
       if (userData) {
         const normalizedRole = normalizeRole(userData.role);
@@ -185,7 +184,7 @@ export const AuthProvider = ({ children }) => {
   const fetchAllUsers = async () => {
     try {
       setLoading(true);
-      const res = await api.get('/auth/users');
+      const res = await apiClient.get('/auth/users');
       setLoading(false);
       return { success: true, data: res.data.data };
     } catch (err) {
@@ -196,7 +195,7 @@ export const AuthProvider = ({ children }) => {
 
   const deleteUser = async (id) => {
     try {
-      await api.delete(`/auth/users/${id}`);
+      await apiClient.delete(`/auth/users/${id}`);
       return { success: true };
     } catch (err) {
       return { success: false, error: err.response?.data?.error || 'Failed to delete user' };

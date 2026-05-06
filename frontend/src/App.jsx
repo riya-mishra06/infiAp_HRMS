@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import DashboardLayout from './components/layout/DashboardLayout';
 import AdminLayout from './components/layout/AdminLayout';
 import { useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // HR Dashboard Pages
 import Dashboard from './pages/hr-dashboard/Dashboard';
@@ -148,20 +149,6 @@ const PublicOnlyRoute = ({ children }) => {
   return children;
 };
 
-const ProtectedRoleRoute = ({ children, allowedRoles }) => {
-  const { role } = useAuth();
-  const normalizedRole = normalizeRole(role);
-
-  if (!normalizedRole) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (allowedRoles && !allowedRoles.includes(normalizedRole)) {
-    return <Navigate to={getDashboardPathByRole(normalizedRole)} replace />;
-  }
-
-  return children;
-};
 
 function App() {
   return (
@@ -184,7 +171,7 @@ function App() {
 
               {/* 2. Management Portal (Company Level) */}
               <Route path="/admin/*" element={
-                <ProtectedRoleRoute allowedRoles={['Admin']}>
+                <ProtectedRoute allowedRoles={['Admin']}>
                   <AdminLayout>
                     <Routes>
                       <Route path="/" element={<AdminDashboard />} />
@@ -224,12 +211,12 @@ function App() {
                       <Route path="/settings" element={<SystemSettings />} />
                     </Routes>
                   </AdminLayout>
-                </ProtectedRoleRoute>
+                </ProtectedRoute>
               } />
 
               {/* 4. Main Institutional Portal (Super Portal) */}
               <Route path="/main-admin/*" element={
-                <ProtectedRoleRoute allowedRoles={['Main Admin']}>
+                <ProtectedRoute allowedRoles={['Main Admin']}>
                   <AdminLayout>
                     <Routes>
                       <Route path="/" element={<MainDashboard />} />
@@ -244,12 +231,12 @@ function App() {
                       <Route path="/monitoring" element={<SystemMonitoring />} />
                     </Routes>
                   </AdminLayout>
-                </ProtectedRoleRoute>
+                </ProtectedRoute>
               } />
 
               {/* 3. HR Dashboard Environment (Existing) */}
               <Route path="/*" element={
-                <ProtectedRoleRoute allowedRoles={['HR']}>
+                <ProtectedRoute allowedRoles={['HR']}>
                   <DashboardLayout>
                     <Routes>
                       <Route path="/" element={<Dashboard />} />
@@ -309,7 +296,7 @@ function App() {
                       <Route path="/settings" element={<Placeholder title="Settings" />} />
                     </Routes>
                   </DashboardLayout>
-                </ProtectedRoleRoute>
+                </ProtectedRoute>
               } />
             </Routes>
             </AdminDashboardProvider>

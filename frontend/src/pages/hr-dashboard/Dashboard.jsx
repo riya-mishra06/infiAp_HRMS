@@ -24,17 +24,7 @@ import {
   User,
   Loader2
 } from 'lucide-react';
-import {
-   getDashboardSummary,
-   getLeaveRequests,
-   getEmployees,
-   getRecruitmentJobs,
-   getAttendanceDailyOverview,
-   getLeaveStats,
-   getAttendanceNotifications,
-   getTodayLeaves,
-   getResignationRegister,
-} from '../../services/hrApi';
+import { hrService } from '../../services/hr.service';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -57,15 +47,15 @@ const Dashboard = () => {
                todayLeavesRes,
                resignationRes,
             ] = await Promise.all([
-               getDashboardSummary(),
-               getEmployees({ limit: 1 }),
-               getRecruitmentJobs({ status: 'Open', limit: 1 }),
-               getAttendanceDailyOverview(),
-               getLeaveStats(),
-               getLeaveRequests({ status: 'Pending', limit: 1 }),
-               getAttendanceNotifications(),
-               getTodayLeaves(),
-               getResignationRegister({ status: 'In Progress', limit: 1 }),
+               hrService.getDashboardSummary(),
+               hrService.getEmployees({ limit: 1 }),
+               hrService.getRecruitmentJobs({ status: 'Open', limit: 1 }),
+               hrService.getAttendanceDailyOverview(),
+               hrService.getLeaveStats(),
+               hrService.getLeaveRequests({ status: 'Pending', limit: 1 }),
+               hrService.getAttendanceNotifications(),
+               hrService.getTodayLeaves(),
+               hrService.getResignationRegister({ status: 'In Progress', limit: 1 }),
             ]);
 
             const summary = summaryRes.data?.data || {};
